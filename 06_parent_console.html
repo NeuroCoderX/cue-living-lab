@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Cue - Parent Guard & Co-Growth Console | 家长端亲子共育控制台</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Dark Mode */
+    :root[data-theme="dark"] {
+      --bg-outer: radial-gradient(circle at 50% 15%, #182C44 0%, #060B12 80%);
+      --screen: #0E1B2A;
+      --phone-border: #223448;
+      --surface: #16273C;
+      --surface2: #1E3349;
+      --surface-glass: rgba(22, 39, 60, 0.75);
+      --coral: #FF7A66;
+      --coral-glow: rgba(255, 122, 102, 0.35);
+      --mint: #4ECDC4;
+      --mint-glow: rgba(78, 205, 196, 0.35);
+      --amber: #E8A87C;
+      --flame: #FF9D5C;
+      --purple: #A78BFA;
+      --text: #F5EFE6;
+      --text2: #A8B6C6;
+      --text3: #6B7C93;
+      --line: rgba(255, 255, 255, 0.08);
+      --nav-bg: rgba(14, 27, 42, 0.95);
+      --black: #060C14;
+      --header-bg: rgba(14, 27, 42, 0.85);
+      --header-border: rgba(255, 255, 255, 0.12);
+      --theme-btn-bg: rgba(255, 255, 255, 0.08);
+      --theme-btn-text: #FFFFFF;
+    }
+
+    /* Light Mode (Default: Fresh Warm Cream) */
+    :root[data-theme="light"] {
+      --bg-outer: radial-gradient(circle at 50% 15%, #E5DDD1 0%, #C9BDAE 80%);
+      --screen: #FBF8F3;
+      --phone-border: #D1C7B8;
+      --surface: #FFFFFF;
+      --surface2: #F0E9DF;
+      --surface-glass: rgba(255, 255, 255, 0.85);
+      --coral: #E05A47;
+      --coral-glow: rgba(224, 90, 71, 0.25);
+      --mint: #0D9488;
+      --mint-glow: rgba(13, 148, 136, 0.25);
+      --amber: #D97706;
+      --flame: #EA580C;
+      --purple: #7C3AED;
+      --text: #0F172A;
+      --text2: #475569;
+      --text3: #64748B;
+      --line: rgba(15, 23, 42, 0.08);
+      --nav-bg: rgba(255, 255, 255, 0.95);
+      --black: #0F172A;
+      --header-bg: rgba(255, 255, 255, 0.9);
+      --header-border: rgba(15, 23, 42, 0.1);
+      --theme-btn-bg: #FFFFFF;
+      --theme-btn-text: #0F172A;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    body {
+      background: var(--bg-outer);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 40px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    /* Top Controls Container - Widened to 460px to prevent text wrap */
+    .top-controls-container {
+      width: 100%;
+      max-width: 460px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .top-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2px;
+    }
+
+    .brand-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Segmented Language Toggle */
+    .lang-segmented {
+      display: flex;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 2px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text3);
+      padding: 3px 8px;
+      border-radius: 9px;
+      font-size: 10.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--mint);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px var(--mint-glow);
+    }
+
+    .btn-top {
+      background: var(--theme-btn-bg);
+      border: 1px solid var(--line);
+      color: var(--theme-btn-text);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      backdrop-filter: blur(12px);
+      text-decoration: none;
+    }
+    .btn-top:hover { transform: translateY(-1px); }
+
+    /* Segmented Tab Bar (Strict 4-Grid) */
+    .segmented-control {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--header-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--header-border);
+      border-radius: 18px;
+      padding: 3px;
+      gap: 3px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .demo-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text3);
+      padding: 7px 0;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .demo-tab-btn:hover { color: var(--text); }
+    .demo-tab-btn.active {
+      background: var(--mint);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px var(--mint-glow);
+    }
+
+    /* iPhone 15 Pro Frame */
+    .iphone-device {
+      width: 390px;
+      height: 844px;
+      flex-shrink: 0;
+      background: var(--screen);
+      border: 12px solid var(--phone-border);
+      border-radius: 54px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15), inset 0 0 16px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .status-header {
+      height: 44px;
+      padding: 12px 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+      z-index: 50;
+    }
+
+    .dynamic-island {
+      width: 110px;
+      height: 25px;
+      background: #000000;
+      border-radius: 20px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+
+    .camera-lens {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #0f172a;
+      border: 2px solid #1e293b;
+    }
+
+    .app-header {
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .avatar-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--mint), #0284c7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 15px;
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px var(--mint-glow);
+    }
+
+    .status-badge {
+      background: rgba(78, 205, 196, 0.12);
+      border: 1px solid var(--mint);
+      color: var(--mint);
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 8px var(--mint);
+      animation: dotPulse 1.8s infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { opacity: 0.6; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.25); }
+    }
+
+    .viewport {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .viewport::-webkit-scrollbar { display: none; }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      animation: screenFade 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .screen.active { display: flex; }
+
+    @keyframes screenFade {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1.0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-head-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Hero Banner */
+    .hero-status-card {
+      background: linear-gradient(135deg, rgba(78, 205, 196, 0.12) 0%, var(--surface2) 100%);
+      border: 1px solid rgba(78, 205, 196, 0.35);
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .trigger-item {
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Smart Home Devices List */
+    .device-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .device-tile {
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+    }
+    .device-tile.active {
+      border-color: var(--mint);
+      background: linear-gradient(135deg, rgba(78, 205, 196, 0.08) 0%, var(--surface2) 100%);
+    }
+
+    .device-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .device-icon { font-size: 18px; }
+    .device-toggle {
+      width: 28px;
+      height: 16px;
+      background: var(--mint);
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+    }
+    .device-toggle::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      top: 2px;
+      right: 2px;
+      transition: all 0.2s;
+    }
+
+    .device-name {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .device-param {
+      font-size: 10px;
+      color: var(--mint);
+      font-weight: 700;
+    }
+    .device-sub {
+      font-size: 9px;
+      color: var(--text3);
+    }
+
+    /* Safe 2x2 Grid for Scenario Nav */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+
+    .scenario-btn {
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      color: var(--text2);
+      padding: 8px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .scenario-btn.active, .scenario-btn:hover {
+      background: var(--mint);
+      color: #FFFFFF;
+      border-color: var(--mint);
+      box-shadow: 0 2px 8px var(--mint-glow);
+    }
+
+    /* Script Contrast Box */
+    .script-contrast {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .script-box-bad {
+      background: rgba(255, 122, 102, 0.1);
+      border-left: 3px solid var(--coral);
+      border-radius: 10px;
+      padding: 9px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .script-bad-title {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--coral);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .script-bad-txt {
+      font-size: 11.5px;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .script-box-good {
+      background: rgba(78, 205, 196, 0.1);
+      border-left: 3px solid var(--mint);
+      border-radius: 10px;
+      padding: 9px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .script-good-title {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--mint);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .script-good-txt {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    /* Action Buttons */
+    .action-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .btn-action-primary {
+      flex: 1;
+      background: var(--mint);
+      color: #FFFFFF;
+      border: none;
+      padding: 9px;
+      border-radius: 10px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-action-sec {
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      color: var(--text2);
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Habit Agreement Box */
+    .agreement-card {
+      background: linear-gradient(135deg, rgba(232, 168, 124, 0.12) 0%, var(--surface2) 100%);
+      border: 1px solid rgba(232, 168, 124, 0.35);
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    /* Bar Chart Wrap */
+    .bar-chart-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: 70px;
+      padding: 8px 6px 0;
+      margin-top: 6px;
+      background: var(--surface2);
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .bar-pill {
+      width: 12px;
+      background: var(--surface);
+      border-radius: 5px;
+      position: relative;
+      height: 44px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      width: 100%;
+      background: var(--mint);
+      border-radius: 5px;
+      transition: height 0.6s ease;
+    }
+    .bar-fill.target { background: var(--coral); }
+
+    .bar-lbl {
+      font-size: 9.5px;
+      color: var(--text3);
+      font-weight: 700;
+    }
+
+    /* Radar List */
+    .radar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .radar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface2);
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+    }
+
+    /* Bottom 4 Navigation Bar */
+    .app-nav {
+      height: 72px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+      padding: 0 4px;
+    }
+
+    .app-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--text3);
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .app-nav-item.active { color: var(--mint); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Controls Header -->
+  <div class="top-controls-container">
+    <div class="top-header-row">
+      <div class="brand-title">
+        <span>👨‍👩‍👧</span>
+        <span id="txt-app-title">Cue 家长端 · 亲子共育控制台</span>
+      </div>
+      <div class="top-actions">
+        <a href="index.html" class="btn-top" style="text-decoration:none;">
+          <span>🏠</span>
+          <span id="txt-portal-btn">门户</span>
+        </a>
+        <div class="lang-segmented">
+          <button class="lang-btn active" id="btn-lang-zh" onclick="setLanguage('zh')">🇨🇳 中</button>
+          <button class="lang-btn" id="btn-lang-en" onclick="setLanguage('en')">🇬🇧 EN</button>
+        </div>
+        <button class="btn-top" onclick="toggleTheme()" id="btn-theme-toggle">
+          <span id="theme-icon">🌙</span>
+          <span id="theme-lbl">Dark</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Segmented Tab Bar -->
+    <div class="segmented-control">
+      <button class="demo-tab-btn active" onclick="jumpToScreen(0)" id="seg-0">🛡️ 状态守护</button>
+      <button class="demo-tab-btn" onclick="jumpToScreen(1)" id="seg-1">🏠 家居物联</button>
+      <button class="demo-tab-btn" onclick="jumpToScreen(2)" id="seg-2">💬 沟通锦囊</button>
+      <button class="demo-tab-btn" onclick="jumpToScreen(3)" id="seg-3">🎯 契约周报</button>
+    </div>
+  </div>
+
+  <!-- iPhone 15 Pro Frame -->
+  <div class="iphone-device">
+
+    <!-- Status Bar -->
+    <div class="status-header">
+      <span>21:40</span>
+      <div class="dynamic-island">
+        <div class="camera-lens"></div>
+        <div style="width:6px; height:6px; border-radius:50%; background:var(--mint);"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:4px; font-size:11px; font-weight:700;">
+        <span class="pulse-dot" style="width:5px; height:5px;"></span>
+        <span id="txt-sync-status">Synced</span>
+      </div>
+    </div>
+
+    <!-- App Header -->
+    <div class="app-header">
+      <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+        <div class="avatar-box" style="flex-shrink:0;">家</div>
+        <div style="min-width:0;">
+          <div style="font-size: 13px; font-weight: 800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="txt-parent-title">Parent Guard Console</div>
+          <div style="font-size: 10px; color: var(--text3);" id="txt-child-info">Alex (Age 15 · Grade 9)</div>
+        </div>
+      </div>
+      <div class="status-badge" style="flex-shrink:0;">
+        <div class="pulse-dot"></div>
+        <span id="txt-guard-active">Guard Active</span>
+      </div>
+    </div>
+
+    <!-- Viewport -->
+    <div class="viewport">
+
+      <!-- TAB 0: 🛡️ 状态守护与自定义提醒 (Live Status & Custom Reminders) -->
+      <div class="screen active" id="screen-0">
+
+        <!-- Hero Flow Status -->
+        <div class="hero-status-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:11.5px; font-weight:800; color:var(--mint); display:flex; align-items:center; gap:6px;">
+              <span class="pulse-dot"></span>
+              <span id="t0-status-badge">当前状态：深度自习心流中</span>
+            </span>
+            <span style="font-size:10.5px; color:var(--text3);" id="t0-focus-duration">连续自习 38 分钟</span>
+          </div>
+
+          <div style="font-size:15px; font-weight:900; color:var(--text); margin-top:2px;" id="t0-hero-title">
+            🛡️ 建议保持安静 · 请勿敲门打扰
+          </div>
+
+          <div style="font-size:11px; color:var(--text2); line-height:1.5;" id="t0-hero-desc">
+            孩子正在高度专注写数学题，前额叶思考连贯。预计将在 <b>12 分钟后</b> 结束本轮自习并触发您的自定义关怀提醒。
+          </div>
+        </div>
+
+        <!-- Custom Care Reminders -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-head-title" id="t0-card2-title">⚙️ 自定义间歇关怀提醒</span>
+            <span style="font-size:10.5px; color:var(--mint); font-weight:800;" id="t0-card2-add">+ 添加规则</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div class="trigger-item">
+              <div>
+                <div style="font-size:11.5px; font-weight:800;" id="t0-r1-title">🍲 提醒吃晚饭</div>
+                <div style="font-size:10px; color:var(--text3);" id="t0-r1-desc">触发条件：当自习结束或 18:30 休息时</div>
+              </div>
+              <span style="font-size:10.5px; color:var(--mint); font-weight:800;" id="t0-r1-state">已开启 ✓</span>
+            </div>
+
+            <div class="trigger-item">
+              <div>
+                <div style="font-size:11.5px; font-weight:800;" id="t0-r2-title">🚶 提醒出门散步/吃水果</div>
+                <div style="font-size:10px; color:var(--text3);" id="t0-r2-desc">触发条件：连续专注达 45 分钟间歇</div>
+              </div>
+              <span style="font-size:10.5px; color:var(--mint); font-weight:800;" id="t0-r2-state">已开启 ✓</span>
+            </div>
+          </div>
+
+          <button class="btn-action-primary" style="margin-top:2px;" onclick="editReminders()">
+            <span>✏️</span>
+            <span id="t0-btn-edit">编辑自定义提醒策略</span>
+          </button>
+        </div>
+
+        <!-- Privacy Card -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-head-title" id="t0-card3-title">🔒 隐私脱敏守护原则 (WHO 标准)</span>
+          </div>
+          <div style="font-size:10.5px; color:var(--text2); line-height:1.45;" id="t0-card3-desc">
+            Cue 严格遵循青少年自主权保护规范：<b>绝不上传任何屏幕画面或聊天隐私</b>，仅同步脱敏后的健康精力趋势，从机制上消除亲子监控对立。
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 1: 🏠 家居物联 (Smart Home IoT Manager) -->
+      <div class="screen" id="screen-1">
+
+        <div class="card">
+          <div class="card-head">
+            <span class="card-head-title" id="t1-card1-title">🏠 全屋健康物联协同生态</span>
+            <span style="font-size:10.5px; color:var(--mint); font-weight:800;" id="t1-card1-online">4台设备在线</span>
+          </div>
+
+          <div class="device-grid">
+            <div class="device-tile active">
+              <div class="device-top">
+                <span class="device-icon">💡</span>
+                <div class="device-toggle" onclick="toggleDev(this)"></div>
+              </div>
+              <div class="device-name" id="d1-name">书房护眼台灯</div>
+              <div class="device-param" id="d1-param">4500K 护眼白</div>
+              <div class="device-sub" id="d1-sub">自习专注联动中</div>
+            </div>
+
+            <div class="device-tile active">
+              <div class="device-top">
+                <span class="device-icon">🌅</span>
+                <div class="device-toggle" onclick="toggleDev(this)"></div>
+              </div>
+              <div class="device-name" id="d2-name">卧室日出唤醒灯</div>
+              <div class="device-param" id="d2-param">06:40 晨光渐亮</div>
+              <div class="device-sub" id="d2-sub">睡眠周期平稳唤醒</div>
+            </div>
+
+            <div class="device-tile active">
+              <div class="device-top">
+                <span class="device-icon">🔇</span>
+                <div class="device-toggle" onclick="toggleDev(this)"></div>
+              </div>
+              <div class="device-name" id="d3-name">客厅智能音响</div>
+              <div class="device-param" id="d3-param">静音守护模式</div>
+              <div class="device-sub" id="d3-sub">自习中防打扰</div>
+            </div>
+
+            <div class="device-tile active">
+              <div class="device-top">
+                <span class="device-icon">🌙</span>
+                <div class="device-toggle" onclick="toggleDev(this)"></div>
+              </div>
+              <div class="device-name" id="d4-name">卧室温控香薰</div>
+              <div class="device-param" id="d4-param">23℃ 睡前暖光</div>
+              <div class="device-sub" id="d4-sub">22:15 自动助眠</div>
+            </div>
+          </div>
+
+          <div class="action-row" style="margin-top:2px;">
+            <button class="btn-action-primary" onclick="searchDevices()">
+              <span>➕</span>
+              <span id="t1-btn-add">添加智能家居设备</span>
+            </button>
+            <button class="btn-action-sec" onclick="triggerScene()">
+              <span id="t1-btn-scene">一键场景</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 2: 💬 沟通锦囊 (Parenting Coach & Psychology) -->
+      <div class="screen" id="screen-2">
+
+        <div class="card">
+          <div class="card-head">
+            <span class="card-head-title" id="t2-card1-title">💡 4大高频情境真诚表达参考</span>
+            <span style="font-size:10.5px; color:var(--mint); font-weight:800;" id="t2-card1-sub">点击切换情境</span>
+          </div>
+
+          <!-- Safe 2x2 Scenario Grid -->
+          <div class="scenario-grid">
+            <button class="scenario-btn active" onclick="switchScenario(0)" id="sc-btn-0">1. 放学回家</button>
+            <button class="scenario-btn" onclick="switchScenario(1)" id="sc-btn-1">2. 房间摸手机</button>
+            <button class="scenario-btn" onclick="switchScenario(2)" id="sc-btn-2">3. 晚饭餐桌</button>
+            <button class="scenario-btn" onclick="switchScenario(3)" id="sc-btn-3">4. 睡前道晚安</button>
+          </div>
+
+          <!-- Contrast Box -->
+          <div class="script-contrast">
+            <div class="script-box-bad">
+              <div class="script-bad-title">
+                <span>❌</span>
+                <span id="t2-bad-title">容易激化矛盾的催促（旧习惯）</span>
+              </div>
+              <div class="script-bad-txt" id="bad-script-txt">
+                “一进门就瘫在沙发上，作业写完了吗？赶紧去写作业，别天天看手机！”
+              </div>
+            </div>
+
+            <div class="script-box-good">
+              <div class="script-good-title">
+                <span>✅</span>
+                <span id="t2-good-title">真诚关怀的表达建议（Cue 建议）</span>
+              </div>
+              <div class="script-good-txt" id="good-script-txt">
+                “今天在学校辛苦啦！先吃点水果喝口温水，休息 15 分钟再开始写作业吧。”
+              </div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-action-primary" onclick="copyScript()">
+              <span>📋</span>
+              <span id="t2-btn-copy">复制参考</span>
+            </button>
+            <button class="btn-action-sec" onclick="playTone()">
+              <span>🔊</span>
+              <span id="t2-btn-tone">示范语气</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Psychology Toolkit -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-head-title" id="t2-card2-title">🧠 青春期脑科学心理锦囊</span>
+          </div>
+
+          <div style="font-size:11.5px; color:var(--text2); line-height:1.5;" id="t2-psych-txt">
+            <b>为什么孩子容易烦躁顶嘴？</b><br>
+            青春期大脑的<b>情绪边缘系统（Amygdala）</b>发育成熟快于<b>理性前额叶（PFC）</b>。当孩子疲劳或受挫时，情绪冲动会优先占领大脑。<br>
+            💡 <b>沟通金法则：</b> 先共情感受（“这题看着挺繁琐的”），再提供支持（“需要一起看还是先休息？”），绝不说教。
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 3: 🎯 契约周报 (Habit Agreement & Radar) -->
+      <div class="screen" id="screen-3">
+
+        <!-- Habit Agreement Card -->
+        <div class="agreement-card">
+          <div class="card-head">
+            <span class="card-head-title" style="color:var(--amber);" id="t3-card1-title">🎯 本周亲子共商自律契约</span>
+            <span style="font-size:10.5px; color:var(--amber); font-weight:800;" id="t3-card1-status">进行中</span>
+          </div>
+
+          <div style="font-size:12px; font-weight:800; color:var(--text);" id="t3-agree-challenge">
+            约定挑战：本周完成 5 天傍晚运动 30 分钟
+          </div>
+          <div style="font-size:10.5px; color:var(--text2);" id="t3-agree-progress">
+            当前进度：<b>4 / 5 天达成</b>（还差 1 天即可解锁周末家庭露营奖励！）
+          </div>
+
+          <div class="action-row" style="margin-top:2px;">
+            <button class="btn-action-primary" style="background:var(--flame);" onclick="fulfilReward()">
+              <span>🎁</span>
+              <span id="t3-btn-reward">兑现奖励与鼓励</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Weekly Trend Bar Chart -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-head-title" id="t3-card2-title">📈 本周健康节律趋势</span>
+            <span style="font-size:10.5px; color:var(--mint); font-weight:800;" id="t3-card2-rate">规律度 94%</span>
+          </div>
+
+          <div class="bar-chart-wrap">
+            <div class="bar-col">
+              <div class="bar-pill"><div class="bar-fill" style="height:30px;"></div></div>
+              <span class="bar-lbl" id="b-lbl-0">周一</span>
+            </div>
+            <div class="bar-col">
+              <div class="bar-pill"><div class="bar-fill" style="height:34px;"></div></div>
+              <span class="bar-lbl" id="b-lbl-1">周二</span>
+            </div>
+            <div class="bar-col">
+              <div class="bar-pill"><div class="bar-fill" style="height:40px;"></div></div>
+              <span class="bar-lbl" id="b-lbl-2">周三</span>
+            </div>
+            <div class="bar-col">
+              <div class="bar-pill"><div class="bar-fill" style="height:36px;"></div></div>
+              <span class="bar-lbl" id="b-lbl-3">周四</span>
+            </div>
+            <div class="bar-col">
+              <div class="bar-pill"><div class="bar-fill" style="height:42px;"></div></div>
+              <span class="bar-lbl" id="b-lbl-4">周五</span>
+            </div>
+            <div class="bar-col">
+              <div class="bar-pill"><div class="bar-fill" style="height:44px;"></div></div>
+              <span class="bar-lbl" id="b-lbl-5">周六</span>
+            </div>
+            <div class="bar-col">
+              <div class="bar-pill"><div class="bar-fill target" style="height:46px;"></div></div>
+              <span class="bar-lbl" style="color:var(--mint); font-weight:800;" id="b-lbl-6">今日</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- WHO 4D Health Radar -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-head-title" id="t3-card3-title">🌐 WHO 青少年健康达标评估</span>
+            <span style="font-size:10px; color:var(--mint); font-weight:800;" id="t3-card3-grade">综合等级 A+</span>
+          </div>
+
+          <div class="radar-list">
+            <div class="radar-row">
+              <span id="r-row-0">🌙 夜间睡眠充沛度</span>
+              <span style="color:var(--mint); font-weight:800;" id="r-val-0">94% (优秀)</span>
+            </div>
+            <div class="radar-row">
+              <span id="r-row-1">📱 日间有效离屏率</span>
+              <span style="color:var(--mint); font-weight:800;" id="r-val-1">88% (良好)</span>
+            </div>
+            <div class="radar-row">
+              <span id="r-row-2">🏃 有氧运动达标率</span>
+              <span style="color:var(--mint); font-weight:800;" id="r-val-2">92% (优秀)</span>
+            </div>
+            <div class="radar-row">
+              <span id="r-row-3">👨‍👩‍👧 亲子情绪稳定度</span>
+              <span style="color:var(--mint); font-weight:800;" id="r-val-3">90% (极佳)</span>
+            </div>
+          </div>
+
+          <button class="btn-action-primary" style="margin-top:2px;" onclick="exportReport()">
+            <span>📤</span>
+            <span id="t3-btn-export">生成本周家庭健康周报长图</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- App Bottom Nav Bar (4 Tabs) -->
+    <div class="app-nav">
+      <div class="app-nav-item active" onclick="jumpToScreen(0)">
+        <span style="font-size:17px;">🛡️</span>
+        <span id="nav-0-lbl">状态守护</span>
+      </div>
+      <div class="app-nav-item" onclick="jumpToScreen(1)">
+        <span style="font-size:17px;">🏠</span>
+        <span id="nav-1-lbl">家居物联</span>
+      </div>
+      <div class="app-nav-item" onclick="jumpToScreen(2)">
+        <span style="font-size:17px;">💬</span>
+        <span id="nav-2-lbl">沟通锦囊</span>
+      </div>
+      <div class="app-nav-item" onclick="jumpToScreen(3)">
+        <span style="font-size:17px;">🎯</span>
+        <span id="nav-3-lbl">契约周报</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Standardized Compact Footer -->
+  <footer style="text-align:center; font-size:11px; color:var(--text3); line-height:1.6; max-width:460px; padding: 0 10px;">
+    <div>Direction One: Youth Health · ISTBI, Fudan University</div>
+    <div style="font-weight:700; color:var(--mint); margin-top:2px;">Team 3: Muireann Hogan, Xinwen Cao, Delya Ahuja, Qihe Zhang</div>
+  </footer>
+
+  <script>
+    let currentTheme = 'light';
+    let currentLang = 'en';
+
+    const i18n = {
+      zh: {
+        appTitle: "Cue 家长端 · 亲子共育控制台",
+        portalBtn: "门户",
+        themeDark: "暗黑",
+        themeLight: "白天",
+        syncStatus: "已同步",
+        parentTitle: "家长监护控制台",
+        childInfo: "小明 (15岁 · 初三)",
+        guardActive: "守护生效中",
+        seg: ["🛡️ 状态守护", "🏠 家居物联", "💬 沟通锦囊", "🎯 契约周报"],
+        nav: ["状态守护", "家居物联", "沟通锦囊", "契约周报"],
+        t0: {
+          statusBadge: "当前状态：深度自习心流中",
+          focusDuration: "连续自习 38 分钟",
+          heroTitle: "🛡️ 建议保持安静 · 请勿敲门打扰",
+          heroDesc: "孩子正在高度专注写数学题，前额叶思考连贯。预计将在 <b>12 分钟后</b> 结束本轮自习并触发您的自定义关怀提醒。",
+          card2Title: "⚙️ 自定义间歇关怀提醒",
+          card2Add: "+ 添加规则",
+          r1Title: "🍲 提醒吃晚饭",
+          r1Desc: "触发条件：当自习结束或 18:30 休息时",
+          r1State: "已开启 ✓",
+          r2Title: "🚶 提醒出门散步/吃水果",
+          r2Desc: "触发条件：连续专注达 45 分钟间歇",
+          r2State: "已开启 ✓",
+          btnEdit: "编辑自定义提醒策略",
+          card3Title: "🔒 隐私脱敏守护原则 (WHO 标准)",
+          card3Desc: "Cue 严格遵循青少年自主权保护规范：<b>绝不上传任何屏幕画面或聊天隐私</b>，仅同步脱敏后的健康精力趋势，从机制上消除亲子监控对立。"
+        },
+        t1: {
+          card1Title: "🏠 全屋健康物联协同生态",
+          card1Online: "4台设备在线",
+          d1Name: "书房护眼台灯", d1Param: "4500K 护眼白", d1Sub: "自习专注联动中",
+          d2Name: "卧室日出唤醒灯", d2Param: "06:40 晨光渐亮", d2Sub: "睡眠周期平稳唤醒",
+          d3Name: "客厅智能音响", d3Param: "静音守护模式", d3Sub: "自习中防打扰",
+          d4Name: "卧室温控香薰", d4Param: "23℃ 睡前暖光", d4Sub: "22:15 自动助眠",
+          btnAdd: "添加智能家居设备",
+          btnScene: "一键场景"
+        },
+        t2: {
+          card1Title: "💡 4大高频情境真诚表达参考",
+          card1Sub: "点击切换情境",
+          scBtns: ["1. 放学回家", "2. 房间摸手机", "3. 晚饭餐桌", "4. 睡前道晚安"],
+          badTitle: "容易激化矛盾的催促（旧习惯）",
+          goodTitle: "真诚关怀的表达建议（Cue 建议）",
+          btnCopy: "复制参考",
+          btnTone: "示范语气",
+          card2Title: "🧠 青春期脑科学心理锦囊",
+          psychTxt: "<b>为什么孩子容易烦躁顶嘴？</b><br>青春期大脑的<b>情绪边缘系统（Amygdala）</b>发育成熟快于<b>理性前额叶（PFC）</b>。当孩子疲劳或受挫时，情绪冲动会优先占领大脑。<br>💡 <b>沟通金法则：</b> 先共情感受（“这题看着挺繁琐的”），再提供支持（“需要一起看还是先休息？”），绝不说教。"
+        },
+        t3: {
+          card1Title: "🎯 亲子自律共育契约",
+          card1Status: "进行中",
+          agreeChallenge: "约定挑战：本周完成 5 天傍晚运动 30 分钟",
+          agreeProgress: "当前进度：<b>4 / 5 天达成</b>（还差 1 天即可解锁周末家庭露营奖励！）",
+          btnReward: "兑现奖励与鼓励",
+          card2Title: "📈 本周健康节律趋势",
+          card2Rate: "规律度 94%",
+          bars: ["周一", "周二", "周三", "周四", "周五", "周六", "今日"],
+          card3Title: "🌐 WHO 青少年健康达标评估",
+          card3Grade: "综合等级 A+",
+          radarRows: ["🌙 夜间睡眠充沛度", "📱 日间有效离屏率", "🏃 有氧运动达标率", "👨‍👩‍👧 亲子情绪稳定度"],
+          radarVals: ["94% (优秀)", "88% (良好)", "92% (优秀)", "90% (极佳)"],
+          btnExport: "生成本周家庭健康周报长图"
+        }
+      },
+      en: {
+        appTitle: "Cue Parent · Co-Growth Console",
+        portalBtn: "Portal",
+        themeDark: "Dark",
+        themeLight: "Light",
+        syncStatus: "Synced",
+        parentTitle: "Parent Guard Console",
+        childInfo: "Alex (Age 15 · Grade 9)",
+        guardActive: "Guard Active",
+        seg: ["🛡️ Status", "🏠 IoT", "💬 Coach", "🎯 Habit"],
+        nav: ["Status", "Smart Home", "Coach", "Habit"],
+        t0: {
+          statusBadge: "Current State: In Deep Study Flow",
+          focusDuration: "Focused for 38 Mins",
+          heroTitle: "🛡️ Keep Quiet · Do Not Disturb",
+          heroDesc: "Teen is deeply focused on math homework. Prefrontal flow is active. Focus cycle will conclude in <b>12 minutes</b> triggering your care prompt.",
+          card2Title: "⚙️ Custom Break Care Reminders",
+          card2Add: "+ Add Rule",
+          r1Title: "🍲 Dinner Time Prompt",
+          r1Desc: "Trigger: Study break concludes or 18:30",
+          r1State: "Active ✓",
+          r2Title: "🚶 Fruit / Walk Break Prompt",
+          r2Desc: "Trigger: 45-min continuous focus break",
+          r2State: "Active ✓",
+          btnEdit: "Configure Custom Care Rules",
+          card3Title: "🔒 WHO Privacy Minimization Principle",
+          card3Desc: "Strictly protects adolescent autonomy: <b>Zero raw screen capture or chat surveillance</b>. Only desensitized energy and wellness trends are synced."
+        },
+        t1: {
+          card1Title: "🏠 Smart Home Health Ecosystem",
+          card1Online: "4 Devices Online",
+          d1Name: "Study Desk Lamp", d1Param: "4500K Eye-Care", d1Sub: "Study mode linked",
+          d2Name: "Sunrise Bed Lamp", d2Param: "06:40 Wake Ramp", d2Sub: "Circadian sync active",
+          d3Name: "Living Room Speaker", d3Param: "Silent Guard", d3Sub: "Muted during focus",
+          d4Name: "Aroma Thermostat", d4Param: "23℃ Bedtime Warm", d4Sub: "22:15 Sleep aid active",
+          btnAdd: "Add Smart IoT Device",
+          btnScene: "One-Touch Scene"
+        },
+        t2: {
+          card1Title: "💡 4 High-Frequency Dialogue References",
+          card1Sub: "Click to Switch Scenario",
+          scBtns: ["1. After School", "2. Gaming in Room", "3. Dinner Table", "4. Bedtime Greeting"],
+          badTitle: "Reactive Nagging (Friction Trigger)",
+          goodTitle: "Empathetic Connection (Cue Guideline)",
+          btnCopy: "Copy Reference",
+          btnTone: "Tone Sample",
+          card2Title: "🧠 Adolescent Neuroscience Insights",
+          psychTxt: "<b>Why do teenagers become defensive easily?</b><br>The <b>emotional amygdala</b> matures faster than the <b>rational prefrontal cortex (PFC)</b> during adolescence. Under stress or fatigue, emotional impulses dominate.<br>💡 <b>Golden Rule:</b> Empathize with feelings first (“This math looks tedious”), offer support second (“Need help or want a break?”), never lecture."
+        },
+        t3: {
+          card1Title: "🎯 Parent-Teen Habit Agreement",
+          card1Status: "In Progress",
+          agreeChallenge: "Agreed Goal: 30-min evening workout for 5 days",
+          agreeProgress: "Progress: <b>4 / 5 Days Done</b> (1 day to unlock reward!)",
+          btnReward: "Fulfill Reward & Praise",
+          card2Title: "📈 Weekly Health Rhythm Trends",
+          card2Rate: "94% Regularity",
+          bars: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Today"],
+          card3Title: "🌐 WHO Adolescent Health Assessment",
+          card3Grade: "Overall Grade: A+",
+          radarRows: ["🌙 Nocturnal Sleep Quality", "📱 Daytime Off-Screen Rate", "🏃 Aerobic Exercise Target", "👨‍👩‍👧 Parent-Teen Stability"],
+          radarVals: ["94% (Excellent)", "88% (Good)", "92% (Excellent)", "90% (Outstanding)"],
+          btnExport: "Export Family Weekly Report Card"
+        }
+      }
+    };
+
+    const scenarios = {
+      zh: [
+        {
+          bad: "“一进门就瘫在沙发上，作业写完了吗？赶紧去写作业，别天天看手机！”",
+          good: "“今天在学校辛苦啦！先吃点水果喝口温水，休息 15 分钟再开始写作业吧。”"
+        },
+        {
+          bad: "“你怎么又在摸手机？快把手机交出来，不许看了！”",
+          good: "“看到你在书房坐了挺久，这道题是不是有点难？出来活动活动脖子，我们一起看看。”"
+        },
+        {
+          bad: "“吃饭还看手机！跟你说过多少次了，吃饭不准看！”",
+          good: "“今天学校有什么好玩的事吗？快尝尝这个排骨，刚出锅特别香。”"
+        },
+        {
+          bad: "“几点了还不睡！明天又该起不来了，快把手机关了睡觉！”",
+          good: "“今天自习和运动都很棒，早点休息给大脑充充电。晚安，做个好梦！”"
+        }
+      ],
+      en: [
+        {
+          bad: "“Slouching on the couch again! Is your homework done? Go study right now and put the phone down!”",
+          good: "“You worked hard at school today! Have some fruit and water, take a 15-min rest before starting homework.”"
+        },
+        {
+          bad: "“Why are you on your phone again? Hand it over immediately, no more screens!”",
+          good: "“You’ve been at your desk for a while, is this problem tricky? Stretch your neck and let’s take a look together.”"
+        },
+        {
+          bad: "“Looking at screens during dinner again! How many times have I told you not to look at your phone while eating!”",
+          good: "“Anything interesting happen at school today? Try this dish, it was just cooked and smells delicious.”"
+        },
+        {
+          bad: "“Look at the time! You won't wake up tomorrow, turn the phone off and sleep right now!”",
+          good: "“Great job on your study and workout today. Rest early to recharge your brain. Good night, sweet dreams!”"
+        }
+      ]
+    };
+
+    let curScIdx = 0;
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('btn-lang-zh').className = (lang === 'zh') ? 'lang-btn active' : 'lang-btn';
+      document.getElementById('btn-lang-en').className = (lang === 'en') ? 'lang-btn active' : 'lang-btn';
+      applyLanguage();
+    }
+
+    function applyLanguage() {
+      const dict = i18n[currentLang];
+      
+      document.getElementById('txt-app-title').innerText = dict.appTitle;
+      document.getElementById('txt-portal-btn').innerText = dict.portalBtn;
+      document.getElementById('txt-sync-status').innerText = dict.syncStatus;
+      document.getElementById('txt-parent-title').innerText = dict.parentTitle;
+      document.getElementById('txt-child-info').innerText = dict.childInfo;
+      document.getElementById('txt-guard-active').innerText = dict.guardActive;
+
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`seg-${i}`).innerText = dict.seg[i];
+        document.getElementById(`nav-${i}-lbl`).innerText = dict.nav[i];
+      }
+
+      // Tab 0
+      document.getElementById('t0-status-badge').innerText = dict.t0.statusBadge;
+      document.getElementById('t0-focus-duration').innerText = dict.t0.focusDuration;
+      document.getElementById('t0-hero-title').innerText = dict.t0.heroTitle;
+      document.getElementById('t0-hero-desc').innerHTML = dict.t0.heroDesc;
+      document.getElementById('t0-card2-title').innerText = dict.t0.card2Title;
+      document.getElementById('t0-card2-add').innerText = dict.t0.card2Add;
+      document.getElementById('t0-r1-title').innerText = dict.t0.r1Title;
+      document.getElementById('t0-r1-desc').innerText = dict.t0.r1Desc;
+      document.getElementById('t0-r1-state').innerText = dict.t0.r1State;
+      document.getElementById('t0-r2-title').innerText = dict.t0.r2Title;
+      document.getElementById('t0-r2-desc').innerText = dict.t0.r2Desc;
+      document.getElementById('t0-r2-state').innerText = dict.t0.r2State;
+      document.getElementById('t0-btn-edit').innerText = dict.t0.btnEdit;
+      document.getElementById('t0-card3-title').innerText = dict.t0.card3Title;
+      document.getElementById('t0-card3-desc').innerHTML = dict.t0.card3Desc;
+
+      // Tab 1
+      document.getElementById('t1-card1-title').innerText = dict.t1.card1Title;
+      document.getElementById('t1-card1-online').innerText = dict.t1.card1Online;
+      document.getElementById('d1-name').innerText = dict.t1.d1Name;
+      document.getElementById('d1-param').innerText = dict.t1.d1Param;
+      document.getElementById('d1-sub').innerText = dict.t1.d1Sub;
+      document.getElementById('d2-name').innerText = dict.t1.d2Name;
+      document.getElementById('d2-param').innerText = dict.t1.d2Param;
+      document.getElementById('d2-sub').innerText = dict.t1.d2Sub;
+      document.getElementById('d3-name').innerText = dict.t1.d3Name;
+      document.getElementById('d3-param').innerText = dict.t1.d3Param;
+      document.getElementById('d3-sub').innerText = dict.t1.d3Sub;
+      document.getElementById('d4-name').innerText = dict.t1.d4Name;
+      document.getElementById('d4-param').innerText = dict.t1.d4Param;
+      document.getElementById('d4-sub').innerText = dict.t1.d4Sub;
+      document.getElementById('t1-btn-add').innerText = dict.t1.btnAdd;
+      document.getElementById('t1-btn-scene').innerText = dict.t1.btnScene;
+
+      // Tab 2
+      document.getElementById('t2-card1-title').innerText = dict.t2.card1Title;
+      document.getElementById('t2-card1-sub').innerText = dict.t2.card1Sub;
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`sc-btn-${i}`).innerText = dict.t2.scBtns[i];
+      }
+      document.getElementById('t2-bad-title').innerText = dict.t2.badTitle;
+      document.getElementById('t2-good-title').innerText = dict.t2.goodTitle;
+      document.getElementById('t2-btn-copy').innerText = dict.t2.btnCopy;
+      document.getElementById('t2-btn-tone').innerText = dict.t2.btnTone;
+      document.getElementById('t2-card2-title').innerText = dict.t2.card2Title;
+      document.getElementById('t2-psych-txt').innerHTML = dict.t2.psychTxt;
+      switchScenario(curScIdx);
+
+      // Tab 3
+      document.getElementById('t3-card1-title').innerText = dict.t3.card1Title;
+      document.getElementById('t3-card1-status').innerText = dict.t3.card1Status;
+      document.getElementById('t3-agree-challenge').innerText = dict.t3.agreeChallenge;
+      document.getElementById('t3-agree-progress').innerHTML = dict.t3.agreeProgress;
+      document.getElementById('t3-btn-reward').innerText = dict.t3.btnReward;
+      document.getElementById('t3-card2-title').innerText = dict.t3.card2Title;
+      document.getElementById('t3-card2-rate').innerText = dict.t3.card2Rate;
+      for (let i = 0; i < 7; i++) {
+        document.getElementById(`b-lbl-${i}`).innerText = dict.t3.bars[i];
+      }
+      document.getElementById('t3-card3-title').innerText = dict.t3.card3Title;
+      document.getElementById('t3-card3-grade').innerText = dict.t3.card3Grade;
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`r-row-${i}`).innerText = dict.t3.radarRows[i];
+        document.getElementById(`r-val-${i}`).innerText = dict.t3.radarVals[i];
+      }
+      document.getElementById('t3-btn-export').innerText = dict.t3.btnExport;
+
+      // Theme toggle button sync
+      const themeLbl = document.getElementById('theme-lbl');
+      const themeIcon = document.getElementById('theme-icon');
+      if (themeLbl) themeLbl.innerText = (currentTheme === 'light') ? dict.themeDark : dict.themeLight;
+      if (themeIcon) themeIcon.innerText = (currentTheme === 'light') ? '🌙' : '☀️';
+    }
+
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      const themeIcon = document.getElementById('theme-icon');
+      const themeLbl = document.getElementById('theme-lbl');
+      const dict = i18n[currentLang];
+
+      if (currentTheme === 'light') {
+        currentTheme = 'dark';
+        htmlEl.setAttribute('data-theme', 'dark');
+        if (themeIcon) themeIcon.innerText = '☀️';
+        if (themeLbl) themeLbl.innerText = dict.themeLight;
+      } else {
+        currentTheme = 'light';
+        htmlEl.setAttribute('data-theme', 'light');
+        if (themeIcon) themeIcon.innerText = '🌙';
+        if (themeLbl) themeLbl.innerText = dict.themeDark;
+      }
+      try { localStorage.setItem('cue_theme', currentTheme); } catch(e){}
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      try { localStorage.setItem('cue_lang', lang); } catch(e){}
+      document.getElementById('btn-lang-zh').className = (lang === 'zh') ? 'lang-btn active' : 'lang-btn';
+      document.getElementById('btn-lang-en').className = (lang === 'en') ? 'lang-btn active' : 'lang-btn';
+      applyLanguage();
+    }
+
+    function jumpToScreen(idx) {
+      const screens = document.querySelectorAll('.screen');
+      const navs = document.querySelectorAll('.app-nav-item');
+      const tabBtns = document.querySelectorAll('.demo-tab-btn');
+
+      screens.forEach((s, i) => {
+        if (i === idx) s.classList.add('active');
+        else s.classList.remove('active');
+      });
+      navs.forEach((n, i) => {
+        if (i === idx) n.classList.add('active');
+        else n.classList.remove('active');
+      });
+      tabBtns.forEach((b, i) => {
+        if (i === idx) b.classList.add('active');
+        else b.classList.remove('active');
+      });
+    }
+
+    function toggleDev(toggle) {
+      const parent = toggle.closest('.device-tile');
+      if (parent.classList.contains('active')) {
+        parent.classList.remove('active');
+        toggle.style.background = '#64748b';
+      } else {
+        parent.classList.add('active');
+        toggle.style.background = 'var(--mint)';
+      }
+    }
+
+    function switchScenario(idx) {
+      curScIdx = idx;
+      const btns = document.querySelectorAll('.scenario-btn');
+      btns.forEach((b, i) => {
+        if (i === idx) b.classList.add('active');
+        else b.classList.remove('active');
+      });
+
+      const curList = scenarios[currentLang];
+      document.getElementById('bad-script-txt').innerText = curList[idx].bad;
+      document.getElementById('good-script-txt').innerText = curList[idx].good;
+    }
+
+    function editReminders() {
+      const msg = (currentLang === 'zh')
+        ? "⚙️ [自定义关怀提醒配置]：\n可自由配置触发事件（自习结束/运动达标）与提醒方式（温和震动/耳塞轻柔提示）。"
+        : "⚙️ [Custom Care Rules Configuration]:\nConfigure automatic triggers (study break conclude / workout goals) and gentle prompt delivery (in-ear audio / phone haptics).";
+      alert(msg);
+    }
+
+    function searchDevices() {
+      const msg = (currentLang === 'zh')
+        ? "➕ [搜索新设备]：正在扫描局域网 Matter / 米家 / 鸿蒙智能家居设备..."
+        : "➕ [Discover IoT Devices]: Scanning local home network for Matter / HomeKit / Smart IoT devices...";
+      alert(msg);
+    }
+
+    function triggerScene() {
+      const msg = (currentLang === 'zh')
+        ? "🏠 [全屋场景]：已一键切换至【全家深度自习静音模式】！"
+        : "🏠 [Home Scene]: Switched to 'Whole-Home Silent Study Flow' scene!";
+      alert(msg);
+    }
+
+    function fulfilReward() {
+      const msg = (currentLang === 'zh')
+        ? "❤️ 已向孩子耳塞发送鼓励：‘太棒了，这周运动表现极佳，周末我们一起去露营！’"
+        : "❤️ Encouragement sent to in-ear buds: ‘Awesome job on your workouts this week! Let’s go camping this weekend!’";
+      alert(msg);
+    }
+
+    function exportReport() {
+      const msg = (currentLang === 'zh')
+        ? "📊 已生成脱敏《本周家庭健康成长简报》，可一键分享至家庭微信群！"
+        : "📊 Privacy-minimized Weekly Family Health Card generated! Ready to share.";
+      alert(msg);
+    }
+
+    function copyScript() {
+      const txt = document.getElementById('good-script-txt').innerText;
+      navigator.clipboard.writeText(txt).then(() => {
+        alert((currentLang === 'zh') ? "📋 [已复制参考话术]：\n\n" + txt : "📋 [Copied Script]:\n\n" + txt);
+      }).catch(() => {
+        alert((currentLang === 'zh') ? "当前选择话术：\n\n" + txt : "Selected Script:\n\n" + txt);
+      });
+    }
+
+    function playTone() {
+      alert((currentLang === 'zh') ? "🔊 [示范语气]：\n\n温和、支持、不预设立场与指责。" : "🔊 [Tone Demo]:\n\nWarm, empathetic, supportive, and non-judgmental.");
+    }
+
+    // Initialize with localStorage persistence (Default to English)
+    try {
+      const savedTheme = localStorage.getItem('cue_theme') || 'light';
+      if (savedTheme === 'dark') {
+        currentTheme = 'dark';
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      const savedLang = localStorage.getItem('cue_lang') || 'en';
+      setLanguage(savedLang);
+    } catch(e) {
+      setLanguage('en');
+    }
+  </script>
+</body>
+</html>
