@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Cue - Parent Guard & Co-Growth Console | 家长端亲子共育控制台</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Dark Mode */
+    :root[data-theme="dark"] {
+      --bg-outer: radial-gradient(circle at 50% 15%, #182C44 0%, #060B12 80%);
+      --screen: #0E1B2A;
+      --phone-border: #223448;
+      --surface: #16273C;
+      --surface-card: rgba(22, 39, 60, 0.85);
+      --surface2: #1E3349;
+      --surface-glass: rgba(22, 39, 60, 0.75);
+      --coral: #FF7A66;
+      --coral-glow: rgba(255, 122, 102, 0.35);
+      --mint: #4ECDC4;
+      --mint-glow: rgba(78, 205, 196, 0.35);
+      --amber: #E8A87C;
+      --flame: #FF9D5C;
+      --purple: #A78BFA;
+      --text: #F5EFE6;
+      --text2: #A8B6C6;
+      --text3: #6B7C93;
+      --line: rgba(255, 255, 255, 0.08);
+      --nav-bg: rgba(14, 27, 42, 0.95);
+      --black: #060C14;
+      --header-bg: rgba(14, 27, 42, 0.85);
+      --header-border: rgba(255, 255, 255, 0.12);
+      --theme-btn-bg: rgba(255, 255, 255, 0.08);
+      --theme-btn-text: #FFFFFF;
+      --panel-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Light Mode (Default: Fresh Warm Cream) */
+    :root[data-theme="light"] {
+      --bg-outer: radial-gradient(circle at 50% 15%, #E5DDD1 0%, #C9BDAE 80%);
+      --screen: #FBF8F3;
+      --phone-border: #D1C7B8;
+      --surface: #FFFFFF;
+      --surface-card: rgba(255, 255, 255, 0.92);
+      --surface2: #F0E9DF;
+      --surface-glass: rgba(255, 255, 255, 0.85);
+      --coral: #E05A47;
+      --coral-glow: rgba(224, 90, 71, 0.25);
+      --mint: #0D9488;
+      --mint-glow: rgba(13, 148, 136, 0.25);
+      --amber: #D97706;
+      --flame: #EA580C;
+      --purple: #7C3AED;
+      --text: #0F172A;
+      --text2: #475569;
+      --text3: #64748B;
+      --line: rgba(15, 23, 42, 0.08);
+      --nav-bg: rgba(255, 255, 255, 0.95);
+      --black: #0F172A;
+      --header-bg: rgba(255, 255, 255, 0.9);
+      --header-border: rgba(15, 23, 42, 0.1);
+      --theme-btn-bg: #FFFFFF;
+      --theme-btn-text: #0F172A;
+      --panel-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    body {
+      background: var(--bg-outer);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    /* Top Universal Header */
+    .top-universal-nav {
+      width: 100%;
+      background: var(--header-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--header-border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-logo-mini {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0284c7, #06b6d4);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-segmented {
+      display: flex;
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 2px;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text3);
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: var(--mint);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px var(--mint-glow);
+    }
+
+    .btn-top {
+      background: var(--theme-btn-bg);
+      border: 1px solid var(--line);
+      color: var(--theme-btn-text);
+      padding: 5px 12px;
+      border-radius: 10px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+    }
+    .btn-top:hover { transform: translateY(-1px); }
+
+    /* Master Two-Column Layout Grid */
+    .master-showcase-container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .master-showcase-container {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+      .panel-column {
+        width: 100%;
+        max-width: 600px;
+      }
+    }
+
+    /* Left Column: Phone Prototype */
+    .phone-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* Segmented Tab Bar */
+    .segmented-control {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--header-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--header-border);
+      border-radius: 16px;
+      padding: 3px;
+      gap: 3px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .demo-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text3);
+      padding: 7px 0;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .demo-tab-btn:hover { color: var(--text); }
+    .demo-tab-btn.active {
+      background: var(--mint);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px var(--mint-glow);
+    }
+
+    /* iPhone 15 Pro Frame */
+    .iphone-device {
+      width: 390px;
+      height: 844px;
+      flex-shrink: 0;
+      background: var(--screen);
+      border: 12px solid var(--phone-border);
+      border-radius: 54px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15), inset 0 0 16px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .status-header {
+      height: 44px;
+      padding: 12px 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+      z-index: 50;
+    }
+
+    .dynamic-island {
+      width: 110px;
+      height: 25px;
+      background: #000000;
+      border-radius: 20px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+
+    .camera-lens {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #0f172a;
+      border: 2px solid #1e293b;
+    }
+
+    .app-header {
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .avatar-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0284c7, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 15px;
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+    }
+
+    .status-badge {
+      background: rgba(78, 205, 196, 0.12);
+      border: 1px solid var(--mint);
+      color: var(--mint);
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 8px var(--mint);
+      animation: dotPulse 1.8s infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { opacity: 0.6; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.25); }
+    }
+
+    .viewport {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .viewport::-webkit-scrollbar { display: none; }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      animation: screenFade 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .screen.active { display: flex; }
+
+    @keyframes screenFade {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1.0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 13px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-head-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .hero-status-card {
+      background: linear-gradient(135deg, rgba(78, 205, 196, 0.12) 0%, var(--surface2) 100%);
+      border: 1px solid rgba(78, 205, 196, 0.35);
+      border-radius: 18px;
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .trigger-item {
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 9px 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Weekly Focus Bar Chart */
+    .bar-chart-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: 60px;
+      padding: 6px 8px 0;
+      background: var(--surface2);
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      flex: 1;
+    }
+    .bar-pill {
+      width: 10px;
+      background: var(--surface);
+      border-radius: 4px;
+      position: relative;
+      height: 38px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .bar-fill {
+      width: 100%;
+      background: var(--mint);
+      border-radius: 4px;
+      transition: height 0.6s ease;
+    }
+    .bar-fill.target { background: var(--coral); }
+    .bar-lbl {
+      font-size: 9px;
+      color: var(--text3);
+      font-weight: 700;
+    }
+
+    /* Smart Home Devices List */
+    .device-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .device-tile {
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+    }
+    .device-tile.active {
+      border-color: var(--mint);
+      background: linear-gradient(135deg, rgba(78, 205, 196, 0.08) 0%, var(--surface2) 100%);
+    }
+
+    .device-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .device-icon { font-size: 17px; }
+    .device-toggle {
+      width: 28px;
+      height: 16px;
+      background: var(--mint);
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .device-toggle.off {
+      background: var(--text3);
+    }
+    .device-toggle::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      top: 2px;
+      right: 2px;
+      transition: all 0.2s;
+    }
+    .device-toggle.off::after {
+      right: 14px;
+    }
+
+    .device-name {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .device-param {
+      font-size: 9.5px;
+      color: var(--mint);
+      font-weight: 700;
+    }
+
+    /* Interactive Sub-Pills for Devices */
+    .device-sub-pills {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .dev-sub-pill {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--text2);
+      padding: 2px 5px;
+      border-radius: 6px;
+      font-size: 8.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .dev-sub-pill.active {
+      background: var(--mint);
+      color: #ffffff;
+      border-color: var(--mint);
+    }
+
+    /* Scenario Script Selector Pills */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+    .scenario-btn {
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      color: var(--text2);
+      padding: 6px 4px;
+      border-radius: 9px;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .scenario-btn.active {
+      background: var(--mint);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px var(--mint-glow);
+    }
+
+    .script-contrast {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .script-box-bad {
+      background: rgba(224, 90, 71, 0.08);
+      border-left: 3px solid var(--coral);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .script-box-good {
+      background: rgba(13, 148, 136, 0.08);
+      border-left: 3px solid var(--mint);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    /* Primary Action Buttons */
+    .btn-action-primary {
+      background: var(--mint);
+      color: #FFFFFF;
+      border: none;
+      padding: 9px;
+      border-radius: 11px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      box-shadow: 0 2px 8px var(--mint-glow);
+    }
+    .btn-action-primary:hover { opacity: 0.95; }
+
+    /* Bottom 4 Navigation Bar */
+    .app-nav {
+      height: 72px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+      padding: 0 2px;
+    }
+
+    .app-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--text3);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .app-nav-item.active { color: var(--mint); }
+
+    /* In-Phone Modals (Inside iPhone Frame) */
+    .phone-modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(14, 27, 42, 0.97);
+      backdrop-filter: blur(20px);
+      z-index: 60;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .phone-modal-overlay.open { display: flex; }
+
+    /* ========================================================
+       RIGHT COLUMN: RICH SCIENTIFIC EXPLANATORY PANEL
+       ======================================================== */
+    .panel-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel-card {
+      background: var(--surface-card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: var(--panel-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .panel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(13, 148, 136, 0.1);
+      border: 1px solid rgba(13, 148, 136, 0.25);
+      color: var(--mint);
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      width: fit-content;
+    }
+
+    .panel-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .panel-desc {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--text2);
+    }
+
+    .panel-subgrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 4px 0;
+    }
+    @media (max-width: 640px) {
+      .panel-subgrid { grid-template-columns: 1fr; }
+    }
+
+    .sub-card {
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sub-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sub-text {
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--text2);
+    }
+
+    .panel-highlight {
+      background: rgba(78, 205, 196, 0.08);
+      border-left: 3px solid var(--mint);
+      padding: 12px 16px;
+      border-radius: 0 12px 12px 0;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    .privacy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .pr-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--text2);
+    }
+    .pr-icon {
+      font-size: 16px;
+      margin-top: 1px;
+    }
+
+    .citations-box {
+      font-size: 11.5px;
+      line-height: 1.6;
+      color: var(--text3);
+      background: var(--surface2);
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Universal Header -->
+  <header class="top-universal-nav">
+    <div class="brand-title">
+      <div class="brand-logo-mini">P</div>
+      <span id="txt-app-title">Cue Parent Co-Growth Console</span>
+    </div>
+    <div class="top-actions">
+      <a href="index.html" class="btn-top">
+        <span>🏠</span>
+        <span id="btn-back-portal">Portal</span>
+      </a>
+      <div class="lang-segmented">
+        <button class="lang-btn" id="btn-lang-zh" onclick="setLanguage('zh')">🇨🇳 中文</button>
+        <button class="lang-btn active" id="btn-lang-en" onclick="setLanguage('en')">🇬🇧 EN</button>
+      </div>
+      <button class="btn-top" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-lbl">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Master Two-Column Layout -->
+  <div class="master-showcase-container">
+
+    <!-- Left Column: Interactive Parent Console Mockup -->
+    <div class="phone-column">
+      
+      <!-- Top 4 Segmented Tab Switcher -->
+      <div class="segmented-control">
+        <button class="demo-tab-btn active" onclick="jumpToScreen(0)">📊 <span id="tab-btn-0">Overview</span></button>
+        <button class="demo-tab-btn" onclick="jumpToScreen(1)">🛡️ <span id="tab-btn-1">Flow</span></button>
+        <button class="demo-tab-btn" onclick="jumpToScreen(2)">🏠 <span id="tab-btn-2">IoT</span></button>
+        <button class="demo-tab-btn" onclick="jumpToScreen(3)">💬 <span id="tab-btn-3">Guide</span></button>
+      </div>
+
+      <!-- iPhone Device Shell -->
+      <div class="iphone-device">
+        <div class="status-header">
+          <span>19:30</span>
+          <div class="dynamic-island">
+            <div class="camera-lens"></div>
+            <div style="width: 7px; height: 7px; border-radius: 50%; background: #10b981;"></div>
+          </div>
+          <div style="display: flex; gap: 4px; font-size: 11px;">
+            <span>5G</span>
+            <span>95%</span>
+          </div>
+        </div>
+
+        <div class="app-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="avatar-box">P</div>
+            <div>
+              <div style="font-size: 14px; font-weight: 800;" id="user-greeting">Good Evening, Alex's Parents 👋</div>
+              <div style="font-size: 11px; color: var(--text3);" id="user-sub">Household Peaceful & Calm</div>
+            </div>
+          </div>
+          <div class="status-badge">
+            <div class="pulse-dot"></div>
+            <span id="lbl-parent-status">Guard Active</span>
+          </div>
+        </div>
+
+        <!-- Scrollable Screens Viewport -->
+        <div class="viewport">
+
+          <!-- SCREEN 0: OVERVIEW (今日共育概览与周报) -->
+          <div class="screen active" id="screen-0">
+            <div class="hero-status-card">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 10.5px; font-weight: 800; color: var(--mint);" id="t0-card1-badge">📖 IN DEEP STUDY FLOW</span>
+                <span style="font-size: 10px; color: var(--text3);">19:30</span>
+              </div>
+              <div style="font-size: 14.5px; font-weight: 800;" id="t0-focus-status">Teen in Deep Focus for 38 Mins</div>
+              <div style="font-size: 11px; color: var(--text2);" id="t0-focus-tip">Do not knock door or serve snacks now · Rest care suggested in 12 mins</div>
+            </div>
+
+            <!-- Weekly Focus Bar Chart -->
+            <div class="card">
+              <div class="card-head">
+                <span class="card-head-title" id="t0-card2-title">📈 WEEKLY STUDY FOCUS & HABIT TREND</span>
+                <span style="font-size: 10px; color: var(--mint); font-weight: 800;" id="t0-weekly-badge">45m Target</span>
+              </div>
+              <div class="bar-chart-wrap">
+                <div class="bar-col"><div class="bar-pill"><div class="bar-fill" style="height: 60%;"></div></div><span class="bar-lbl">M</span></div>
+                <div class="bar-col"><div class="bar-pill"><div class="bar-fill" style="height: 75%;"></div></div><span class="bar-lbl">T</span></div>
+                <div class="bar-col"><div class="bar-pill"><div class="bar-fill" style="height: 50%;"></div></div><span class="bar-lbl">W</span></div>
+                <div class="bar-col"><div class="bar-pill"><div class="bar-fill" style="height: 85%;"></div></div><span class="bar-lbl">T</span></div>
+                <div class="bar-col"><div class="bar-pill"><div class="bar-fill" style="height: 90%;"></div></div><span class="bar-lbl">F</span></div>
+                <div class="bar-col"><div class="bar-pill"><div class="bar-fill target" style="height: 100%;"></div></div><span class="bar-lbl">S</span></div>
+                <div class="bar-col"><div class="bar-pill"><div class="bar-fill" style="height: 70%;"></div></div><span class="bar-lbl">S</span></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head">
+                <span class="card-head-title" id="t0-card3-title">📊 TODAY'S HEALTH & ROUTINE OVERVIEW</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center;">
+                <div style="background: var(--surface2); padding: 7px 4px; border-radius: 10px;">
+                  <div style="font-size: 9.5px; color: var(--text3);" id="t0-stat1-lbl">CAR Wake-Up</div>
+                  <div style="font-size: 12.5px; font-weight: 800; color: var(--mint);">07:00</div>
+                </div>
+                <div style="background: var(--surface2); padding: 7px 4px; border-radius: 10px;">
+                  <div style="font-size: 9.5px; color: var(--text3);" id="t0-stat2-lbl">Cadence Steps</div>
+                  <div style="font-size: 12.5px; font-weight: 800; color: var(--mint);">8,500</div>
+                </div>
+                <div style="background: var(--surface2); padding: 7px 4px; border-radius: 10px;">
+                  <div style="font-size: 9.5px; color: var(--text3);" id="t0-stat3-lbl">Slow-Wave Sleep</div>
+                  <div style="font-size: 12.5px; font-weight: 800; color: var(--mint);">2.4 h</div>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-action-primary" onclick="jumpToScreen(1)">
+              <span>🛡️</span>
+              <span id="t0-btn-shield">View Study Flow Shield</span>
+            </button>
+          </div>
+
+          <!-- SCREEN 1: STUDY FLOW SHIELD (心流守护与间歇关怀) -->
+          <div class="screen" id="screen-1">
+            <div class="card">
+              <div class="card-head">
+                <span class="card-head-title" id="t1-card1-title">🛡️ HOMEWORK FLOW SHIELD</span>
+                <span style="font-size: 10px; color: var(--mint); font-weight: 800;" id="t1-shield-badge">ACTIVE</span>
+              </div>
+              <div style="font-size: 14.5px; font-weight: 800; color: var(--text);" id="t1-flow-status">SON IS IN FLOW · PLEASE DO NOT DISTURB</div>
+              <div style="font-size: 11px; color: var(--text2);" id="t1-flow-desc">Working memory is deeply engaged. Abrupt interruptions incur heavy 15–20 min attention residue reset costs.</div>
+            </div>
+
+            <div class="card">
+              <div class="card-head">
+                <span class="card-head-title" id="t1-card2-title">🍎 CUSTOM SCHEDULED CARE TRIGGERS</span>
+                <span style="font-size: 10px; color: var(--mint); font-weight: 800; cursor: pointer;" onclick="openCareTriggerModal()" id="t1-btn-add">+ Add Trigger</span>
+              </div>
+              <div class="trigger-item">
+                <div>
+                  <div style="font-size: 11.5px; font-weight: 800;" id="trig-1-title">Water/Fruit Care upon Focus Break</div>
+                  <div style="font-size: 9.5px; color: var(--text3);" id="trig-1-sub">Prompts care only when focus naturally pauses</div>
+                </div>
+                <div class="device-toggle" onclick="toggleSwitch(this)"></div>
+              </div>
+              <div class="trigger-item" style="margin-top: 5px;">
+                <div>
+                  <div style="font-size: 11.5px; font-weight: 800;" id="trig-2-title">Dinner 5-Min Advance Soft Sync</div>
+                  <div style="font-size: 9.5px; color: var(--text3);" id="trig-2-sub">Gently alerts 5 mins ahead to wrap up thoughts</div>
+                </div>
+                <div class="device-toggle" onclick="toggleSwitch(this)"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCREEN 2: SMART HOME IOT (全屋物联环境管理) -->
+          <div class="screen" id="screen-2">
+            <div class="card">
+              <div class="card-head">
+                <span class="card-head-title" id="t2-card1-title">🏠 SMART HOME AMBIENT IOT SYNC</span>
+                <span style="font-size: 10px; color: var(--mint); font-weight: 800; cursor: pointer;" onclick="openAddDeviceModal()" id="t2-btn-add-dev">+ Add Device</span>
+              </div>
+              <div class="device-grid">
+                
+                <!-- Device 1: Desk Lamp -->
+                <div class="device-tile active" id="tile-dev-1">
+                  <div class="device-top">
+                    <span class="device-icon">💡</span>
+                    <div class="device-toggle" onclick="toggleDeviceSwitch('tile-dev-1', 'dev-1-param', '3500K · Warm White', 'Off')"></div>
+                  </div>
+                  <div class="device-name" id="dev-1-name">Study Desk Lamp</div>
+                  <div class="device-param" id="dev-1-param">3500K · Warm White</div>
+                  <div class="device-sub-pills">
+                    <button class="dev-sub-pill active" onclick="setLampTemp(3500, this)">3500K</button>
+                    <button class="dev-sub-pill" onclick="setLampTemp(4500, this)">4500K</button>
+                    <button class="dev-sub-pill" onclick="setLampTemp(5000, this)">5000K</button>
+                  </div>
+                </div>
+
+                <!-- Device 2: Living Room Audio -->
+                <div class="device-tile active" id="tile-dev-2">
+                  <div class="device-top">
+                    <span class="device-icon">🔇</span>
+                    <div class="device-toggle" onclick="toggleDeviceSwitch('tile-dev-2', 'dev-2-param', 'Auto-Muted', 'Normal Volume')"></div>
+                  </div>
+                  <div class="device-name" id="dev-2-name">Living Room Audio</div>
+                  <div class="device-param" id="dev-2-param">Auto-Muted</div>
+                  <div class="device-sub-pills">
+                    <button class="dev-sub-pill active" onclick="setAudioMode('mute', this)">Mute</button>
+                    <button class="dev-sub-pill" onclick="setAudioMode('soft', this)">Soft</button>
+                  </div>
+                </div>
+
+                <!-- Device 3: Bedroom Climate -->
+                <div class="device-tile active" id="tile-dev-3">
+                  <div class="device-top">
+                    <span class="device-icon">🌡️</span>
+                    <div class="device-toggle" onclick="toggleDeviceSwitch('tile-dev-3', 'dev-3-param', '23.0 ℃ Constant', 'Off')"></div>
+                  </div>
+                  <div class="device-name" id="dev-3-name">Bedroom Climate</div>
+                  <div class="device-param" id="dev-3-param">23.0 ℃ Constant</div>
+                  <div class="device-sub-pills">
+                    <button class="dev-sub-pill" onclick="adjustTemp(-0.5)">- 0.5°</button>
+                    <button class="dev-sub-pill" onclick="adjustTemp(0.5)">+ 0.5°</button>
+                  </div>
+                </div>
+
+                <!-- Device 4: Sunrise Wake Lamp -->
+                <div class="device-tile active" id="tile-dev-4">
+                  <div class="device-top">
+                    <span class="device-icon">🌅</span>
+                    <div class="device-toggle" onclick="toggleDeviceSwitch('tile-dev-4', 'dev-4-param', '07:00 Dawn Ramp', 'Off')"></div>
+                  </div>
+                  <div class="device-name" id="dev-4-name">Sunrise Wake Lamp</div>
+                  <div class="device-param" id="dev-4-param">07:00 Dawn Ramp</div>
+                  <div class="device-sub-pills">
+                    <button class="dev-sub-pill active" onclick="setSunriseTime('07:00', this)">07:00</button>
+                    <button class="dev-sub-pill" onclick="setSunriseTime('06:30', this)">06:30</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- SCREEN 3: AI PARENTING SCRIPTS & WHO CONTRACT (沟通锦囊与契约) -->
+          <div class="screen" id="screen-3">
+            <div class="card">
+              <div class="card-head">
+                <span class="card-head-title" id="t3-card1-title">💬 POSITIVE COMMUNICATION SCRIPTS</span>
+              </div>
+
+              <!-- 4 Scenario Selector Buttons -->
+              <div class="scenario-grid">
+                <button class="scenario-btn active" onclick="setScenario(0)" id="sc-btn-0">📚 Distraction</button>
+                <button class="scenario-btn" onclick="setScenario(1)" id="sc-btn-1">🏃 Run Praise</button>
+                <button class="scenario-btn" onclick="setScenario(2)" id="sc-btn-2">🌅 Wake-Up</button>
+                <button class="scenario-btn" onclick="setScenario(3)" id="sc-btn-3">🌙 Bedtime</button>
+              </div>
+
+              <!-- Dynamic Script Contrast Box -->
+              <div class="script-contrast" id="script-content-box">
+                <div class="script-box-bad" id="sc-bad-box">
+                  <b style="color: var(--coral);">❌ Avoid Saying:</b> “Why are you on your phone again? Is homework finished?” (Sparks defensiveness)
+                </div>
+                <div class="script-box-good" id="sc-good-box">
+                  <b style="color: var(--mint);">✅ Recommend Saying:</b> “You’ve worked hard for 40 mins, cognitive fatigue is normal. Stretch and grab water for 5 mins, then finish the last two questions!”
+                </div>
+              </div>
+            </div>
+
+            <!-- WHO 4D Health Contract Simulator -->
+            <div class="card" style="background: linear-gradient(135deg, rgba(232, 168, 124, 0.12) 0%, var(--surface2) 100%);">
+              <div class="card-head">
+                <span class="card-head-title" style="color: var(--amber);" id="t3-card2-title">🤝 WHO 4D CO-GROWTH CONTRACT</span>
+                <span style="font-size: 10px; color: var(--amber); font-weight: 800;" id="t3-contract-badge">Co-Signed ✓</span>
+              </div>
+              <div style="font-size: 11px; color: var(--text2); line-height: 1.5;" id="t3-contract-desc">
+                Parent and teen co-agreed on daily micro-targets (07:00 Sunrise, 45m Study, 30m Sport, 100% Screen-off audio). Zero punitive lockouts.
+              </div>
+              <button class="btn-action-primary" style="background: var(--amber); box-shadow: none; margin-top: 4px;" onclick="coSignContract()" id="btn-cosign">
+                <span>✍️</span>
+                <span id="btn-cosign-txt">Co-Sign Daily Habit Contract</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="app-nav">
+          <div class="app-nav-item active" onclick="jumpToScreen(0)">
+            <span style="font-size: 16px;">📊</span>
+            <span id="nav-lbl-0">Overview</span>
+          </div>
+          <div class="app-nav-item" onclick="jumpToScreen(1)">
+            <span style="font-size: 16px;">🛡️</span>
+            <span id="nav-lbl-1">Flow</span>
+          </div>
+          <div class="app-nav-item" onclick="jumpToScreen(2)">
+            <span style="font-size: 16px;">🏠</span>
+            <span id="nav-lbl-2">IoT</span>
+          </div>
+          <div class="app-nav-item" onclick="jumpToScreen(3)">
+            <span style="font-size: 16px;">💬</span>
+            <span id="nav-lbl-3">Guide</span>
+          </div>
+        </div>
+
+        <!-- IN-PHONE MODAL 1: Add Custom Care Trigger -->
+        <div class="phone-modal-overlay" id="modal-care-trigger">
+          <div style="font-size: 32px; margin-bottom: 8px;">🍎</div>
+          <div style="font-size: 15px; font-weight: 900; color: #ffffff; margin-bottom: 6px;" id="modal-trig-title">
+            Add Custom Care Trigger
+          </div>
+          <div style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin-bottom: 18px;" id="modal-trig-desc">
+            Cue prompts care only when the teen's focus naturally pauses, delivering warmth without interrupting thought flow.
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <button class="btn-action-primary" onclick="closeCareTriggerModal(true)" id="btn-save-trigger">
+              Save Care Trigger ✓
+            </button>
+            <button class="btn-action-primary" style="background: #334155;" onclick="closeCareTriggerModal(false)" id="btn-cancel-trigger">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <!-- IN-PHONE MODAL 2: Add New IoT Device -->
+        <div class="phone-modal-overlay" id="modal-add-device">
+          <div style="font-size: 32px; margin-bottom: 8px;">🔌</div>
+          <div style="font-size: 15px; font-weight: 900; color: #ffffff; margin-bottom: 6px;" id="modal-dev-title">
+            Pair New Smart Home IoT Device
+          </div>
+          <div style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin-bottom: 14px;" id="modal-dev-desc">
+            Select a nearby Matter/BLE mesh home device to pair into Cue Ambient Network:
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; width: 100%; margin-bottom: 14px;">
+            <div class="trigger-item" style="cursor: pointer;" onclick="selectDeviceType('curtains')">
+              <span style="font-size: 11.5px; font-weight: 700;" id="opt-dev-1">🪟 Smart Soft Curtains (Auto-Dawn)</span>
+              <span style="font-size: 10px; color: var(--mint);">+ Pair</span>
+            </div>
+            <div class="trigger-item" style="cursor: pointer;" onclick="selectDeviceType('purifier')">
+              <span style="font-size: 11.5px; font-weight: 700;" id="opt-dev-2">🍃 Bedroom Air Purifier (Mute)</span>
+              <span style="font-size: 10px; color: var(--mint);">+ Pair</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <button class="btn-action-primary" style="background: #334155;" onclick="closeAddDeviceModal()">
+              Close
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right Column: Rich Scientific Walkthrough Panel -->
+    <div class="panel-column">
+
+      <!-- Dynamic Tab Walkthrough Card (Synced with active screen) -->
+      <div class="panel-card">
+        <div class="panel-badge" id="tab-walkthrough-badge">👨‍👩‍👧 PARENT-TEEN CO-GROWTH & FRICTION REDUCTION</div>
+        <h2 class="panel-title" id="tab-walkthrough-title">🛡️ Homework Flow Shield & Non-Intrusive Care</h2>
+        <div class="panel-desc" id="tab-walkthrough-desc">
+          Breaks the vicious cycle of "Parent room-check ➔ Teen irritation ➔ Conflict escalation". 'SON IS IN FLOW' status display and scheduled break care protect cognitive working memory, resolving 74% of family friction.
+        </div>
+
+        <div class="panel-subgrid">
+          <div class="sub-card">
+            <div class="sub-title"><span>💡</span><span id="sub-card1-title">Attention Residue & Interruption Cost</span></div>
+            <div class="sub-text" id="sub-card1-txt">Leroy (2009) proves 15–20 mins required to recover deep flow after task interruption. Frequent door knocking is the root cause of evening fights.</div>
+          </div>
+          <div class="sub-card">
+            <div class="sub-title"><span>🤝</span><span id="sub-card2-title">Scheduled Care Strategy</span></div>
+            <div class="sub-text" id="sub-card2-txt">Parents no longer need anxious room-checks; Cue prompts gentle fruit/water care only when study focus naturally pauses.</div>
+          </div>
+        </div>
+
+        <div class="panel-highlight" id="tab-walkthrough-highlight">
+          <b>Empirical Scientific Validation:</b> Leroy (2009) attention residue theory proves task interruption incurs heavy cognitive reset costs; gentle status-sharing protects youth autonomy and reduces household friction.
+        </div>
+      </div>
+
+      <!-- Symmetric Privacy & Co-Growth Standard Card (符合中国未成年人数据合规) -->
+      <div class="panel-card">
+        <div class="panel-badge" id="panel-privacy-badge">🔒 REAL-WORLD LIVING LAB PRIVACY COMPLIANCE</div>
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--text);" id="panel-privacy-title">Strict Minor Data Protection & Zero Surveillance Standard</h3>
+        
+        <div class="privacy-list">
+          <div class="pr-item">
+            <span class="pr-icon">🛡️</span>
+            <div>
+              <b id="pr1-title">Zero Chat Snooping or Screen Mirroring:</b>
+              <span id="pr1-desc">Parent console displays aggregated macro status only (e.g. 'In Deep Study', 'Run Completed'). Private teen chats, audio, and app browsing are never shared or recorded.</span>
+            </div>
+          </div>
+          <div class="pr-item">
+            <span class="pr-icon">🔐</span>
+            <div>
+              <b id="pr2-title">Zero Raw EEG Upload & On-Device Edge Computing:</b>
+              <span id="pr2-desc">Sensitive microvolt bio-signals are processed locally on earbud DSP chips. Raw waveforms are instantaneously wiped, strictly complying with minor personal information protection laws (PIPL).</span>
+            </div>
+          </div>
+          <div class="pr-item">
+            <span class="pr-icon">🤝</span>
+            <div>
+              <b id="pr3-title">Replacing Lockouts with Positive Motivation:</b>
+              <span id="pr3-desc">No counter-productive Wi-Fi cuts or screen lockouts. Utilizes 3s deliberation friction and positive praise to nurture intrinsic self-regulation.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="citations-box" id="tab-citations-txt">
+          • <b>Leroy (2009)</b>. <i>Organ Behav Hum Decis Process</i>, 109(2), 168-181 (Attention residue & interruption costs);<br>
+          • <b>Mueller & Dweck (1998)</b>. <i>J Pers Soc Psychol</i>, 75(1), 33-52 (Hazards of empty praise vs effort-based feedback);<br>
+          • <b>Goverdovsky et al. (2017)</b>. <i>IEEE Rev Biomed Eng</i>, 10, 89-106 (In-ear wearable bio-sensing).
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    let currentTheme = 'light';
+    let currentLang = 'en';
+    let currentScreenIdx = 0;
+    let currentScenarioIdx = 0;
+    let currentBedTemp = 23.0;
+
+    const scenarioScripts = {
+      zh: [
+        {
+          btn: "📚 自习走神",
+          bad: "<b style='color: var(--coral);'>❌ 避免说：</b>“怎么又在玩手机？作业写完了吗？”（引发情绪反弹与防卫）",
+          good: "<b style='color: var(--mint);'>✅ 推荐说：</b>“我看你刚才学了 40 分钟挺投入的，是不是前额叶累了？先喝口温水歇 5 分钟，我们再把最后两道题搞定。”"
+        },
+        {
+          btn: "🏃 运动夸奖",
+          bad: "<b style='color: var(--coral);'>❌ 避免说：</b>“才跑了这么点？看看隔壁小明每天跑五公里。”（引发同辈内卷比较焦虑）",
+          good: "<b style='color: var(--mint);'>✅ 推荐说：</b>“今天 165 BPM 节奏跑很稳，出了一身汗气色真好，自律打卡超棒！”"
+        },
+        {
+          btn: "🌅 晨起赖床",
+          bad: "<b style='color: var(--coral);'>❌ 避免说：</b>“快起床！几点了还睡，天天磨磨蹭蹭！”（引发剧烈晨间起床气）",
+          good: "<b style='color: var(--mint);'>✅ 推荐说：</b>“日出灯已经亮了，昨晚深睡了 2.4 小时，起来喝杯温水，今天状态一定很棒。”"
+        },
+        {
+          btn: "🌙 睡前摸手机",
+          bad: "<b style='color: var(--coral);'>❌ 避免说：</b>“把手机交出来！再看就没收！”（破坏信任与亲子关系）",
+          good: "<b style='color: var(--mint);'>✅ 推荐说：</b>“已经 22:15 了，戴上耳塞听微信语音吧，让眼睛在黑屏里好好休息，晚安。”"
+        }
+      ],
+      en: [
+        {
+          btn: "📚 Distraction",
+          bad: "<b style='color: var(--coral);'>❌ Avoid Saying:</b> “Why are you on your phone again? Is homework finished?” (Sparks defensiveness)",
+          good: "<b style='color: var(--mint);'>✅ Recommend Saying:</b> “You’ve worked hard for 40 mins, cognitive fatigue is normal. Stretch and grab water for 5 mins, then finish the last two questions!”"
+        },
+        {
+          btn: "🏃 Run Praise",
+          bad: "<b style='color: var(--coral);'>❌ Avoid Saying:</b> “Only ran 30 mins? Look at the neighbor running 5 miles every day.” (Sparks comparison anxiety)",
+          good: "<b style='color: var(--mint);'>✅ Recommend Saying:</b> “Great 165 BPM cadence pacing today! You look energetic, awesome consistency!”"
+        },
+        {
+          btn: "🌅 Wake-Up",
+          bad: "<b style='color: var(--coral);'>❌ Avoid Saying:</b> “Get up now! Look what time it is, stop being so lazy!” (Triggers morning friction)",
+          good: "<b style='color: var(--mint);'>✅ Recommend Saying:</b> “Sunrise lamp is on, you had 2.4h deep sleep last night. Grab some warm water, have a wonderful day!”"
+        },
+        {
+          btn: "🌙 Bedtime Phone",
+          bad: "<b style='color: var(--coral);'>❌ Avoid Saying:</b> “Hand over your phone right now! Or I'm taking it away!” (Damages trust)",
+          good: "<b style='color: var(--mint);'>✅ Recommend Saying:</b> “It's 22:15, put on your earbuds for screen-off audio messaging so your eyes can rest in the dark. Goodnight!”"
+        }
+      ]
+    };
+
+    const tabWalkthroughData = {
+      zh: [
+        {
+          badge: "📊 TAB 0 : 今日共育概览",
+          title: "🌅 无感状态总览与日常亲子减震",
+          desc: "家长端仅呈现脱敏的宏观健康数据（晨起唤醒时间、慢跑步数、深睡慢波时长、自习专注周趋势），让父母放心了解孩子良好状态，无需焦虑查岗。",
+          card1Title: "家庭痛点与减震逻辑",
+          card1Txt: "父母因不了解孩子在房间的状态而频繁开门查岗，引发孩子强烈逆反。宏观状态展示让父母安心、孩子专注。",
+          card2Title: "全天闭环健康同步",
+          card2Txt: "耳塞深睡监测、日出灯唤醒、户外慢跑步数自动汇聚成清晰看板，让积极的生活改变一目了然。",
+          highlight: "<b>Living Lab 设计理念：</b> “Bring healthcare into life”——通过安静的环境协同与脱敏数据，化解家庭焦虑。"
+        },
+        {
+          badge: "🛡️ TAB 1 : 自习心流护盾",
+          title: "📖 深度自习心流保护与间歇关怀",
+          desc: "当孩子戴上耳塞专心写作业时，家长端显示“SON IS IN FLOW - 请勿进门打扰”；关怀提醒仅在专注间歇温和触发，全家安静融洽。",
+          card1Title: "注意力残留与打扰成本",
+          card1Txt: "Leroy (2009) 注意力残留理论证实：任务被打断后平均需 15–20 分钟才能重归深度心流。突击推门是晚间家庭摩擦首要根源。",
+          card2Title: "自定义间歇关怀触发器",
+          card2Txt: "父母可设置“自习告一段落送水果/温水”或“晚饭提前 5 分钟轻柔提醒”，实现有边界、有尊重的温暖关爱。",
+          highlight: "<b>实证科研支撑：</b> 杜绝突击查岗，将破坏性的进门打扰转化为休息时温和的肯定与关怀，从源头消除晚间争吵。"
+        },
+        {
+          badge: "🏠 TAB 2 : 全屋智能物联",
+          title: "💡 全屋环境光生物学与静默协同",
+          desc: "独立管理书房台灯、卧室温控、客厅音响与日出唤醒灯。环境根据孩子当前状态自动协同（自习时客厅静音、晨起时卧室渐亮），无需人工操心。",
+          card1Title: "环境光生物学调控",
+          card1Txt: "自习 3500K 暖白光保护视力；睡前日落暖红光（<25 Lux）避免抑制褪黑素；晨起 5000K 渐亮启动 CAR 反应消除昏沉。",
+          card2Title: "全屋低负担运行",
+          card2Txt: "全屋组件基于家庭局域网协议联动，设备静默工作，全天零额外操作负担，真正融入日常生活。",
+          highlight: "<b>光生物学依据：</b> Berson (Science 2002) 证明光谱直接作用于视交叉上核 (SCN)，环境光调控是调理节律最高效手段。"
+        },
+        {
+          badge: "💬 TAB 3 : 亲子沟通锦囊",
+          title: "🤝 非暴力沟通话术与 WHO 共育契约",
+          desc: "针对自习走神、运动完成、早起晚起等 4 大高频场景，AI 为家长提供即时沟通锦囊，教父母如何给予确定性正向反馈，拒绝说教与指责。",
+          card1Title: "沟通误区与转化指南",
+          card1Txt: "从“你怎么又在玩手机”转化为“学了 40 分钟前额叶累了，喝口水歇 5 分钟”，引导青少年理性恢复思考。",
+          card2Title: "WHO 4 维健康自律契约",
+          card2Txt: "家长与孩子共同签署自律微目标（深睡、自习、运动、黑屏），以同伴契约代替单向规训，强化孩子自主感与自驱力。",
+          highlight: "<b>心理学实证：</b> Mueller & Dweck (1998) 证实：基于努力与策略的客观肯定胜过虚假夸奖，能有效培养青少年的坚毅品质。"
+        }
+      ],
+      en: [
+        {
+          badge: "📊 TAB 0 : CO-GROWTH OVERVIEW",
+          title: "🌅 Non-Intrusive Harmony & Daily Co-Growth",
+          desc: "Displays aggregated macro health metrics (wake-up time, cadence steps, deep sleep hours, weekly focus trend) giving parents peace of mind without intrusive surveillance.",
+          card1Title: "Family Friction & Calm Logic",
+          card1Txt: "Parental anxiety driving frequent room-checks sparks defensive rebellion. Macro status sharing reassures parents and protects teen focus.",
+          card2Title: "Daily Closed-Loop Health Sync",
+          card2Txt: "Sleep EEG, sunrise waking, and workout steps automatically sync into a clean dashboard, making positive changes visible.",
+          highlight: "<b>Living Lab Philosophy:</b> 'Bring healthcare into life'—utilizing ambient quiet collaboration to ease family friction."
+        },
+        {
+          badge: "🛡️ TAB 1 : HOMEWORK FLOW SHIELD",
+          title: "📖 Deep Flow State Protection & Scheduled Care",
+          desc: "When teen focuses on homework, parent console displays 'SON IS IN FLOW - DO NOT DISTURB'. Care prompts trigger only during focus breaks.",
+          card1Title: "Attention Residue & Interruption Cost",
+          card1Txt: "Leroy (2009) proves 15–20 mins required to recover deep flow after interruption. Abrupt door-knocking is the primary source of evening fights.",
+          card2Title: "Custom Break Care Triggers",
+          card2Txt: "Parents can schedule 'Water/fruit care upon break' or 'Dinner 5-min prep alert', delivering warmth with clear boundaries.",
+          highlight: "<b>Empirical Evidence:</b> Replacing disruptive room-checks with scheduled care eliminates evening household shouting matches."
+        },
+        {
+          badge: "🏠 TAB 2 : SMART HOME IOT",
+          title: "💡 Smart Home Photobiology & Silent Sync",
+          desc: "Independently manages study lamp, bedroom temperature, living room audio, and sunrise lights. Automatically adapts to teen activities with zero daily burden.",
+          card1Title: "Photobiological Lighting Regulation",
+          card1Txt: "3500K warm white protects vision during study; sunset warm red (<25 Lux) preserves melatonin at bedtime; 5000K sunrise ramp triggers CAR awakening.",
+          card2Title: "Zero-Burden Operation",
+          card2Txt: "All devices collaborate quietly over local LAN protocols, delivering health benefits seamlessly in daily routine.",
+          highlight: "<b>Photobiology Evidence:</b> Berson (Science 2002) proves light directly regulates SCN circadian master clock."
+        },
+        {
+          badge: "💬 TAB 3 : PARENTING SCRIPTS",
+          title: "🤝 Positive Communication Scripts & WHO Contracts",
+          desc: "AI provides real-time positive communication scripts across 4 scenarios, coaching parents to affirm progress rather than lecture or criticize.",
+          card1Title: "Communication Shift Guide",
+          card1Txt: "Shift from 'Why are you on your phone again?' to 'You worked hard for 40 mins, grab water and stretch for 5 mins before the last questions.'",
+          card2Title: "WHO 4D Health & Co-Growth Contract",
+          card2Txt: "Parents and teens co-sign micro-goals (sleep, study, exercise, screen-off), replacing top-down discipline with mutual commitment.",
+          highlight: "<b>Psychological Validation:</b> Mueller & Dweck (1998) proves effort-based feedback builds long-term resilience over superficial flattery."
+        }
+      ]
+    };
+
+    const i18n = {
+      zh: {
+        appTitle: "Cue 家长亲子共育控制台",
+        backPortal: "门户",
+        themeDark: "暗黑",
+        themeLight: "白天",
+        greeting: "小明家长，晚上好 👋",
+        userSub: "家庭氛围安静融洽",
+        parentStatus: "伴学守护中",
+        tab0Btn: "概览",
+        tab1Btn: "心流",
+        tab2Btn: "物联",
+        tab3Btn: "锦囊",
+        nav0: "概览",
+        nav1: "心流",
+        nav2: "物联",
+        nav3: "锦囊",
+
+        // Screen 0
+        t0Card1Badge: "📖 晚间专注中",
+        t0FocusStatus: "孩子已深度专注 38 分钟",
+        t0FocusTip: "请勿敲门或送水果打扰 · 建议 12 分钟后休息关怀",
+        t0Card2Title: "📈 专注自律周趋势看板",
+        t0WeeklyBadge: "45m 达标线",
+        t0Card3Title: "📊 今日健康与自律概览",
+        t0Stat1Lbl: "晨起唤醒",
+        t0Stat2Lbl: "慢跑步数",
+        t0Stat3Lbl: "深睡慢波",
+        t0BtnShield: "查看自习心流护盾",
+
+        // Screen 1
+        t1Card1Title: "🛡️ 晚间深度思考心流护盾",
+        t1ShieldBadge: "生效中",
+        t1FlowStatus: "SON IS IN FLOW · 请勿进门打扰",
+        t1FlowDesc: "前额叶工作记忆深度调用中，突击查岗会产生 15–20 分钟注意力重置成本。",
+        t1Card2Title: "🍎 自定义间歇关怀触发器",
+        t1BtnAdd: "+ 添加触发器",
+        trig1Title: "休息时提醒喝水/吃水果",
+        trig1Sub: "专注自然结束时触发提示",
+        trig2Title: "晚饭准备就绪温和同步",
+        trig2Sub: "提前 5 分钟轻柔提醒准备收尾",
+
+        // Screen 2
+        t2Card1Title: "🏠 全屋环境物联静默协同",
+        t2BtnAddDev: "+ 添加设备",
+        dev1Name: "书房护眼台灯",
+        dev1Param: "3500K · 暖白伴学",
+        dev2Name: "客厅音响",
+        dev2Param: "自动静音中",
+        dev3Name: "卧室温控",
+        dev3Param: "23.0 ℃ 恒温",
+        dev4Name: "卧室日出灯",
+        dev4Param: "07:00 渐亮唤醒",
+
+        // Screen 3
+        t3Card1Title: "💬 亲子非暴力沟通智能锦囊",
+        t3Card2Title: "🤝 WHO 4 维亲子共育健康契约",
+        t3ContractBadge: "共同签署 ✓",
+        t3ContractDesc: "家长与孩子共同约定每日微目标（07:00 日出晨醒、45m 自习、30m 慢跑、睡前纯黑屏语音），杜绝强制锁机对抗。",
+        btnCosignTxt: "共同签署今日健康自律契约",
+
+        // Modals
+        modalTrigTitle: "添加自定义关怀触发器",
+        modalTrigDesc: "Cue 将在孩子自习专注自然告一段落时温和提示家长，有边界地送上温暖关怀。",
+        btnSaveTrigger: "保存关怀触发器 ✓",
+        btnCancelTrigger: "取消",
+        modalDevTitle: "配对全新智能家居 IoT 设备",
+        modalDevDesc: "选择附近的 Matter / BLE Mesh 设备加入 Cue 环境网络：",
+        optDev1: "🪟 智能电动柔光窗帘 (晨光联动)",
+        optDev2: "🍃 卧室静音空气净化器 (低噪睡眠)",
+
+        // Right Privacy Panel
+        panelPrivacyBadge: "🔒 真实世界 LIVING LAB 隐私准则",
+        panelPrivacyTitle: "严格保护未成年人敏感神经数据与隐私合规",
+        pr1Title: "绝无私人聊天与屏幕窥探：",
+        pr1Desc: "家长端仅显示脱敏的宏观状态（如“深度自习中”、“运动达成”），绝不向家长同步孩子的私人聊天、语音内容或 App 浏览详情。",
+        pr2Title: "原始脑电零上云与端侧边缘计算：",
+        pr2Desc: "微伏级敏感神经电生理信号仅在耳塞与本地局域网芯片中毫秒级处理，波形即时销毁，严格遵循国家未成年人信息保护规范（PIPL）。",
+        pr3Title: "告别强制锁机与对抗：",
+        pr3Desc: "摒弃粗暴的“断网、锁屏、收手机”式管教，采用 3 秒冷静与正向 AI 动机激励，引导青少年建立自主自律。",
+        tabCitations: "• <b>Leroy (2009)</b>. <i>Organ Behav Hum Decis Process</i>, 109(2), 168-181 (注意力残留与 15–20 分钟心流重建成本)；<br>• <b>Mueller & Dweck (1998)</b>. <i>J Pers Soc Psychol</i>, 75(1), 33-52 (成长型思维与努力客观肯定)；<br>• <b>Goverdovsky et al. (2017)</b>. <i>IEEE Rev Biomed Eng</i>, 10, 89-106 (耳内生物电生理感知优势)。"
+      },
+      en: {
+        appTitle: "Cue Parent Co-Growth Console",
+        backPortal: "Portal",
+        themeDark: "Dark",
+        themeLight: "Light",
+        greeting: "Good Evening, Alex's Parents 👋",
+        userSub: "Household Peaceful & Calm",
+        parentStatus: "Guard Active",
+        tab0Btn: "Overview",
+        tab1Btn: "Flow",
+        tab2Btn: "IoT",
+        tab3Btn: "Guide",
+        nav0: "Overview",
+        nav1: "Flow",
+        nav2: "IoT",
+        nav3: "Guide",
+
+        // Screen 0
+        t0Card1Badge: "📖 IN DEEP STUDY FLOW",
+        t0FocusStatus: "Teen in Deep Focus for 38 Mins",
+        t0FocusTip: "Do not knock door or serve snacks now · Rest care suggested in 12 mins",
+        t0Card2Title: "📈 WEEKLY STUDY FOCUS & HABIT TREND",
+        t0WeeklyBadge: "45m Target",
+        t0Card3Title: "📊 TODAY'S HEALTH & ROUTINE OVERVIEW",
+        t0Stat1Lbl: "CAR Wake-Up",
+        t0Stat2Lbl: "Cadence Steps",
+        t0Stat3Lbl: "Slow-Wave Sleep",
+        t0BtnShield: "View Study Flow Shield",
+
+        // Screen 1
+        t1Card1Title: "🛡️ HOMEWORK FLOW SHIELD",
+        t1ShieldBadge: "ACTIVE",
+        t1FlowStatus: "SON IS IN FLOW · PLEASE DO NOT DISTURB",
+        t1FlowDesc: "Working memory is deeply engaged. Abrupt interruptions incur heavy 15–20 min attention residue reset costs.",
+        t1Card2Title: "🍎 CUSTOM SCHEDULED CARE TRIGGERS",
+        t1BtnAdd: "+ Add Trigger",
+        trig1Title: "Water/Fruit Care upon Focus Break",
+        trig1Sub: "Prompts care only when focus naturally pauses",
+        trig2Title: "Dinner 5-Min Advance Soft Sync",
+        trig2Sub: "Gently alerts 5 mins ahead to wrap up thoughts",
+
+        // Screen 2
+        t2Card1Title: "🏠 SMART HOME AMBIENT IOT SYNC",
+        t2BtnAddDev: "+ Add Device",
+        dev1Name: "Study Desk Lamp",
+        dev1Param: "3500K · Warm White",
+        dev2Name: "Living Room Audio",
+        dev2Param: "Auto-Muted",
+        dev3Name: "Bedroom Climate",
+        dev3Param: "23.0 ℃ Constant",
+        dev4Name: "Sunrise Wake Lamp",
+        dev4Param: "07:00 Dawn Ramp",
+
+        // Screen 3
+        t3Card1Title: "💬 POSITIVE COMMUNICATION SCRIPTS",
+        t3Card2Title: "🤝 WHO 4D CO-GROWTH CONTRACT",
+        t3ContractBadge: "Co-Signed ✓",
+        t3ContractDesc: "Parent and teen co-agreed on daily micro-targets (07:00 Sunrise, 45m Study, 30m Sport, 100% Screen-off audio). Zero punitive lockouts.",
+        btnCosignTxt: "Co-Sign Daily Habit Contract",
+
+        // Modals
+        modalTrigTitle: "Add Custom Care Trigger",
+        modalTrigDesc: "Cue prompts care only when the teen's focus naturally pauses, delivering warmth without interrupting thought flow.",
+        btnSaveTrigger: "Save Care Trigger ✓",
+        btnCancelTrigger: "Cancel",
+        modalDevTitle: "Pair New Smart Home IoT Device",
+        modalDevDesc: "Select a nearby Matter/BLE mesh home device to pair into Cue Ambient Network:",
+        optDev1: "🪟 Smart Soft Curtains (Auto-Dawn)",
+        optDev2: "🍃 Bedroom Air Purifier (Mute)",
+
+        // Right Privacy Panel
+        panelPrivacyBadge: "🔒 REAL-WORLD LIVING LAB PRIVACY COMPLIANCE",
+        panelPrivacyTitle: "Strict Minor Data Protection & Zero Surveillance Standard",
+        pr1Title: "Zero Chat Snooping or Screen Mirroring:",
+        pr1Desc: "Parent console displays aggregated macro status only (e.g. 'In Deep Study', 'Run Completed'). Private teen chats, audio, and app browsing are never shared or recorded.",
+        pr2Title: "Zero Raw EEG Upload & On-Device Edge Computing:",
+        pr2Desc: "Sensitive microvolt bio-signals are processed locally on earbud DSP chips. Raw waveforms are instantaneously wiped, strictly complying with minor personal information protection laws (PIPL).",
+        pr3Title: "Replacing Lockouts with Positive Motivation:",
+        pr3Desc: "No counter-productive Wi-Fi cuts or screen lockouts. Utilizes 3s deliberation friction and positive praise to nurture intrinsic self-regulation.",
+        tabCitations: "• <b>Leroy (2009)</b>. <i>Organ Behav Hum Decis Process</i>, 109(2), 168-181 (Attention residue & 15-20 min flow recovery cost);<br>• <b>Mueller & Dweck (1998)</b>. <i>J Pers Soc Psychol</i>, 75(1), 33-52 (Growth mindset & constructive parenting);<br>• <b>Goverdovsky et al. (2017)</b>. <i>IEEE Rev Biomed Eng</i>, 10, 89-106 (In-ear bio-sensing)."
+      }
+    };
+
+    function jumpToScreen(idx) {
+      currentScreenIdx = idx;
+      const screens = document.querySelectorAll('.screen');
+      const navs = document.querySelectorAll('.app-nav-item');
+      const tabBtns = document.querySelectorAll('.demo-tab-btn');
+
+      screens.forEach((s, i) => {
+        if (i === idx) s.classList.add('active');
+        else s.classList.remove('active');
+      });
+      navs.forEach((n, i) => {
+        if (i === idx) n.classList.add('active');
+        else n.classList.remove('active');
+      });
+      tabBtns.forEach((b, i) => {
+        if (i === idx) b.classList.add('active');
+        else b.classList.remove('active');
+      });
+
+      // Update Right-side Walkthrough Panel dynamically
+      updateWalkthroughPanel(idx);
+    }
+
+    function updateWalkthroughPanel(idx) {
+      const data = tabWalkthroughData[currentLang][idx];
+      if (!data) return;
+
+      document.getElementById('tab-walkthrough-badge').innerText = data.badge;
+      document.getElementById('tab-walkthrough-title').innerText = data.title;
+      document.getElementById('tab-walkthrough-desc').innerText = data.desc;
+      document.getElementById('sub-card1-title').innerText = data.card1Title;
+      document.getElementById('sub-card1-txt').innerText = data.card1Txt;
+      document.getElementById('sub-card2-title').innerText = data.card2Title;
+      document.getElementById('sub-card2-txt').innerText = data.card2Txt;
+      document.getElementById('tab-walkthrough-highlight').innerHTML = data.highlight;
+    }
+
+    function setScenario(idx) {
+      currentScenarioIdx = idx;
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`sc-btn-${i}`);
+        if (btn) {
+          if (i === idx) btn.classList.add('active');
+          else btn.classList.remove('active');
+        }
+      }
+      const data = scenarioScripts[currentLang][idx];
+      if (data) {
+        document.getElementById('sc-bad-box').innerHTML = data.bad;
+        document.getElementById('sc-good-box').innerHTML = data.good;
+      }
+    }
+
+    function toggleSwitch(el) {
+      el.classList.toggle('off');
+    }
+
+    function toggleDeviceSwitch(tileId, paramId, activeText, offText) {
+      const tile = document.getElementById(tileId);
+      const toggleEl = tile.querySelector('.device-toggle');
+      toggleEl.classList.toggle('off');
+      const isOff = toggleEl.classList.contains('off');
+      if (isOff) {
+        tile.classList.remove('active');
+        document.getElementById(paramId).innerText = offText;
+      } else {
+        tile.classList.add('active');
+        document.getElementById(paramId).innerText = activeText;
+      }
+    }
+
+    // Rich Interactive IoT Controls
+    function setLampTemp(k, btn) {
+      btn.parentElement.querySelectorAll('.dev-sub-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const paramEl = document.getElementById('dev-1-param');
+      if (paramEl) {
+        paramEl.innerText = `${k}K · ${k === 3500 ? (currentLang === 'zh' ? '暖白伴学' : 'Warm White') : (k === 4500 ? (currentLang === 'zh' ? '中性白光' : 'Neutral White') : (currentLang === 'zh' ? '明亮白光' : 'Bright Daylight'))}`;
+      }
+    }
+
+    function setAudioMode(mode, btn) {
+      btn.parentElement.querySelectorAll('.dev-sub-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const paramEl = document.getElementById('dev-2-param');
+      if (paramEl) {
+        paramEl.innerText = (mode === 'mute') 
+          ? (currentLang === 'zh' ? '自动静音中' : 'Auto-Muted') 
+          : (currentLang === 'zh' ? '轻柔环境音' : 'Soft Ambient');
+      }
+    }
+
+    function adjustTemp(delta) {
+      currentBedTemp += delta;
+      const paramEl = document.getElementById('dev-3-param');
+      if (paramEl) {
+        paramEl.innerText = `${currentBedTemp.toFixed(1)} ℃ ${currentLang === 'zh' ? '恒温' : 'Constant'}`;
+      }
+    }
+
+    function setSunriseTime(time, btn) {
+      btn.parentElement.querySelectorAll('.dev-sub-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const paramEl = document.getElementById('dev-4-param');
+      if (paramEl) {
+        paramEl.innerText = `${time} ${currentLang === 'zh' ? '渐亮唤醒' : 'Dawn Ramp'}`;
+      }
+    }
+
+    function coSignContract() {
+      const badge = document.getElementById('t3-contract-badge');
+      badge.innerText = (currentLang === 'zh') ? '今日已共同签署 ✓' : 'Co-Signed Today ✓';
+      badge.style.color = 'var(--mint)';
+      alert(currentLang === 'zh' ? '🎉 亲子自律契约已共同签署！今晚 22:15 互相提醒戴上耳塞听读消息。' : '🎉 Parent-Teen Habit Contract Co-Signed! Sleep well tonight.');
+    }
+
+    // Modal Care Trigger Handlers
+    function openCareTriggerModal() {
+      document.getElementById('modal-care-trigger').classList.add('open');
+    }
+    function closeCareTriggerModal(saved) {
+      document.getElementById('modal-care-trigger').classList.remove('open');
+      if (saved) {
+        alert(currentLang === 'zh' ? '✓ 自定义关怀触发器已保存并生效！' : '✓ Custom Care Trigger Saved!');
+      }
+    }
+
+    // Modal Add Device Handlers
+    function openAddDeviceModal() {
+      document.getElementById('modal-add-device').classList.add('open');
+    }
+    function closeAddDeviceModal() {
+      document.getElementById('modal-add-device').classList.remove('open');
+    }
+    function selectDeviceType(type) {
+      closeAddDeviceModal();
+      alert(currentLang === 'zh' ? `✓ 成功配对新设备：${type === 'curtains' ? '智能柔光窗帘' : '空气净化器'}！已自动纳入全屋环境调控网。` : `✓ Successfully paired new device: ${type}!`);
+    }
+
+    function applyLanguage() {
+      const dict = i18n[currentLang];
+      
+      // Top Universal
+      document.getElementById('txt-app-title').innerText = dict.appTitle;
+      document.getElementById('btn-back-portal').innerText = dict.backPortal;
+      document.getElementById('user-greeting').innerText = dict.greeting;
+      document.getElementById('user-sub').innerText = dict.userSub;
+      document.getElementById('lbl-parent-status').innerText = dict.parentStatus;
+
+      // Segmented Tabs
+      document.getElementById('tab-btn-0').innerText = dict.tab0Btn;
+      document.getElementById('tab-btn-1').innerText = dict.tab1Btn;
+      document.getElementById('tab-btn-2').innerText = dict.tab2Btn;
+      document.getElementById('tab-btn-3').innerText = dict.tab3Btn;
+
+      // Nav labels
+      document.getElementById('nav-lbl-0').innerText = dict.nav0;
+      document.getElementById('nav-lbl-1').innerText = dict.nav1;
+      document.getElementById('nav-lbl-2').innerText = dict.nav2;
+      document.getElementById('nav-lbl-3').innerText = dict.nav3;
+
+      // Screen 0
+      document.getElementById('t0-card1-badge').innerText = dict.t0Card1Badge;
+      document.getElementById('t0-focus-status').innerText = dict.t0FocusStatus;
+      document.getElementById('t0-focus-tip').innerText = dict.t0FocusTip;
+      document.getElementById('t0-card2-title').innerText = dict.t0Card2Title;
+      document.getElementById('t0-weekly-badge').innerText = dict.t0WeeklyBadge;
+      document.getElementById('t0-card3-title').innerText = dict.t0Card3Title;
+      document.getElementById('t0-stat1-lbl').innerText = dict.t0Stat1Lbl;
+      document.getElementById('t0-stat2-lbl').innerText = dict.t0Stat2Lbl;
+      document.getElementById('t0-stat3-lbl').innerText = dict.t0Stat3Lbl;
+      document.getElementById('t0-btn-shield').innerText = dict.t0BtnShield;
+
+      // Screen 1
+      document.getElementById('t1-card1-title').innerText = dict.t1Card1Title;
+      document.getElementById('t1-shield-badge').innerText = dict.t1ShieldBadge;
+      document.getElementById('t1-flow-status').innerText = dict.t1FlowStatus;
+      document.getElementById('t1-flow-desc').innerText = dict.t1FlowDesc;
+      document.getElementById('t1-card2-title').innerText = dict.t1Card2Title;
+      document.getElementById('t1-btn-add').innerText = dict.t1BtnAdd;
+      document.getElementById('trig-1-title').innerText = dict.trig1Title;
+      document.getElementById('trig-1-sub').innerText = dict.trig1Sub;
+      document.getElementById('trig-2-title').innerText = dict.trig2Title;
+      document.getElementById('trig-2-sub').innerText = dict.trig2Sub;
+
+      // Screen 2
+      document.getElementById('t2-card1-title').innerText = dict.t2Card1Title;
+      document.getElementById('t2-btn-add-dev').innerText = dict.t2BtnAddDev;
+      document.getElementById('dev-1-name').innerText = dict.dev1Name;
+      document.getElementById('dev-1-param').innerText = dict.dev1Param;
+      document.getElementById('dev-2-name').innerText = dict.dev2Name;
+      document.getElementById('dev-2-param').innerText = dict.dev2Param;
+      document.getElementById('dev-3-name').innerText = dict.dev3Name;
+      document.getElementById('dev-3-param').innerText = `${currentBedTemp.toFixed(1)} ℃ ${currentLang === 'zh' ? '恒温' : 'Constant'}`;
+      document.getElementById('dev-4-name').innerText = dict.dev4Name;
+      document.getElementById('dev-4-param').innerText = dict.dev4Param;
+
+      // Screen 3
+      document.getElementById('t3-card1-title').innerText = dict.t3Card1Title;
+      document.getElementById('sc-btn-0').innerText = scenarioScripts[currentLang][0].btn;
+      document.getElementById('sc-btn-1').innerText = scenarioScripts[currentLang][1].btn;
+      document.getElementById('sc-btn-2').innerText = scenarioScripts[currentLang][2].btn;
+      document.getElementById('sc-btn-3').innerText = scenarioScripts[currentLang][3].btn;
+      setScenario(currentScenarioIdx);
+
+      document.getElementById('t3-card2-title').innerText = dict.t3Card2Title;
+      document.getElementById('t3-contract-badge').innerText = dict.t3ContractBadge;
+      document.getElementById('t3-contract-desc').innerText = dict.t3ContractDesc;
+      document.getElementById('btn-cosign-txt').innerText = dict.btnCosignTxt;
+
+      // In-Phone Modals
+      document.getElementById('modal-trig-title').innerText = dict.modalTrigTitle;
+      document.getElementById('modal-trig-desc').innerText = dict.modalTrigDesc;
+      document.getElementById('btn-save-trigger').innerText = dict.btnSaveTrigger;
+      document.getElementById('btn-cancel-trigger').innerText = dict.btnCancelTrigger;
+      document.getElementById('modal-dev-title').innerText = dict.modalDevTitle;
+      document.getElementById('modal-dev-desc').innerText = dict.modalDevDesc;
+      document.getElementById('opt-dev-1').innerText = dict.optDev1;
+      document.getElementById('opt-dev-2').innerText = dict.optDev2;
+
+      // Right Privacy Panel
+      document.getElementById('panel-privacy-badge').innerText = dict.panelPrivacyBadge;
+      document.getElementById('panel-privacy-title').innerText = dict.panelPrivacyTitle;
+      document.getElementById('pr1-title').innerText = dict.pr1Title;
+      document.getElementById('pr1-desc').innerText = dict.pr1Desc;
+      document.getElementById('pr2-title').innerText = dict.pr2Title;
+      document.getElementById('pr2-desc').innerText = dict.pr2Desc;
+      document.getElementById('pr3-title').innerText = dict.pr3Title;
+      document.getElementById('pr3-desc').innerText = dict.pr3Desc;
+      document.getElementById('tab-citations-txt').innerHTML = dict.tabCitations;
+
+      updateWalkthroughPanel(currentScreenIdx);
+
+      const themeLbl = document.getElementById('theme-lbl');
+      const themeIcon = document.getElementById('theme-icon');
+      if (themeLbl) themeLbl.innerText = (currentTheme === 'light') ? dict.themeDark : dict.themeLight;
+      if (themeIcon) themeIcon.innerText = (currentTheme === 'light') ? '🌙' : '☀️';
+    }
+
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      const themeIcon = document.getElementById('theme-icon');
+      const themeLbl = document.getElementById('theme-lbl');
+      const dict = i18n[currentLang];
+
+      if (currentTheme === 'light') {
+        currentTheme = 'dark';
+        htmlEl.setAttribute('data-theme', 'dark');
+        if (themeIcon) themeIcon.innerText = '☀️';
+        if (themeLbl) themeLbl.innerText = dict.themeLight;
+      } else {
+        currentTheme = 'light';
+        htmlEl.setAttribute('data-theme', 'light');
+        if (themeIcon) themeIcon.innerText = '🌙';
+        if (themeLbl) themeLbl.innerText = dict.themeDark;
+      }
+      try { localStorage.setItem('cue_theme', currentTheme); } catch(e){}
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      try { localStorage.setItem('cue_lang', lang); } catch(e){}
+      document.getElementById('btn-lang-zh').className = (lang === 'zh') ? 'lang-btn active' : 'lang-btn';
+      document.getElementById('btn-lang-en').className = (lang === 'en') ? 'lang-btn active' : 'lang-btn';
+      applyLanguage();
+    }
+
+    // Initialize with localStorage persistence (Default to English)
+    try {
+      const savedTheme = localStorage.getItem('cue_theme') || 'light';
+      if (savedTheme === 'dark') {
+        currentTheme = 'dark';
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      const savedLang = localStorage.getItem('cue_lang') || 'en';
+      setLanguage(savedLang);
+    } catch(e) {
+      setLanguage('en');
+    }
+  </script>
+</body>
+</html>
