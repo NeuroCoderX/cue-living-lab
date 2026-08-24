@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cue: Real-World Living Lab Future Home Health Portal</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23030712'><path d='M12 3.8C12.8 3.8 13.5 4.2 13.9 4.9L20.2 15.6C20.6 16.3 20.1 17.5 19 17.5H5C3.9 17.5 3.4 16.3 3.8 15.6L10.1 4.9C10.5 4.2 11.2 3.8 12 3.8Z' fill='%23030712' stroke='%2300f2fe' stroke-width='2.2' stroke-linejoin='round'/><circle cx='17' cy='18.5' r='1.2' fill='%2300f2fe'/></svg>">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Dark Theme */
+    :root[data-theme="dark"] {
+      --bg: #0b1320;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #172a45 0%, #080d16 100%);
+      --surface: #111e30;
+      --surface-card: rgba(17, 30, 48, 0.85);
+      --surface2: #192a42;
+      --surface-glass: rgba(25, 42, 66, 0.7);
+      --border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+      --accent-blue: #38bdf8;
+      --accent-mint: #4ecdc4;
+      --accent-coral: #ff7a66;
+      --accent-purple: #a78bfa;
+      --accent-emerald: #34d399;
+      --glow: rgba(56, 189, 248, 0.2);
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Light Theme (Default: Fresh Cream Modern) */
+    :root[data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #e2e8f0 0%, #f1f5f9 100%);
+      --surface: #ffffff;
+      --surface-card: rgba(255, 255, 255, 0.94);
+      --surface2: #f1f5f9;
+      --surface-glass: rgba(255, 255, 255, 0.8);
+      --border: rgba(15, 23, 42, 0.08);
+      --text-main: #0f172a;
+      --text-sub: #475569;
+      --text-muted: #64748b;
+      --accent-blue: #0284c7;
+      --accent-mint: #0d9488;
+      --accent-coral: #e05a47;
+      --accent-purple: #7c3aed;
+      --accent-emerald: #059669;
+      --glow: rgba(2, 132, 199, 0.15);
+      --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      scroll-behavior: smooth;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Sticky Navigation Bar */
+    header {
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      padding: 10px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+    }
+    .top-nav {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 14px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .brand-logo-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: #090e17;
+      border: 1px solid rgba(0, 242, 254, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+    }
+    .brand-text-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand-name {
+      font-size: 16.5px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      background: linear-gradient(135deg, #ffffff 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-divider {
+      color: rgba(255, 255, 255, 0.3);
+      font-weight: 300;
+      font-size: 13px;
+    }
+    .brand-desc {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #cbd5e1;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+    }
+    .top-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: nowrap;
+    }
+    .top-nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .top-nav-links a:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .top-nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .lang-switch {
+      display: flex;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      padding: 2px;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);
+    }
+    .btn-theme-toggle, .btn-github {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-theme-toggle:hover, .btn-github:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 36px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .hero-banner::before {
+      content: "";
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(2, 132, 199, 0.1);
+      border: 1px solid rgba(2, 132, 199, 0.25);
+      color: var(--accent-blue);
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      width: fit-content;
+    }
+    :root[data-theme="dark"] .hero-badge {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+    }
+
+    .hero-title {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: -0.6px;
+      color: var(--text-main);
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-sub);
+      max-width: 980px;
+    }
+
+    /* Scroll Cue */
+    .hero-scroll-cue {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent-blue);
+      margin-top: 4px;
+    }
+
+    /* Team Banner */
+    .team-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-size: 12.5px;
+      color: var(--text-sub);
+    }
+    .team-tag {
+      font-weight: 800;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .team-members {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(2, 132, 199, 0.1);
+      border: 1px solid rgba(2, 132, 199, 0.25);
+      color: var(--accent-blue);
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 800;
+      width: fit-content;
+    }
+    :root[data-theme="dark"] .section-badge {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.3px;
+    }
+    .section-sub {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      max-width: 980px;
+    }
+
+    /* 3 Interactive Prototype Gateways */
+    .gateways-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .gateway-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .gateway-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(2, 132, 199, 0.15);
+      border-color: var(--accent-blue);
+    }
+    .card-thumb {
+      height: 170px;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .gateway-card:hover .card-thumb img {
+      transform: scale(1.04);
+    }
+    .card-pill {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .feature-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 4px 0 8px;
+    }
+    .ft-tag {
+      background: var(--surface2);
+      color: var(--text-sub);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+    .btn-launch {
+      background: var(--accent-blue);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+      transition: all 0.2s;
+    }
+    .btn-launch:hover {
+      background: #0369a1;
+      transform: translateY(-1px);
+    }
+
+    /* Science & Biological Foundations Explained Section */
+    .science-explained-section {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .mech-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .mech-card-full {
+      grid-column: span 2;
+    }
+    .mech-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .mech-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .mech-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .mech-icon-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .mech-icon-clas { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: #fff; }
+    .mech-icon-aclas { background: linear-gradient(135deg, #065f46 0%, #10b981 100%); color: #fff; }
+    .mech-icon-car  { background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%); color: #fff; }
+    .mech-icon-nudge{ background: linear-gradient(135deg, #7c2d12 0%, #ea580c 100%); color: #fff; }
+    .mech-icon-sport{ background: linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%); color: #fff; }
+    
+    .mech-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .mech-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .mech-subtitle {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+    .mech-plain-box {
+      background: rgba(14, 165, 233, 0.08);
+      border-left: 4px solid var(--accent-blue);
+      border-radius: 0 12px 12px 0;
+      padding: 12px 16px;
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--text-main);
+    }
+    .mech-hardcore-box {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 12px;
+      line-height: 1.65;
+      color: var(--text-sub);
+    }
+    .mech-stat-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .mech-tag {
+      background: rgba(100, 116, 139, 0.1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Core Intervention Pillars Container */
+    .pillars-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+    .pillar-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 26px 28px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+    }
+    .pillar-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pillar-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+    .pillar-icon-sleep {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: #fff;
+    }
+    .pillar-icon-addiction {
+      background: linear-gradient(135deg, #7c2d12 0%, #f97316 100%);
+      color: #fff;
+    }
+    .pillar-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .pillar-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--text-main);
+    }
+    .pillar-badge {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .pillar-body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+    .pillar-pain {
+      background: rgba(224, 90, 71, 0.08);
+      border-left: 4px solid var(--accent-coral);
+      padding: 12px 16px;
+      border-radius: 0 12px 12px 0;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+    .pillar-points {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+    .point-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--text-sub);
+      background: var(--surface2);
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+    .point-item b {
+      color: var(--text-main);
+    }
+    .pt-icon-box {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Exclusivity Framework Section (Why Earbuds & App) */
+    .exclusivity-section {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .excl-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .excl-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .excl-card-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .excl-card-body {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-sub);
+    }
+
+    /* Software App Ecosystem Feature Showcase Section */
+    .app-ecosystem-section {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .eco-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .eco-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .eco-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .eco-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .eco-features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .eco-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--text-sub);
+    }
+    .eco-feature-item b {
+      color: var(--text-main);
+    }
+    .eco-dot {
+      color: var(--accent-blue);
+      font-size: 14px;
+      margin-top: -1px;
+    }
+
+    /* Minor Neuro-Data Privacy Section */
+    .privacy-compliance-section {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .priv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .priv-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .priv-card-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .priv-card-desc {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-sub);
+    }
+
+    /* Formal Academic Bibliography Section */
+    .biblio-section {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .biblio-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .bib-item {
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: var(--text-sub);
+      padding: 14px 18px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .bib-item b {
+      color: var(--text-main);
+    }
+    .bib-tag {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      color: var(--accent-blue);
+    }
+    .bib-category-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      margin-bottom: 2px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .bib-category-title:first-child {
+      margin-top: 0;
+    }
+
+    /* Standardized Compact Footer */
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 24px 20px;
+      text-align: center;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      line-height: 1.6;
+    }
+    .footer-highlight {
+      font-weight: 800;
+      color: #38bdf8;
+    }
+
+    @media (max-width: 1024px) {
+      .top-nav-links { display: none; }
+      .gateways-grid { grid-template-columns: 1fr; }
+      .pillars-container { grid-template-columns: 1fr; }
+      .excl-grid { grid-template-columns: 1fr; }
+      .eco-grid { grid-template-columns: 1fr; }
+      .priv-grid { grid-template-columns: 1fr; }
+      .team-bar { flex-direction: column; gap: 6px; text-align: center; }
+      .hero-title { font-size: 26px; }
+    }
+    @media (max-width: 640px) {
+      header { padding: 12px 16px; }
+      .back-to-top { bottom: 20px; right: 20px; width: 44px; height: 44px; }
+    }
+
+    /* Floating Smooth Back-to-Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), var(--card-shadow);
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px) scale(0.9);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      outline: none;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+    .back-to-top:hover {
+      transform: translateY(-4px) scale(1.08);
+      background: var(--accent-blue);
+      color: #ffffff;
+      border-color: var(--accent-blue);
+      box-shadow: 0 14px 28px rgba(2, 132, 199, 0.35);
+    }
+    .back-to-top svg {
+      width: 22px;
+      height: 22px;
+      transition: transform 0.3s ease;
+    }
+    .back-to-top:hover svg {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Top Navigation Bar -->
+  <header>
+    <div class="top-nav">
+      <div class="brand">
+        <div class="brand-logo-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Cue Hardware Signature Glowing Cyan Faceplate (1:1 with 3D render) -->
+            <path d="M12 4.6C12.8 4.6 13.5 5 13.9 5.7L18.8 14.8C19.2 15.6 18.6 17 17.5 17H6.5C5.4 17 4.8 15.6 5.2 14.8L10.1 5.7C10.5 5 11.2 4.6 12 4.6Z" 
+                  fill="#030712" stroke="#00f2fe" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="16.5" cy="18.2" r="0.9" fill="#00f2fe" opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="brand-text-wrap">
+          <span class="brand-name">Cue</span>
+          <span class="brand-divider">·</span>
+          <span class="brand-desc" id="nav-brand-title">Living Lab 交互门户</span>
+        </div>
+      </div>
+
+      <nav class="top-nav-links">
+        <a href="#portals" id="lnk-portals">Prototypes</a>
+        <a href="#pillars" id="lnk-pillars">Health Pillars</a>
+        <a href="#exclusivity" id="lnk-exclusivity">Why In-Ear</a>
+        <a href="#ecosystem" id="lnk-ecosystem">Ecosystem</a>
+        <a href="#science-explained" id="lnk-science-explained">How It Works</a>
+        <a href="#privacy" id="lnk-privacy">Data Ethics</a>
+        <a href="#science" id="lnk-science">Bibliography</a>
+      </nav>
+
+      <div class="top-nav-controls">
+        <div class="lang-switch">
+          <button class="lang-btn" id="btn-lang-zh" onclick="setLanguage('zh')">中文</button>
+          <button class="lang-btn active" id="btn-lang-en" onclick="setLanguage('en')">EN</button>
+        </div>
+        <button class="btn-theme-toggle" onclick="toggleTheme()" id="btn-theme">
+          <span id="theme-icon">🌙</span>
+          <span id="theme-lbl">Dark</span>
+        </button>
+        <a href="https://github.com/NeuroCoderX/cue-living-lab" target="_blank" class="btn-github">
+          <span>🐙</span>
+          <span id="github-lbl">GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Living Lab Hero Banner (Aligned with Team 3 Official Presentation) -->
+    <div id="overview" class="hero-section">
+      <div class="hero-badge">
+        <span>🏆</span>
+        <span id="hero-badge-txt">TEAM 3 · YOUTH DIGITAL WELLBEING</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
+        <div style="font-size:38px; font-weight:900; letter-spacing:1.5px; color:var(--text-main); line-height:1;">CUE</div>
+        <h1 class="hero-title" id="hero-title-txt" style="margin:0;">Intervention for Digital Addiction &amp; Overall Wellbeing in Adolescents</h1>
+      </div>
+
+      <div class="hero-slogan" style="font-size:18px; font-weight:700; font-style:italic; color:var(--accent-teal); letter-spacing:0.2px; margin-top:2px;" id="hero-slogan-txt">
+        “Building better daily digital habits.”
+      </div>
+
+      <p class="hero-subtitle" id="hero-subtitle-txt">
+        Reframing adolescent sleep deprivation and digital distraction into positive everyday home routines. Guided by the Living Lab core philosophy <i>“Bring healthcare into life, not life into healthcare”</i> — powered by single flexible in-ear biosensing, growth-mindset AI motivation, and ambient smart home IoT with zero daily wear burden.
+      </p>
+
+      <div class="hero-scroll-cue">
+        <span id="txt-hero-scroll">👇 Scroll down to explore Prototypes, Interventions, Exclusivity &amp; APA Bibliography</span>
+      </div>
+    </div>
+
+    <!-- Team 3 Official Roster -->
+    <div class="team-bar">
+      <div class="team-tag">
+        <span>👥</span>
+        <span id="txt-team-tag">TEAM 3</span>
+      </div>
+      <div class="team-members" id="txt-team-members">
+        Delya Ahuja · Xinwen Cao · Muireann Hogan · Qihe Zhang
+      </div>
+    </div>
+
+    <!-- 3 Interactive Prototypes Showcase Gateways -->
+    <div id="portals" class="gateways-grid">
+
+      <!-- Gateway 1: 24H Living Lab Showcase (04) -->
+      <div class="gateway-card">
+        <div class="card-thumb">
+          <img src="assets/01_0700_晨醒日出_卧室自然唤醒.jpg" alt="24H Showcase">
+          <div class="card-pill" id="pill-g1">⏱️ 24H Living Lab Flow</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">
+            <span>⏱️</span>
+            <span id="g1-title">24-Hour Home Living Lab Demonstration</span>
+          </div>
+          <div class="card-desc" id="g1-desc">
+            5 key daily life scenarios (07:00 Wake-Up, 10:30 Study Focus & αCLAS, 16:30 Workout, 19:30 Study Shield, 22:15 Deep Sleep CLAS). Demonstrates modular on-demand usage (non-invasive, zero all-day wear burden) with seamless 1-click toggle between Real-Life Story and Neuroscience Citations.
+          </div>
+          <div class="feature-tags">
+            <span class="ft-tag" id="g1-tag1">Modular On-Demand</span>
+            <span class="ft-tag" id="g1-tag2">Dynamic Pins</span>
+            <span class="ft-tag" id="g1-tag3">IoT Live HUD</span>
+            <span class="ft-tag" id="g1-tag4">Peer-Reviewed Evidence</span>
+          </div>
+          <a href="04_showcase_24h.html" class="btn-launch">
+            <span id="g1-btn">🚀 Open 24H Showcase</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Gateway 2: Adolescent Mobile App (05) -->
+      <div class="gateway-card">
+        <div class="card-thumb">
+          <img src="assets/02_1030_自习书房_专注学习护盾.jpg" alt="Teen App">
+          <div class="card-pill" id="pill-g2">📱 Adolescent Console</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">
+            <span>📱</span>
+            <span id="g2-title">Adolescent Mobile App Prototype</span>
+          </div>
+          <div class="card-desc" id="g2-desc">
+            Interactive two-column mobile console featuring real-time CLI focus tracking, αCLAS 10Hz Alpha brainwave modulation, 3-second breathing micro-intervention, 180 spm cadence running, and 100% screen-off bedtime voice messaging.
+          </div>
+          <div class="feature-tags">
+            <span class="ft-tag" id="g2-tag1">αCLAS 10Hz Alpha Audio</span>
+            <span class="ft-tag" id="g2-tag2">Growth Mindset AI</span>
+            <span class="ft-tag" id="g2-tag3">3s Deliberation Pause</span>
+            <span class="ft-tag" id="g2-tag4">Peer Kudos</span>
+          </div>
+          <a href="05_teen_app.html" class="btn-launch">
+            <span id="g2-btn">📱 Open Teen App</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Gateway 3: Parent Guard & Co-Growth Console (06) -->
+      <div class="gateway-card">
+        <div class="card-thumb">
+          <img src="assets/04_1930_晚间伴学_深度心流与亲子防打扰.jpg" alt="Parent Console">
+          <div class="card-pill" id="pill-g3">🛡️ Parent Console</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">
+            <span>🛡️</span>
+            <span id="g3-title">Parent Guard & Co-Growth Console</span>
+          </div>
+          <div class="card-desc" id="g3-desc">
+            Eliminates intrusive surveillance and forced lockouts. Provides study flow protection, custom break care reminders (dinner/fruit), smart home IoT manager, parenting coach scripts, and World Health Organization (WHO) co-growth habit contracts.
+          </div>
+          <div class="feature-tags">
+            <span class="ft-tag" id="g3-tag1">Study Flow Shield</span>
+            <span class="ft-tag" id="g3-tag2">Zero Screen Lockout</span>
+            <span class="ft-tag" id="g3-tag3">Break Care Ping</span>
+            <span class="ft-tag" id="g3-tag4">WHO Habit Contract</span>
+          </div>
+          <a href="06_parent_console.html" class="btn-launch">
+            <span id="g3-btn">🛡️ Open Parent Console</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Two Core Youth Health Challenges & Interventions Section -->
+    <div id="pillars" style="display: flex; flex-direction: column; gap: 24px;">
+      <div class="section-header">
+        <div class="section-badge">
+          <span>🎯</span>
+          <span id="txt-pillar-badge">CORE INTERVENTION FRAMEWORK</span>
+        </div>
+        <div class="section-title">
+          <span>⚡</span>
+          <span id="txt-pillar-title">Two Core Youth Health Challenges & Closed-Loop Solutions</span>
+        </div>
+        <div class="section-sub" id="txt-pillar-sub">
+          Addressing the two most pervasive home health crises among modern adolescents—Sleep Deprivation (CLAS) and Digital Distraction (αCLAS & 3s Nudge)—through gentle, biologically synchronized ambient closed loops.
+        </div>
+      </div>
+
+      <div class="pillars-container">
+        <!-- Pillar 1: Sleep & Circadian -->
+        <div class="pillar-card">
+          <div class="pillar-header">
+            <div class="pillar-icon-box pillar-icon-sleep">🌙</div>
+            <div class="pillar-meta">
+              <span class="pillar-badge" id="p1-badge">Pillar 1 : Circadian & Sleep Neuromodulation</span>
+              <div class="pillar-title" id="p1-title">Sleep Restoration & Glymphatic Detoxification (CLAS)</div>
+            </div>
+          </div>
+          <div class="pillar-body">
+            <div class="pillar-pain" id="p1-pain">
+              <b>Real-World Friction:</b> Bedtime social scrolling exposes eyes to blue light, suppressing melatonin; fragmented N3 slow-wave sleep causes morning grogginess and parent-teen wake-up conflicts.
+            </div>
+            <div class="pillar-points">
+              <div class="point-item">
+                <div class="pt-icon-box">🕶️</div>
+                <div id="p1-pt1"><b>100% Screen-Off Voice Messaging:</b> In-ear micro-speaker & mic allow teen to listen and reply to friends without waking the screen, completely blocking blue light temptation and melatonin suppression.</div>
+              </div>
+              <div class="point-item">
+                <div class="pt-icon-box">🧠</div>
+                <div id="p1-pt2"><b>CLAS Slow-Wave Auditory Stimulation:</b> Strictly for nighttime N3 deep sleep (SO ~0.5–1.25 Hz). In-ear EEG locks to slow oscillation up-states at 250Hz, emitting sensation-threshold-adapted pink noise to constructively amplify slow wave activity and promote glymphatic clearance (Coon et al., Front Neurosci 2025; Møllgård et al., Science 2023; Xie et al., Science 2013).</div>
+              </div>
+              <div class="point-item">
+                <div class="pt-icon-box">🌅</div>
+                <div id="p1-pt3"><b>5000K Sunrise Photobiology Ramp:</b> Morning ambient light gradually ramps 20 minutes before waking (5000K daylight spectrum, calibrated per Brown et al., PLOS Biol 2022 Melanopic EDI standard) to activate ipRGCs and trigger Cortisol Awakening Response (CAR), eliminating sleep inertia.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 2: Digital Distraction & Executive Function -->
+        <div class="pillar-card">
+          <div class="pillar-header">
+            <div class="pillar-icon-box pillar-icon-addiction">📱</div>
+            <div class="pillar-meta">
+              <span class="pillar-badge" id="p2-badge">Pillar 2 : Executive Function & Dopamine Regulation</span>
+              <div class="pillar-title" id="p2-title">Digital Self-Regulation & Flow Protection (αCLAS & Nudge)</div>
+            </div>
+          </div>
+          <div class="pillar-body">
+            <div class="pillar-pain" id="p2-pain">
+              <b>Real-World Friction:</b> Study fatigue triggers mindless social media scrolling (40+ mins); abrupt parental door-knocking incurs heavy attention residue (15–20 mins) and sparks emotional defense.
+            </div>
+            <div class="pillar-points">
+              <div class="point-item">
+                <div class="pt-icon-box">🎧</div>
+                <div id="p2-pt1"><b>αCLAS 10Hz Alpha Neuromodulation:</b> Strictly for study focus. In-ear EEG tracks Theta/Beta load ratio (CLI). Delivers αCLAS closed-loop phase-locked pulses, entraining prefrontal cortical oscillations into steady flow (Hebron et al., PLOS Biol 2024).</div>
+              </div>
+              <div class="point-item">
+                <div class="pt-icon-box">⏸️</div>
+                <div id="p2-pt2"><b>3-Second Deliberation Micro-Nudge:</b> Applying the self-nudge friction principle from Grüning et al. (PNAS 2023) (demonstrating 36% immediate abandonment and 37% open reduction), Cue injects a 3s breathing pause on entertainment app launch to allow prefrontal rationality to re-engage.</div>
+              </div>
+              <div class="point-item">
+                <div class="pt-icon-box">🛡️</div>
+                <div id="p2-pt3"><b>Parent Flow Shield & Growth Mindset Feedback:</b> Parent console displays 'Son is in deep focus - Do not disturb' to eliminate attention residue costs (Leroy, 2009); AI coach provides effort-based praise, applying growth-mindset principles (Yeager et al., Nature 2022) via a conversational agent interface (cf. Fitzpatrick et al., JMIR 2017) without empty flattery.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The In-Ear Advantage & Hardware Uniqueness Section -->
+    <div id="exclusivity" class="exclusivity-section">
+      <div class="section-header">
+        <div class="section-badge">
+          <span>🎧</span>
+          <span id="txt-excl-badge">THE IN-EAR BIOSENSING ADVANTAGE</span>
+        </div>
+        <div class="section-title">
+          <span>✨</span>
+          <span id="txt-excl-title">Why Single Flexible In-Ear Wearable? The Unique Hardware Scaffolding</span>
+        </div>
+        <div class="section-sub" id="txt-excl-sub">
+          Wristbands and smart rings cannot provide millivolt-level EEG for sleep staging or micro-second phase-locked sound delivery. Cue's ultra-soft single earbud provides the irreplaceable biological interface.
+        </div>
+      </div>
+
+      <div class="excl-grid">
+        <div class="excl-card">
+          <div class="excl-card-title">
+            <span>🧠</span>
+            <span id="excl-1-title">Why Earbuds: High-Precision EEG & Acoustic Modulation</span>
+          </div>
+          <div class="excl-card-body" id="excl-1-desc">
+            Wristbands only estimate sleep via movement and PPG, missing real slow-wave oscillations (SO ~0.5–1.25 Hz). In-ear dry EEG provides gold-standard slow wave detection, allowing precise 250Hz closed-loop phase-locked sound delivery.
+          </div>
+        </div>
+
+        <div class="excl-card">
+          <div class="excl-card-title">
+            <span>🔕</span>
+            <span id="excl-2-title">Single Ear Design: Sleep Comfort & Zero Daily Burden</span>
+          </div>
+          <div class="excl-card-body" id="excl-2-desc">
+            Traditional dual earbuds cause severe ear canal pressure during side-sleeping. Cue utilizes an ultra-soft single flexible earbud, keeping the other ear naturally open for ambient hearing and zero sleep pressure.
+          </div>
+        </div>
+
+        <div class="excl-card">
+          <div class="excl-card-title">
+            <span>🕶️</span>
+            <span id="excl-3-title">100% Screen-Off Audio vs Blue Light</span>
+          </div>
+          <div class="excl-card-body" id="excl-3-desc">
+            In-ear in-ear micro-speaker and micro-pickups allow teenagers to hear and whisper messages with friends while keeping the phone screen completely pitch black—eliminating midnight doomscrolling from the biological source.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Software App Ecosystem Feature Showcase Section -->
+    <div id="ecosystem" class="app-ecosystem-section">
+      <div class="section-header">
+        <div class="section-badge">
+          <span>🌐</span>
+          <span id="txt-eco-badge">SOFTWARE & SERVICE ECOSYSTEM</span>
+        </div>
+        <div class="section-title">
+          <span>💻</span>
+          <span id="txt-eco-title">Cue Multi-End Application Architecture</span>
+        </div>
+        <div class="section-sub" id="txt-eco-sub">
+          Seamless synergy between the Teen Mobile App and the Parent Co-Growth Console—bridging adolescent self-determination and caring parental support without surveillance.
+        </div>
+      </div>
+
+      <div class="eco-grid">
+        <!-- Teen App Features -->
+        <div class="eco-card">
+          <div class="eco-card-header">
+            <div class="eco-card-title">
+              <span>📱</span>
+              <span id="eco-teen-title">Cue Adolescent App (5 Core Modules)</span>
+            </div>
+            <a href="05_teen_app.html" style="font-size:12px; font-weight:800; color:var(--accent-blue); text-decoration:none;">Open Prototype ➔</a>
+          </div>
+          <div class="eco-features-list">
+            <div class="eco-feature-item">
+              <span id="eco-t1"><b>📅 Daily Momentum:</b> CAR sunrise wake tracking, WHO-aligned daily micro-habits, and positive daily progress logging.</span>
+            </div>
+            <div class="eco-feature-item">
+              <span id="eco-t2"><b>📚 Focus & αCLAS Modulation:</b> Real-time CLI tracking, αCLAS 10Hz Alpha modulation, and 3-second breathing friction against doomscrolling.</span>
+            </div>
+            <div class="eco-feature-item">
+              <span id="eco-t3"><b>🎙️ Growth Mindset Voice AI Coach:</b> In-ear private voiceprint interaction providing effort-based encouragement without empty flattery or nagging.</span>
+            </div>
+            <div class="eco-feature-item">
+              <span id="eco-t4"><b>🏃 Cadence-Matched Sport:</b> Cadence-matched music, in-ear PPG aerobic HR (135 bpm), and peer kudos with zero leaderboard anxiety.</span>
+            </div>
+            <div class="eco-feature-item">
+              <span id="eco-t5"><b>🌙 Screen-Off Bedtime & CLAS:</b> 100% black screen voice messaging, sunset warm light, and CLAS slow-wave deep sleep enhancement.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parent Console Features -->
+        <div class="eco-card">
+          <div class="eco-card-header">
+            <div class="eco-card-title">
+              <span>🛡️</span>
+              <span id="eco-parent-title">Parent Co-Growth Console (4 Core Modules)</span>
+            </div>
+            <a href="06_parent_console.html" style="font-size:12px; font-weight:800; color:var(--accent-blue); text-decoration:none;">Open Console ➔</a>
+          </div>
+          <div class="eco-features-list">
+            <div class="eco-feature-item">
+              <span id="eco-p1"><b>📊 Co-Growth Dashboard:</b> Aggregated macro status sharing (wake time, steps, deep sleep hours) without intrusive surveillance.</span>
+            </div>
+            <div class="eco-feature-item">
+              <span id="eco-p2"><b>🛡️ Study Flow Shield:</b> Real-time 'SON IN FLOW' status display preventing door-knocking interruption and 15–20 min attention residue costs.</span>
+            </div>
+            <div class="eco-feature-item">
+              <span id="eco-p3"><b>🏠 Smart Home IoT Manager:</b> Automated ambient study lamp, living room audio muting, and bedroom temperature sync.</span>
+            </div>
+            <div class="eco-feature-item">
+              <span id="eco-p4"><b>💬 Positive Parenting Scripts:</b> AI communication guidance coaching parents on positive affirmation, plus WHO co-growth contracts.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Science & Biological Foundations Explained (Why & How it Works - Parent-Friendly & Modest) -->
+    <div id="science-explained" class="science-explained-section">
+      <div class="section-header" style="margin-bottom: 0;">
+        <div class="section-badge">
+          <span>🧠</span>
+          <span id="txt-sci-badge">HOW IT WORKS : SCIENTIFIC PRINCIPLES</span>
+        </div>
+        <div class="section-title">
+          <span>🔬</span>
+          <span id="txt-sci-title">How Cue Works: Gentle Biological & Habit Principles</span>
+        </div>
+        <div class="section-sub" id="txt-sci-sub">
+          Explaining the gentle physiological principles and daily habit nudges behind Cue—in clear, everyday analogies for parents and modest, validated scientific foundations for researchers.
+        </div>
+      </div>
+
+      <div class="mech-grid">
+        <!-- Mech 1: CLAS -->
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <div class="mech-icon-box mech-icon-clas">🌙</div>
+            <div class="mech-title-group">
+              <div class="mech-title" id="m1-title">CLAS (Closed-Loop Auditory Stimulation) : Deep Sleep & Restorative Recovery</div>
+              <div class="mech-subtitle" id="m1-sub">In-Ear EEG 250Hz Phase-Locking · Sensation-Threshold Pink Noise</div>
+            </div>
+          </div>
+          <div class="mech-plain-box" id="m1-plain">
+            <b>Experience & Working Principle:</b> In-Ear EEG electrodes monitor deep sleep slow oscillations (SO ~0.5–1.25 Hz) at 250Hz. Much like pushing a swing at the exact peak of its arc, when slow waves reach their peak, the earbud delivers an individual sensation-threshold-adapted acoustic pulse to constructively amplify deep restorative sleep without waking the teen.
+          </div>
+          <div class="mech-hardcore-box" id="m1-hardcore">
+            <b>Scientific & Physiological Evidence:</b> Phase-locked micro-pulses during the Up-Phase constructively amplify slow-wave amplitude via closed-loop acoustic resonance (<i>Coon et al., Front Neurosci 2025</i>), driving cerebrospinal fluid pulsation to facilitate glymphatic metabolic clearance during N3 sleep (<i>Møllgård et al., Science 2023; Xie et al., Science 2013</i>).
+          </div>
+          <div class="mech-stat-tags">
+            <span class="mech-tag">In-Ear EEG 250Hz</span>
+            <span class="mech-tag">Slow Oscillations (SO) Up-Phase</span>
+            <span class="mech-tag">Threshold-Adapted Pink Noise</span>
+            <span class="mech-tag">Glymphatic Clearance</span>
+          </div>
+        </div>
+
+        <!-- Mech 2: αCLAS -->
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <div class="mech-icon-box mech-icon-aclas">🎧</div>
+            <div class="mech-title-group">
+              <div class="mech-title" id="m2-title">αCLAS (Alpha Closed-Loop Auditory Stimulation) : 10Hz Alpha Focus Audio & Phase Modulation</div>
+              <div class="mech-subtitle" id="m2-sub">Closed-Loop Phase-Resetting · Prefrontal 10Hz Alpha Focus</div>
+            </div>
+          </div>
+          <div class="mech-plain-box" id="m2-plain">
+            <b>Experience & Working Principle:</b> In-Ear EEG monitors real-time cognitive load (Theta/Beta CLI). When attention drifts during homework, the earbud plays soothing 10Hz alpha-modulated auditory stimulation embedded with phase-resetting acoustic pulses—acting like a quiet background metronome to guide wandering thoughts back into steady focus.
+          </div>
+          <div class="mech-hardcore-box" id="m2-hardcore">
+            <b>Scientific & Physiological Evidence:</b> Closed-loop auditory stimulation applies phase-reset mechanisms to selectively modulate parieto-occipital potentials into synchronized 10Hz Alpha oscillations (<i>Hebron et al., PLOS Biol 2024</i>). Alpha rhythms functionally inhibit distracting sensory noise and stabilize top-down executive attention.
+          </div>
+          <div class="mech-stat-tags">
+            <span class="mech-tag">Theta/Beta (CLI) Tracking</span>
+            <span class="mech-tag">αCLAS 10Hz Phase Modulation</span>
+            <span class="mech-tag">Alpha Flow Stabilization</span>
+            <span class="mech-tag">Cognitive Fatigue Relief</span>
+          </div>
+        </div>
+
+        <!-- Mech 3: CAR & Sunrise -->
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <div class="mech-icon-box mech-icon-car">🌅</div>
+            <div class="mech-title-group">
+              <div class="mech-title" id="m3-title">Gentle Sunrise Wake-Up, Eliminating Morning Grumpiness</div>
+              <div class="mech-subtitle" id="m3-sub">Simulated Morning Dawn · Natural Circadian Awakening</div>
+            </div>
+          </div>
+          <div class="mech-plain-box" id="m3-plain">
+            <b>Experience & Working Principle:</b> Replaces abrupt, jarring alarm ringtones that cause panic heart rate and morning irritability. 20 minutes before wake-up, bedroom lighting gradually brightens like a natural dawn (5000K daylight spectrum) while the room gently warms, allowing the body to awaken naturally and refreshed.
+          </div>
+          <div class="mech-hardcore-box" id="m3-hardcore">
+            <b>Scientific & Physiological Evidence:</b> Morning light (5000K daylight spectrum calibrated to the Melanopic EDI consensus standard established by <i>Brown et al., PLOS Biol 2022</i>) transmitting through eyelids stimulates intrinsically photosensitive retinal ganglion cells (ipRGCs), signaling the suprachiasmatic nucleus to suppress melatonin and trigger the natural Cortisol Awakening Response (CAR), eliminating morning grogginess.
+          </div>
+          <div class="mech-stat-tags">
+            <span class="mech-tag">5000K Dawn Glow</span>
+            <span class="mech-tag">Natural CAR Awakening</span>
+            <span class="mech-tag">Melatonin Easing</span>
+            <span class="mech-tag">No Panic Alarm</span>
+          </div>
+        </div>
+
+        <!-- Mech 4: CLI & 3s Nudge -->
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <div class="mech-icon-box mech-icon-nudge">🧘</div>
+            <div class="mech-title-group">
+              <div class="mech-title" id="m4-title">3-Second Breathing Pause to Reduce Mindless Phone Checking</div>
+              <div class="mech-subtitle" id="m4-sub">Gentle Self-Nudge · Breaking the Unconscious Reflex</div>
+            </div>
+          </div>
+          <div class="mech-plain-box" id="m4-plain">
+            <b>Experience & Working Principle:</b> Reaching for short video apps during study is often an unconscious habit reflex. When tapping an entertainment app, a gentle 3-second breathing animation appears. This subtle friction never forcefully locks the device, but provides a crucial pause for rational reflection, curbing mindless scrolling before it begins.
+          </div>
+          <div class="mech-hardcore-box" id="m4-hardcore">
+            <b>Scientific & Physiological Evidence:</b> In-Ear EEG monitors real-time cognitive load (CLI = Theta/Beta ratio). Applying the self-nudge micro-friction principle from <i>Grüning et al. (PNAS 2023)</i> (which proved 36% immediate abandonment and 37% open reduction), Cue injects a 3-second breathing pause to delay instant gratification and allow rational prefrontal control to re-engage.
+          </div>
+          <div class="mech-stat-tags">
+            <span class="mech-tag">3-Second Gentle Pause</span>
+            <span class="mech-tag">Voluntary Abandonment</span>
+            <span class="mech-tag">-37% Screen Opens</span>
+            <span class="mech-tag">Habit Self-Nudge</span>
+          </div>
+        </div>
+
+        <!-- Mech 5: In-Ear PPG & 180 spm Sport (Full width) -->
+        <div class="mech-card mech-card-full">
+          <div class="mech-card-header">
+            <div class="mech-icon-box mech-icon-sport">🏃</div>
+            <div class="mech-title-group">
+              <div class="mech-title" id="m5-title">Cadence Rhythm & Motion-Resilient In-Ear Heart Rate</div>
+              <div class="mech-subtitle" id="m5-sub">In-Ear Optical Sensing · Healthy Dopamine & Encouraging Feedback</div>
+            </div>
+          </div>
+          <div class="mech-plain-box" id="m5-plain">
+            <b>Experience & Working Principle:</b> Wrists swing vigorously during jogging, creating motion noise on smartwatches. In-ear optical PPG, augmented by digital motion-filtering, provides continuous workout heart rate tracking in the ear canal (Passler et al., Sensors 2019). 180 spm cadence music serves as Cue's target step rate based on elite running heuristics (building on the joint unloading mechanics from Heiderscheit et al., MSSE 2011), while immediate AI validation upon stopping delivers healthy, lasting satisfaction far beyond social feeds.
+          </div>
+          <div class="mech-hardcore-box" id="m5-hardcore">
+            <b>Scientific & Physiological Evidence:</b> In-ear reflective PPG sensors provide continuous heart rate tracking during workouts (<i>Passler et al., Sensors 2019</i>). Sustaining a 135 bpm aerobic target stimulates natural endorphin and dopamine release, while effort-based praise (<i>Yeager et al., Nature 2022</i>) fosters intrinsic self-regulation.
+          </div>
+          <div class="mech-stat-tags">
+            <span class="mech-tag">In-Ear PPG Monitoring</span>
+            <span class="mech-tag">180 spm Step Cadence</span>
+            <span class="mech-tag">Effort-Based Encouragement</span>
+            <span class="mech-tag">Healthy Dopamine</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Minor Neuro-Data Privacy Section -->
+    <div id="privacy" class="privacy-compliance-section">
+      <div class="section-header">
+        <div class="section-badge">
+          <span>🔒</span>
+          <span id="txt-priv-badge">DATA PRIVACY &amp; ETHICAL COMPLIANCE</span>
+        </div>
+        <div class="section-title">
+          <span>🛡️</span>
+          <span id="txt-priv-title">Strict Minor Data Protection &amp; Zero Surveillance Standard</span>
+        </div>
+        <div class="section-sub" id="txt-priv-sub">
+          Adolescent neural biometrics are classified as highly sensitive personal data. Cue strictly complies with personal information protection regulations (PIPL), rigorously safeguarding privacy and autonomy.
+        </div>
+      </div>
+
+      <div class="priv-grid">
+        <div class="priv-card">
+          <div class="priv-card-title">
+            <span>🔐</span>
+            <span id="priv-c1-title">Zero Raw EEG Upload</span>
+          </div>
+          <div class="priv-card-desc" id="priv-c1-desc">
+            Microvolt neural signals are filtered and computed on local earbud DSP chips. Raw waveforms are wiped immediately, with zero cloud storage or advertising monetization.
+          </div>
+        </div>
+
+        <div class="priv-card">
+          <div class="priv-card-title">
+            <span>👁️‍🗨️</span>
+            <span id="priv-c2-title">Zero Chat Snooping or Mirroring</span>
+          </div>
+          <div class="priv-card-desc" id="priv-c2-desc">
+            Parent devices only receive aggregated macro status indicators (e.g. 'In Deep Study', 'Run Completed'). Teen private chats, voice audio, and app browsing are never accessible to parents.
+          </div>
+        </div>
+
+        <div class="priv-card">
+          <div class="priv-card-title">
+            <span>🤝</span>
+            <span id="priv-c3-title">Non-Coercive Co-Growth Compact</span>
+          </div>
+          <div class="priv-card-desc" id="priv-c3-desc">
+            No remote lockouts or camera surveillance. Builds on WHO AA-HA! (2023) adolescent health guidance and mutual agreement contracts to foster intrinsic motivation and parental peace of mind.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formal Academic Bibliography Section (2022-2026 Peer-Reviewed Papers) -->
+    <div id="science" class="biblio-section">
+      <div class="section-header">
+        <div class="section-badge">
+          <span>📚</span>
+          <span id="txt-bib-badge">PEER-REVIEWED SCIENTIFIC EVIDENCE (2022–2026)</span>
+        </div>
+        <div class="section-title">
+          <span>🔬</span>
+          <span id="txt-bib-title">Academic Bibliography &amp; Empirical Evidence Base (2022–2026 APA 7th)</span>
+        </div>
+        <div class="section-sub" id="txt-bib-sub">
+          Every physiological intervention modality, acoustic frequency, and behavioral mechanism in Cue is directly validated by recent peer-reviewed literature (2022–2026) in neuroscience, chronobiology, and psychology.
+        </div>
+      </div>
+
+      <div class="biblio-list" id="biblio-container">
+        <!-- Part I: 5 Academic Papers -->
+        <div class="bib-category-title">
+          <span>📄</span>
+          <span id="txt-bib-cat1">Part I: Academic Papers (5+ Peer-Reviewed Journals)</span>
+        </div>
+        <div class="bib-item">
+          • Coon, W. G., Nilsson, S. J., Smith, M. T., &amp; Reid, M. J. (2025). Acoustic stimulation and other emerging approaches to enhance sleep: Design notes for the next generation of closed-loop neurostimulation technology. <i>Frontiers in Neuroscience</i>, <i>19</i>, 1682450. <a href="https://doi.org/10.3389/fnins.2025.1682450" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.3389/fnins.2025.1682450</a> <span class="bib-tag" id="bib1-tag">CLAS Phase-Locked Slow Oscillations</span>
+        </div>
+        <div class="bib-item">
+          • Møllgård, K., Beinlich, F. R. M., Kusk, P., Miyakoshi, L. M., Delle, C., Plá, V., Hauglund, N. L., Esmail, T., Rasmussen, M. K., Gomolka, R. S., Mori, Y., &amp; Nedergaard, M. (2023). A mesothelium divides the subarachnoid space into functional compartments. <i>Science</i>, <i>379</i>(6627), 84–88. <a href="https://doi.org/10.1126/science.adc8810" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.1126/science.adc8810</a> <span class="bib-tag" id="bib2-tag">SLYM &amp; Glymphatic Barrier Foundation</span>
+        </div>
+        <div class="bib-item">
+          • Grüning, D. J., Riedel, F., &amp; Lorenz-Spreen, P. (2023). Directing smartphone use through the self-nudge app one sec. <i>Proceedings of the National Academy of Sciences</i>, <i>120</i>(8), e2213114120. <a href="https://doi.org/10.1073/pnas.2213114120" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.1073/pnas.2213114120</a> <span class="bib-tag" id="bib3-tag">Digital Micro-Nudge: -37% Usage</span>
+        </div>
+        <div class="bib-item">
+          • Brown, T. M., Brainard, G. C., Cajochen, C., Czeisler, C. A., Hanifin, J. P., Lockley, S. W., Lucas, R. J., Münch, M., O'Hagan, J. B., Peirson, S. N., Price, L. L. A., Roenneberg, T., Schlangen, L. J. M., Skene, D. J., Spitschan, M., Vetter, C., Zee, P. C., &amp; Wright, K. P., Jr. (2022). Recommendations for daytime, evening, and nighttime indoor light exposure to best support physiology, sleep, and wakefulness in healthy adults. <i>PLOS Biology</i>, <i>20</i>(3), e3001571. <a href="https://doi.org/10.1371/journal.pbio.3001571" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.1371/journal.pbio.3001571</a> <span class="bib-tag" id="bib4-tag">ipRGCs &amp; Circadian Entrainment</span>
+        </div>
+        <div class="bib-item">
+          • Leroy, S. (2009). Why is it so hard to do my work? The challenge of attention residue when switching between work tasks. <i>Organizational Behavior and Human Decision Processes</i>, <i>109</i>(2), 168–181. <a href="https://doi.org/10.1016/j.obhdp.2009.04.002" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.1016/j.obhdp.2009.04.002</a> <span class="bib-tag" id="bib5-tag">Attention Residue Theory</span>
+        </div>
+        <div class="bib-item">
+          • Fitzpatrick, K. K., Darcy, A., &amp; Vierhile, M. (2017). Delivering cognitive behavior therapy to young adults with symptoms of depression via a fully automated conversational agent (Woebot): A randomized clinical trial. <i>JMIR Mental Health</i>, <i>4</i>(2), e19. <a href="https://doi.org/10.2196/mental.7785" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.2196/mental.7785</a> <span class="bib-tag">AI Conversational Agent for Youth</span>
+        </div>
+        <div class="bib-item">
+          • Passler, S., Müller, N., &amp; Senner, V. (2019). In-ear pulse rate measurement: A valid alternative to heart rate derived from electrocardiography? <i>Sensors</i>, <i>19</i>(17), 3641. <a href="https://doi.org/10.3390/s19173641" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.3390/s19173641</a> <span class="bib-tag">In-Ear PPG Heart Rate Validation</span>
+        </div>
+        <div class="bib-item">
+          • <b>Hebron, H., et al. (2024).</b> <i>A closed-loop auditory stimulation approach selectively modulates alpha oscillations and sleep onset dynamics in humans</i>. <i>PLOS Biology</i>, <i>22</i>(6), e3002651. <a href="https://doi.org/10.1371/journal.pbio.3002651" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.1371/journal.pbio.3002651</a> <span class="bib-tag" id="bib6-tag">αCLAS Alpha Phase Modulation</span>
+        </div>
+
+        <!-- Part II: 2 Recent Empirical Studies (Past 5 Years) -->
+        <div class="bib-category-title">
+          <span>📊</span>
+          <span id="txt-bib-cat2">Part II: Recent Empirical Studies (Past 5 Years / 2022–2026)</span>
+        </div>
+        <div class="bib-item">
+          • Yeager, D. S., Bryan, C. J., Gross, J. J., Murray, J. S., Krettek Cobb, D., Santos, P. H. F., Gravelding, H., Johnson, M., &amp; Jamieson, J. P. (2022). A synergistic mindsets intervention protects adolescents from stress. <i>Nature</i>, <i>607</i>(7919), 512–520. <a href="https://doi.org/10.1038/s41586-022-04907-7" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.1038/s41586-022-04907-7</a> <span class="bib-tag" id="bib7-tag">Growth Mindset Effort Feedback</span>
+        </div>
+        <div class="bib-item">
+          • Tabar, Y. R., Mikkelsen, K. B., Shenton, N., Kappel, S. L., Hemmsen, M. C., Rank, M. L., Otto, M., &amp; Kidmose, P. (2023). At-home sleep monitoring using generic ear-EEG. <i>Frontiers in Neuroscience</i>, <i>17</i>, 987578. <a href="https://doi.org/10.3389/fnins.2023.987578" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.3389/fnins.2023.987578</a> <span class="bib-tag" id="bib8-tag">In-Ear Sleep EEG Feasibility</span>
+        </div>
+        <div class="bib-item">
+          • Lee, T., Cho, Y., Cha, K. S., Jung, J., Cho, J., Kim, H., Kim, D., Hong, J., Lee, D., Keum, M., Kushida, C. A., Yoon, I.-Y., &amp; Kim, J.-W. (2023). Accuracy of 11 wearable, nearable, and airable consumer sleep trackers: Prospective multicenter validation study. <i>JMIR mHealth and uHealth</i>, <i>11</i>, e50983. <a href="https://doi.org/10.2196/50983" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.2196/50983</a> <span class="bib-tag" id="bib9-tag">Wrist Wearable vs In-Ear Accuracy</span>
+        </div>
+        <div class="bib-item">
+          • Ho, M., Schulz, P. J., &amp; Chang, A. (2025). Exploring the impact of perceived parental oversight on problematic smartphone use among adolescents in the digital age. <i>JMIR Pediatrics and Parenting</i>, <i>8</i>, e75837. <a href="https://doi.org/10.2196/75837" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.2196/75837</a> <span class="bib-tag" id="bib10-tag">Parental Control vs Reactance</span>
+        </div>
+
+        <!-- Part III: 1 Authoritative International Guideline -->
+        <div class="bib-category-title">
+          <span>🏛️</span>
+          <span id="txt-bib-cat3">Part III: Authoritative International Guidelines &amp; Standards (WHO / NICE)</span>
+        </div>
+        <div class="bib-item">
+          • <b>World Health Organization (WHO). (2023).</b> <i>Global accelerated action for the health of adolescents (AA-HA!): Guidance to support country implementation</i> (2nd ed., ISBN: 9789240081765; Inheriting WHO 2015 Global Standards). Geneva: World Health Organization. <a href="https://www.who.int/publications/i/item/9789240081765" target="_blank" style="color:var(--accent-blue);">https://www.who.int/publications/i/item/9789240081765</a> <span class="bib-tag" id="bib11-tag">WHO Adolescent Autonomy &amp; Ethics</span>
+        </div>
+        <div class="bib-item">
+          • <b>National Institute for Health and Care Excellence (NICE). (2022).</b> <i>Sleepio to treat insomnia and insomnia symptoms</i> (Medical Technologies Guidance MTG70). London: NICE. <a href="https://www.nice.org.uk/guidance/mtg70" target="_blank" style="color:var(--accent-blue);">https://www.nice.org.uk/guidance/mtg70</a> <span class="bib-tag" id="bib12-tag">Non-Pharmacological Guidance</span>
+        </div>
+
+        <!-- Part IV: 2 International Living Lab Cases -->
+        <div class="bib-category-title">
+          <span>🌐</span>
+          <span id="txt-bib-cat4">Part IV: 2 International Living Lab Benchmark Cases</span>
+        </div>
+        <div class="bib-item">
+          • <b>Philips HomeLab (Eindhoven, Netherlands)</b>: <b>De Ruyter, B., Aarts, E., Markopoulos, P., &amp; IJsselsteijn, W. A. (2005)</b>. <i>Ambient Intelligence Research in HomeLab: Engineering the User Experience</i>. In <i>Ambient Intelligence</i> (pp. 49–61). Springer, Berlin, Heidelberg. <a href="https://doi.org/10.1007/3-540-27139-2_4" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.1007/3-540-27139-2_4</a> <span class="bib-tag" id="bib13-tag">Ambient Intelligence Living Lab</span>
+        </div>
+        <div class="bib-item">
+          • <b>Digital Wellness Lab, Boston Children's Hospital &amp; Harvard Medical School (USA)</b>: <b>Carter, M. C., et al. (2025)</b> [Dir: M. Rich]. <i>Placing problematic media use in context: a research synthesis, person-centric framework, and chart review among a clinical sample of US youth</i>. <i>Frontiers in Psychiatry</i>, <i>16</i>, 1574502. <a href="https://doi.org/10.3389/fpsyt.2025.1574502" target="_blank" style="color:var(--accent-blue);">https://doi.org/10.3389/fpsyt.2025.1574502</a> | <a href="https://digitalwellnesslab.org/" target="_blank" style="color:var(--accent-blue);">Official Lab Portal</a> <span class="bib-tag" id="bib14-tag">Adolescent Digital Health Lab</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Standardized Compact Footer -->
+  <footer>
+    <div style="font-weight:800; color:#f8fafc;">Cue: Real-World Living Lab Future Home Health Innovation Challenge</div>
+    <div>Direction One: Youth Health · ISTBI, Fudan University (Brain Science & AI Summer School 2026)</div>
+    <div class="footer-highlight" id="txt-footer-team">Team 3: Muireann Hogan, Xinwen Cao, Delya Ahuja, Qihe Zhang</div>
+  </footer>
+
+  <!-- Floating Back to Top Action Button -->
+  <button class="back-to-top" id="btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top / 返回顶部" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    let currentTheme = 'light';
+    let currentLang = 'en';
+
+    const i18n = {
+      zh: {
+        brandTitle: "Living Lab 交互门户",
+        themeDark: "暗黑",
+        themeLight: "白天",
+        githubLbl: "GitHub",
+        lnkPortals: "三大原型",
+        lnkPillars: "核心产品价值",
+        lnkExclusivity: "耳塞核心优势",
+        lnkEcosystem: "双端软件生态",
+        lnkScienceExplained: "原理通俗解析",
+        lnkPrivacy: "未成年人隐私",
+        lnkScience: "学术文献库",
+        heroBadge: "TEAM 3 · 青少年数字健康 | 复旦脑院夏令营 Living Lab 概念挑战赛",
+        heroTitle: "青少年数字成瘾干预与全面身心健康调控系统",
+        heroSlogan: "“构建更好的日常数字习惯 (Building better daily digital habits)”",
+        heroSub: "直击当代青少年睡眠剥夺与数字分心两大核心生活困境，将其转化为自然温馨的家庭微习惯回路。遵循 Living Lab 核心理念“把健康融入生活，而非把生活塞进医疗”——依托单一柔性仿生耳塞、成长型思维 AI 动机教练与全屋智能环境协同，全天无感运行，不给孩子增加日常负担。",
+        heroScroll: "👇 向下翻阅探索三大交互原型、核心调控机制、数据合规与 APA 学术文献库",
+        teamTag: "TEAM 3",
+        teamMembers: "Delya Ahuja · Xinwen Cao · Muireann Hogan · Qihe Zhang",
+        footerTeam: "Team 3 (Youth Digital Wellbeing): Delya Ahuja · Xinwen Cao · Muireann Hogan · Qihe Zhang",
+        
+        pillG1: "⏱️ 24小时推演",
+        pillG2: "📱 青少年端",
+        pillG3: "🛡️ 家长端",
+
+        g1Title: "青少年 24 小时真实家庭生活场景推演",
+        g1Desc: "呈现 5 大高频生活场景（07:00 晨醒、10:30 自习与 αCLAS 专注、16:30 慢跑运动、19:30 心流护盾、22:15 纯黑屏语音与 CLAS 深睡）。演示柔性耳塞的按需模块化使用（零全天佩戴负担），支持生活故事与神经调控科研依据一键无缝切换。",
+        g1Tag1: "按需模块化使用", g1Tag2: "动态信息交互", g1Tag3: "全屋物联实时反馈", g1Tag4: "同行评议实证支撑",
+        g1Btn: "🚀 开启 24 小时推演",
+
+        g2Title: "Cue 青少年手机端 App 交互原型",
+        g2Desc: "双栏仿真交互原型，集成 CLI 实时脑力负荷追踪、αCLAS 10Hz Alpha 脑波调控、3 秒深呼吸防走神冷静微阻尼、180 spm 运动步频同步及 100% 睡前黑屏纯语音听读通道。",
+        g2Tag1: "αCLAS 10Hz Alpha 专注音频", g2Tag2: "成长型思维 AI", g2Tag3: "3秒深呼吸冷静屏障", g2Tag4: "同伴无声点赞",
+        g2Btn: "📱 开启青少年端 App",
+
+        g3Title: "Cue 家长监护端 App 与亲子共育控制台",
+        g3Desc: "告别粗暴断网与查岗监控。提供自习心流护盾、自定义间歇关怀提醒（晚饭/水果）、全屋智能家居管理、AI 亲子温和沟通锦囊及 基于 WHO AA-HA! (2023) 的健康共育契约。",
+        g3Tag1: "自习心流护盾", g3Tag2: "自定义关怀触发", g3Tag3: "全屋环境物联协同", g3Tag4: "零隐私窥探保障",
+        g3Btn: "🛡️ 开启家长端控制台",
+
+        sciBadge: "背后的科学原理与日常习惯原理",
+        sciTitle: "原理通俗解析：为什么 Cue 的温和辅助真实有效？",
+        sciSub: "为您通俗拆解 Cue 背后温和的生理调节与日常习惯引导原理——用生动贴切的生活比喻讲清运作逻辑，用 2022–2026 经同行评议验证的科学依据打消疑虑。",
+        
+        m1Title: "CLAS 闭环慢波声学刺激：夜间深睡机能修复",
+        m1Sub: "耳道脑电 250Hz 慢波锁相 · 个体感知阈值适配粉红微脉冲",
+        m1Plain: "<b>日常体验与作用原理：</b>耳塞内侧电极以 250Hz 采样率实时感知夜间慢振荡（SO ~0.5–1.25 Hz）。如同推秋千在最高点顺势推一把，当慢波到达波峰时，耳塞精准释放个体感知阈值适配的极轻微声学脉冲，顺势共振加深慢波睡眠，全程不打扰睡眠，让夜间休息更安稳充分。",
+        m1Hardcore: "<b>科学与生理依据：</b>在深度慢波睡眠期（N3期），耳塞算法锁相慢振荡上升相（Up-Phase），通过声学相长共振显著增强慢波振幅与深睡深度（<i>Coon et al., Front Neurosci 2025</i>），加速脑脊液搏动与类淋巴系统代谢废物清除屏障（<i>Møllgård et al., Science 2023; Xie et al., Science 2013</i>）。",
+
+        m2Title: "αCLAS 闭环听觉调控：10Hz Alpha 专注音频与相位引导",
+        m2Sub: "闭环相位重置机制 · 前额叶 10Hz Alpha 专注态",
+        m2Plain: "<b>日常体验与作用原理：</b>耳塞实时监测脑力负荷比值（Theta/Beta CLI）。当孩子自习做作业感到脑力疲惫、注意力开始分散时，耳塞自动播放 10Hz Alpha 调制声波并融入相位引导节拍，充当安静的声音节拍器，平复浮躁思绪，引导大脑平稳重回专注状态。",
+        m2Hardcore: "<b>科学与生理依据：</b>αCLAS 闭环听觉调控基于相位重置机制，特异性调制顶叶-枕叶皮层产生同步 10Hz Alpha 脑波（<i>Hebron et al., PLOS Biol 2024</i>），功能性抑制外界杂念干扰，降低认知负荷，稳固前额叶自顶向下注意控制网络。",
+
+        m3Title: "清晨日出模拟唤醒，告别起床气",
+        m3Sub: "模拟自然晨光 · 生物钟温和唤醒",
+        m3Plain: "<b>日常体验与作用原理：</b>告别刺耳闹钟突然惊醒引发的心跳急促与起床气。在预定起床前 20 分钟，卧室灯光如同自然日出般由暗柔和渐亮（5000K 晨光暖白），房间微温舒适。身体感应到自然清晨信号，在闹钟响前自然醒转并伸展身体，开启精力充沛的一天。",
+        m3Hardcore: "<b>科学与生理依据：</b>Cue 设定 5000K 晨光光谱（依据 <i>Brown et al., PLOS Biol 2022</i> 确立的 Melanopic EDI 国际共识标准）经眼睑光照投射刺激视网膜内源光敏神经节细胞（ipRGCs），通过视网膜-下丘脑通路抑制松果体褪黑素分泌，平稳诱导皮质醇觉醒反应（CAR），从源头消除晨起睡眠惰性。",
+
+        m4Title: "3 秒深呼吸小缓冲，减少顺手刷手机",
+        m4Sub: "行为自我微助推 · 打破下意识顺手摸手机",
+        m4Plain: "<b>日常体验与作用原理：</b>自习疲惫时顺手摸手机刷短视频，往往是一种下意识的冲动反射。当手指触碰娱乐 App 时，屏幕柔和弹出 3 秒深呼吸动画。这 3 秒微小缓冲绝非强制锁机，而是给理性思考留出宝贵的冷静间隙，在萌芽阶段打破无意识刷屏的惯性。",
+        m4Hardcore: "<b>科学与生理依据：</b>耳道脑电实时追踪前额叶认知负荷（CLI = Theta/Beta 比值）。基于 <i>Grüning et al. (PNAS 2023)</i> 自助推微延迟摩擦原理（实证使 36% 冲动打开即时放弃、日常无意识屏幕使用显著下降 37%），Cue 注入 3 秒深呼吸冷静缓冲打断即时多巴胺反射弧，助推理性前额叶重新上线。",
+
+        m5Title: "运动步频节律与稳健心率感知",
+        m5Sub: "耳道光学感知 · 运动内啡肽与肯定式反馈",
+        m5Plain: "<b>日常体验与作用原理：</b>慢跑时手臂剧烈摆动，手环容易产生较大测量误差并带来震动打扰；而耳道光学 PPG 传感器结合动态滤波算法能有效感知运动心率（Passler et al., Sensors 2019）。180 spm 步频节律音乐为 Cue 结合精英跑者经验设定的目标引导值（关节减负机制依据 Heiderscheit et al., MSSE 2011 提升 5%~10% 步频降低膝髋关节机械负荷实证），跑完停下的一刻 AI 及时给予客观的努力肯定，让真实运动获得的成就感远超虚拟屏幕刺激。",
+        m5Hardcore: "<b>科学与生理依据：</b>耳道内反射式 PPG 传感器在运动状态下提供连续心率追踪（<i>Passler et al., Sensors 2019</i>），稳定锁定 135 bpm 有氧靶心率，促进下丘脑分泌内源性内啡肽与多巴胺；跑后基于努力事实的正向肯定（<i>Yeager et al., Nature 2022</i>）持续巩固自律习惯。",
+        
+        pillarBadge: "核心干预体系架构",
+        pillarTitle: "两大核心青少年健康危机与闭环干预方案",
+        pillarSub: "直击当代青少年家庭最高频的两大健康困境——【睡眠剥夺与昼夜节律失调（CLAS 慢波深睡）】与【数字手机成瘾与走神（αCLAS 专注音频与 3 秒深呼吸微阻尼）】，通过温和的自然感觉通路实现闭环调控。",
+        p1Badge: "支柱一：昼夜节律与睡眠神经调控",
+        p1Title: "睡眠质量重塑与脑类淋巴排毒 (CLAS)",
+        p1Pain: "真实家庭痛点：睡前玩手机导致屏幕蓝光抑制褪黑素分泌，深度慢波睡眠被严重剥夺；早晨被闹钟突然惊醒引发头昏脑胀与剧烈晨间起床气。",
+        p1Pt1: "<b>100% 睡前黑屏纯语音听读（从生理阻断蓝光）：</b>通过耳塞耳内微型扬声器与微型麦克风，孩子闭着眼就能轻声收发同学微信，手机屏幕全程 100% 保持完全熄灭。从生理源头彻底杜绝屏幕蓝光对松果体褪黑素的抑制，避免顺手点进短视频的视觉多巴胺诱惑。",
+        p1Pt2: "<b>CLAS 闭环慢波深睡增强（夜间声学脑排毒）：</b>针对夜间最关键的 N3 慢波深睡期（慢振荡 SO ~0.5–1.25 Hz）。耳塞以 250Hz 采样率毫秒级捕捉慢波波峰，释放感知阈值适配的微弱粉红脉冲，通过闭环声学共振显著强化慢波深睡振幅与深度 (Coon et al., Front Neurosci 2025)，促进脑脊液加速清除脑代谢废物 (Møllgård et al., Science 2023; Xie et al., Science 2013)，早晨清醒不赖床。",
+        p1Pt3: "<b>5000K 日出晨醒光生物学（CAR 自然唤醒）：</b>起床前 20 分钟卧室晨光模拟日出渐亮（5000K 晨光色温，依据 Brown et al., PLOS Biol 2022 的 Melanopic EDI 共识标准设计），通过视网膜感光节细胞 (ipRGCs) 温柔激活生物钟，促发体内的<b>皮质醇觉醒反应（CAR）</b>，在闹钟响起前自然平稳地唤醒大脑，彻底消除晨间头昏与起床气。",
+
+        p2Badge: "支柱二：前额叶执行功能与多巴胺自律",
+        p2Title: "数字自律微阻尼与心流保护 (αCLAS & Nudge)",
+        p2Pain: "真实家庭痛点：自习写作业疲劳诱发无意识摸手机（一刷短视频就是大半小时）；父母频繁推门查岗打断思路，导致孩子需耗费 15–20 分钟才能重新集中注意力，激化家庭矛盾。",
+        p2Pt1: "<b>αCLAS 10Hz Alpha 专注音频调控（听觉脑波相位引导）：</b>针对自习专注期。耳塞实时监测 Theta/Beta 认知负荷比值 (CLI)。感知到走神时，耳塞输出 <b>αCLAS 10Hz Alpha 调控音频</b>，通过闭环听觉调制 (Hebron et al., PLOS Biol 2024) 引导前额叶神经元恢复至 10Hz Alpha 沉浸态，减少走神发呆。",
+        p2Pt2: "<b>3 秒深呼吸冷静缓冲（防冲动微阻尼）：</b>当孩子伸手想点开娱乐 App 时，屏幕先弹出 3 秒深呼吸动效。基于 Grüning et al. (PNAS 2023) 自助推微延迟原理（实证 36% 即时放弃、使用频次下降 37%），Cue 注入 3 秒深呼吸冷静缓冲为理智前额叶留出重新思考时间，打断自动反射弧，显著减少无意识玩手机。",
+        p2Pt3: "<b>家长心流护盾与成长型思维反馈：</b>孩子深度自习时，家长端显示‘孩子深度自习中·请勿打扰’，消除推门打扰带来的注意力残留成本 (Leroy, 2009)；AI 教练基于客观努力事实给予肯定 (Yeager et al., Nature 2022)，拒绝虚假盲目吹捧，培养孩子坚毅品格。",
+
+        exclBadge: "耳内生物感知与调控优势",
+        exclTitle: "为什么必须依托 Cue 耳内生物感知耳塞才能实现闭环？",
+        exclSub: "通俗向家长解释：为什么智能手表与纯手机软件无法实现主动神经调控闭环，而必须依托耳内生物感知耳塞。",
+        excl1Title: "CLAS 慢波深睡增强 vs 智能手表",
+        excl1Desc: "智能手表在深浅睡眠分期上存在显著偏差（Lee et al., JMIR 2023）；唯有耳内脑电耳塞能在夜间深睡期以 250Hz 实时采样脑电慢波，释放感知阈值适配的声学微脉冲主动共振增强深睡排毒 (Coon et al., Front Neurosci 2025; Tabar et al., 2023)。",
+        excl2Title: "αCLAS 10Hz Alpha 专注调控 vs 手机强制锁机",
+        excl2Desc: "手机自带防沉迷只能在走神后粗暴锁机，单向强硬监管在青春期效果急剧递减、无焦点监视无效 (Ho et al., JMIR Pediatr Parent 2025)；耳塞能在走神前感知前额叶脑力疲劳，通过 αCLAS 闭环听觉刺激主动引导脑波恢复至专注 Alpha 状态 (Hebron et al., PLOS Biol 2024)。",
+        excl3Title: "100% 纯黑屏语音通道 vs 屏幕蓝光",
+        excl3Desc: "耳塞耳内微型扬声器与麦克风让孩子闭眼即可轻声收发微信，手机屏幕全程 100% 保持漆黑，从生理源头彻底杜绝夜间顺手点进短视频的视觉多巴胺诱惑。",
+
+        ecoBadge: "软件与服务生态架构",
+        ecoTitle: "Cue 双端软件功能全景矩阵",
+        ecoSub: "青少年自主调控端与家长端沟通护盾无缝协同——以尊重隐私与自主性为基石，消解家庭矛盾，建立融洽的家庭健康微习惯回路。",
+        ecoTeenTitle: "青少年端 App (5 大核心功能模块)",
+        ecoT1: "<b>📅 今日自律闭环：</b>CAR 日出晨醒目标追踪、世界卫生组织（WHO）4 维微习惯流与每日正向成就感汇聚。",
+        ecoT2: "<b>📚 专注心流与微阻尼：</b>实时脑力负荷追踪、αCLAS 10Hz Alpha 专注音频调控与 3 秒深呼吸防走神冷静缓冲。",
+        ecoT3: "<b>🎙️ 成长型思维 AI 教练：</b>耳内私密声纹交互，提供基于努力事实的客观肯定与策略建议，杜绝盲目吹捧。",
+        ecoT4: "<b>🏃 步频同步运动：</b>180 spm 步频同步节奏音乐、耳道 PPG 135 bpm 有氧心率追踪与同伴无声 Kudos 互勉。",
+        ecoT5: "<b>🌙 睡前黑屏与 CLAS 深睡：</b>100% 黑屏语音听读微信、日落暖红光与 CLAS 闭环慢波声学增强。",
+        ecoParentTitle: "家长端亲子共育与沟通护盾 (4 大核心功能模块)",
+        ecoP1: "<b>📊 共育仪表盘：</b>脱敏宏观健康状态共享（起床时间、运动步数、深睡时长），消除父母查岗焦虑。",
+        ecoP2: "<b>🛡️ 自习心流护盾：</b>显示“孩子深度专注中·请勿打扰”，自定义间歇送温水与晚饭温和关怀提醒。",
+        ecoP3: "<b>🏠 全屋环境物联管理：</b>书房台灯色温、客厅音响静音、卧室恒温与晨间日落灯光自动化管理。",
+        ecoP4: "<b>💬 亲子沟通锦囊：</b>AI 非暴力沟通话术指导，共同签署世界卫生组织（WHO）4 维健康自律契约，强化孩子自驱力。",
+
+        privBadge: "未成年人数据隐私与合规标准",
+        privTitle: "严格保护未成年人敏感神经数据与隐私合规",
+        privSub: "青少年神经生理电信号属于高度敏感个人信息。Cue 严格遵循《中华人民共和国个人信息保护法》(PIPL) 与国际神经伦理准则，保障青少年隐私边界。",
+        privC1Title: "原始脑电零上云 (Zero Raw EEG Upload)",
+        privC1Desc: "微伏级脑电信号在耳塞及本地基站芯片内部即时完成滤波与负荷指数计算，原始波形瞬时销毁，永不上传云端或贩卖给第三方商业机构。",
+        privC2Title: "绝无私人聊天与屏幕监控",
+        privC2Desc: "家长端仅呈现脱敏的宏观状态（如“自习专注中”、“跑步达成”），严格屏蔽青少年的私人聊天、语音内容与应用浏览详情。",
+        privC3Title: "非强制亲子共育契约",
+        privC3Desc: "杜绝任何远程强制锁机与摄像头监控。基于世界卫生组织 (WHO) AA-HA! 青少年健康框架与亲子共育契约，建立内在动机驱动与信任连接。",
+
+        bibBadge: "权威证据源与文献体系 (EVIDENCE SOURCES)",
+        bibTitle: "同行评议学术参考文献与实证证据源库 (2022–2026 APA 7th)",
+        bibSub: "严格对齐夏令营任务书硬性标准：8篇核心可靠证据源（5篇顶刊学术论文 + 2篇近5年实证研究 + 1篇权威国际指南），并包含2个国际经典Living Lab案例，全方位覆盖规模、需求、差距、安全、伦理、隐私与可及性。",
+        bibCat1: "第一部分：核心学术期刊论文 (5+ 篇国际权威顶刊)",
+        bibCat2: "第二部分：近 5 年前沿实证与临床队列研究 (2 Recent Studies, 2022–2026)",
+        bibCat3: "第三部分：权威国际指南与行业标准报告 (1 Authoritative Guideline, 2022–2026)",
+        bibCat4: "第四部分：2 个国际经典 Living Lab 标杆案例 (2 International Living Lab Cases)",
+        bib1Tag: "CLAS 闭环慢波深睡增强 (2025)",
+        bib2Tag: "SLYM 解剖与脑类淋巴排毒 (2023)",
+        bib3Tag: "数字微阻尼现场实证 (-37%) (2023)",
+        bib4Tag: "视网膜感光节细胞与 CAR 晨醒 (2022)",
+        bib5Tag: "注意力残留与心流打扰成本 (经典理论)",
+        bib6Tag: "αCLAS 闭环 Alpha 调控 (2024)",
+        bib7Tag: "成长型思维与努力客观肯定 (2022)",
+        bib8Tag: "耳内脑电睡眠监测可行性 (2023)",
+        bib9Tag: "消费级手环睡眠监测局限性 (2023)",
+        bib10Tag: "家长强管控引发逆反实证 (2025)",
+        bib11Tag: "WHO 青少年自主权与伦理标准 (2023)",
+        bib12Tag: "NICE 英国非药物睡眠指南 (2022)",
+        bib13Tag: "飞利浦环境智能 Living Lab (荷兰)",
+        bib14Tag: "哈佛波士顿儿童青少年数字健康 Lab (美国)"
+      },
+      en: {
+        brandTitle: "Living Lab Portal",
+        themeDark: "Dark",
+        themeLight: "Light",
+        githubLbl: "GitHub",
+        lnkPortals: "Prototypes",
+        lnkScienceExplained: "How It Works",
+        lnkExclusivity: "Why In-Ear",
+        lnkPillars: "Health Pillars",
+        lnkEcosystem: "Ecosystem",
+        lnkPrivacy: "Data Ethics",
+        lnkScience: "Bibliography",
+        heroBadge: "TEAM 3 · YOUTH DIGITAL WELLBEING",
+        heroTitle: "Intervention for Digital Addiction & Overall Wellbeing in Adolescents",
+        heroSlogan: "“Building better daily digital habits.”",
+        heroSub: "Reframing adolescent sleep deprivation and digital distraction into positive everyday home routines. Guided by the Living Lab core philosophy “Bring healthcare into life, not life into healthcare” — powered by single flexible in-ear biosensing, growth-mindset AI motivation, and ambient smart home IoT with zero daily wear burden.",
+        heroScroll: "👇 Scroll down to explore Prototypes, Interventions, Exclusivity & APA Bibliography",
+        teamTag: "TEAM 3",
+        teamMembers: "Delya Ahuja · Xinwen Cao · Muireann Hogan · Qihe Zhang",
+        footerTeam: "Team 3 (Youth Digital Wellbeing): Delya Ahuja · Xinwen Cao · Muireann Hogan · Qihe Zhang",
+        
+        pillG1: "⏱️ 24H Living Lab Flow",
+        pillG2: "📱 Adolescent Console",
+        pillG3: "🛡️ Parent Console",
+
+        g1Title: "24-Hour Home Living Lab Demonstration",
+        g1Desc: "5 key daily life scenarios (07:00 Wake-Up, 10:30 Study Focus & αCLAS, 16:30 Workout, 19:30 Study Shield, 22:15 Deep Sleep CLAS). Demonstrates modular on-demand usage (non-invasive, zero all-day wear burden) with seamless 1-click toggle between Real-Life Story and Neuroscience Citations.",
+        g1Tag1: "Modular On-Demand", g1Tag2: "Dynamic Pins", g1Tag3: "IoT Live HUD", g1Tag4: "Peer-Reviewed Evidence",
+        g1Btn: "🚀 Open 24H Showcase",
+
+        g2Title: "Adolescent Mobile App Prototype",
+        g2Desc: "Interactive two-column mobile console featuring real-time CLI focus tracking, αCLAS 10Hz Alpha brainwave modulation, 3-second breathing micro-intervention, 180 spm cadence running, and 100% screen-off bedtime voice messaging.",
+        g2Tag1: "αCLAS 10Hz Alpha Audio", g2Tag2: "Growth Mindset AI", g2Tag3: "3s Deliberation Pause", g2Tag4: "Peer Kudos",
+        g2Btn: "📱 Open Teen App",
+
+        g3Title: "Parent Guard & Co-Growth Console",
+        g3Desc: "Eliminates intrusive surveillance and forced lockouts. Provides study flow protection, custom break care reminders (dinner/fruit), smart home IoT manager, parenting coach scripts, and World Health Organization (WHO) co-growth habit contracts.",
+        g3Tag1: "Study Flow Shield", g3Tag2: "Custom Care Prompts", g3Tag3: "Smart Home Manager", g3Tag4: "Zero Surveillance",
+        g3Btn: "🛡️ Open Parent Console",
+
+        sciBadge: "HOW IT WORKS : SCIENTIFIC PRINCIPLES",
+        sciTitle: "How Cue Works: Gentle Biological & Habit Principles",
+        sciSub: "Explaining the gentle physiological principles and daily habit nudges behind Cue—in clear, vivid analogies for real-life understanding and validated scientific foundations for researchers.",
+        
+        m1Title: "CLAS (Closed-Loop Auditory Stimulation) : Deep Sleep & Restorative Recovery",
+        m1Sub: "In-Ear EEG 250Hz Phase-Locking · Sensation-Threshold Pink Noise",
+        m1Plain: "<b>Experience & Working Principle:</b> In-Ear EEG electrodes monitor deep sleep slow oscillations (SO ~0.5–1.25 Hz) at 250Hz. Much like pushing a swing at the exact peak of its arc, when slow waves reach their peak, the earbud delivers an individual sensation-threshold-adapted acoustic pulse to constructively amplify deep restorative sleep without waking the teen.",
+        m1Hardcore: "<b>Scientific & Physiological Evidence:</b> Phase-locked micro-pulses during the Up-Phase constructively amplify slow-wave amplitude via closed-loop acoustic resonance (<i>Coon et al., Front Neurosci 2025</i>), driving cerebrospinal fluid pulsation to facilitate glymphatic metabolic clearance during N3 sleep (<i>Møllgård et al., Science 2023; Xie et al., Science 2013</i>).",
+
+        m2Title: "αCLAS (Alpha Closed-Loop Auditory Stimulation) : 10Hz Alpha Focus Audio & Phase Modulation",
+        m2Sub: "Closed-Loop Phase-Resetting · Prefrontal 10Hz Alpha Focus",
+        m2Plain: "<b>Experience & Working Principle:</b> In-Ear EEG monitors real-time cognitive load (Theta/Beta CLI). When attention drifts during homework, the earbud plays soothing 10Hz alpha-modulated auditory stimulation embedded with phase-resetting acoustic pulses—acting like a quiet background metronome to guide wandering thoughts back into steady focus.",
+        m2Hardcore: "<b>Scientific & Physiological Evidence:</b> Closed-loop auditory stimulation applies phase-reset mechanisms to selectively modulate parieto-occipital potentials into synchronized 10Hz Alpha oscillations (<i>Hebron et al., PLOS Biol 2024</i>). Alpha rhythms functionally inhibit distracting sensory noise and stabilize top-down executive attention.",
+
+        m3Title: "Gentle Sunrise Wake-Up, Eliminating Morning Grumpiness",
+        m3Sub: "Simulated Morning Dawn · Natural Circadian Awakening",
+        m3Plain: "<b>Experience & Working Principle:</b> Replaces abrupt, jarring alarm ringtones that cause panic heart rate and morning irritability. 20 minutes before wake-up, bedroom lighting gradually brightens like a natural dawn (5000K daylight spectrum) while the room gently warms, allowing the body to awaken naturally and refreshed.",
+        m3Hardcore: "<b>Scientific & Physiological Evidence:</b> Morning light (5000K daylight spectrum calibrated to the Melanopic EDI consensus standard established by <i>Brown et al., PLOS Biol 2022</i>) transmitting through eyelids stimulates intrinsically photosensitive retinal ganglion cells (ipRGCs), signaling the suprachiasmatic nucleus to suppress melatonin and trigger the natural Cortisol Awakening Response (CAR), eliminating morning grogginess.",
+
+        m4Title: "3-Second Breathing Pause to Reduce Mindless Phone Checking",
+        m4Sub: "Gentle Self-Nudge · Breaking the Unconscious Reflex",
+        m4Plain: "<b>Experience & Working Principle:</b> Reaching for short video apps during study is often an unconscious habit reflex. When tapping an entertainment app, a gentle 3-second breathing animation appears. This subtle friction never forcefully locks the device, but provides a crucial pause for rational reflection, curbing mindless scrolling before it begins.",
+        m4Hardcore: "<b>Scientific & Physiological Evidence:</b> In-Ear EEG monitors real-time cognitive load (CLI = Theta/Beta ratio). Applying the self-nudge micro-friction principle from <i>Grüning et al. (PNAS 2023)</i> (which proved 36% immediate abandonment and 37% open reduction), Cue injects a 3-second breathing pause to delay instant gratification and allow rational prefrontal control to re-engage.",
+
+        m5Title: "Cadence Rhythm & Motion-Resilient In-Ear Heart Rate",
+        m5Sub: "In-Ear Optical Sensing · Healthy Dopamine & Encouraging Feedback",
+        m5Plain: "<b>Experience & Working Principle:</b> Wrists swing vigorously during jogging, creating motion noise on smartwatches. In-ear optical PPG, augmented by digital motion-filtering, provides continuous workout heart rate tracking in the ear canal (Passler et al., Sensors 2019). 180 spm cadence music serves as Cue's target step rate based on elite running heuristics (building on the joint unloading mechanics from Heiderscheit et al., MSSE 2011), while immediate AI validation upon stopping delivers healthy, lasting satisfaction far beyond social feeds.",
+        m5Hardcore: "<b>Scientific & Physiological Evidence:</b> In-ear reflective PPG sensors provide continuous heart rate tracking during workouts (<i>Passler et al., Sensors 2019</i>). Sustaining a 135 bpm aerobic target stimulates natural endorphin and dopamine release, while effort-based praise (<i>Yeager et al., Nature 2022</i>) fosters intrinsic self-regulation.",
+
+        pillarBadge: "CORE INTERVENTION FRAMEWORK",
+        pillarTitle: "Two Core Youth Health Challenges & Closed-Loop Solutions",
+        pillarSub: "Addressing the two most pervasive home health crises among modern adolescents—Sleep Deprivation (CLAS) and Digital Distraction (αCLAS & 3s Nudge)—through gentle, biologically synchronized ambient closed loops.",
+        p1Badge: "Pillar 1 : Circadian & Sleep Neuromodulation",
+        p1Title: "Sleep Restoration & Glymphatic Detoxification (CLAS)",
+        p1Pain: "Real-World Friction: Bedtime social scrolling exposes eyes to blue light, suppressing melatonin; fragmented N3 slow-wave sleep causes morning grogginess and parent-teen wake-up conflicts.",
+        p1Pt1: "<b>100% Screen-Off Voice Messaging:</b> In-ear in-ear micro-speaker & mic allow teen to listen and reply to friends without waking the screen, completely blocking blue light temptation and melatonin suppression.",
+        p1Pt2: "<b>CLAS Slow-Wave Auditory Stimulation:</b> Strictly for nighttime N3 deep sleep (SO ~0.5–1.25 Hz). In-ear EEG locks to slow oscillation up-states at 250Hz, emitting sensation-threshold-adapted pink noise to constructively amplify slow wave activity and promote glymphatic clearance (Coon et al., Front Neurosci 2025; Møllgård et al., Science 2023; Xie et al., Science 2013).",
+        p1Pt3: "<b>5000K Sunrise Photobiology Ramp:</b> Morning ambient light gradually ramps 20 minutes before waking (5000K daylight spectrum, calibrated per Brown et al., PLOS Biol 2022 Melanopic EDI standard) to activate ipRGCs and trigger Cortisol Awakening Response (CAR), eliminating sleep inertia.",
+
+        p2Badge: "Pillar 2 : Executive Function & Dopamine Regulation",
+        p2Title: "Digital Self-Regulation & Flow Protection (αCLAS & Nudge)",
+        p2Pain: "Real-World Friction: Study fatigue triggers mindless social media scrolling (40+ mins); abrupt parental door-knocking incurs heavy attention residue (15–20 mins) and sparks emotional defense.",
+        p2Pt1: "<b>αCLAS 10Hz Alpha Neuromodulation:</b> Strictly for study focus. In-ear EEG tracks Theta/Beta load ratio (CLI). Delivers αCLAS closed-loop phase-locked pulses, entraining prefrontal cortical oscillations into steady flow (Hebron et al., PLOS Biol 2024).",
+        p2Pt2: "<b>3-Second Deliberation Micro-Nudge:</b> Applying the self-nudge friction principle from Grüning et al. (PNAS 2023) (demonstrating 36% immediate abandonment and 37% open reduction), Cue injects a 3s breathing pause on entertainment app launch to allow prefrontal rationality to re-engage.",
+        p2Pt3: "<b>Parent Flow Shield & Growth Mindset Feedback:</b> Parent console displays 'Son is in deep focus - Do not disturb' to eliminate attention residue costs (Leroy, 2009); AI coach provides effort-based praise, applying growth-mindset principles (Yeager et al., Nature 2022) via a conversational agent interface (cf. Fitzpatrick et al., JMIR 2017) without empty flattery.",
+
+        exclBadge: "THE IN-EAR BIOSENSING ADVANTAGE",
+        exclTitle: "Why Only Cue In-Ear Biosensors Can Deliver This Closed Loop",
+        exclSub: "Why smartwatches and pure phone apps cannot achieve active neuromodulation, requiring in-ear biosensors.",
+        excl1Title: "CLAS Slow-Wave Sleep vs Wristbands",
+        excl1Desc: "Smartwatches only provide passive sleep graphs with significant staging errors (Lee et al., JMIR 2023). Only In-Ear EEG Earbuds can sample slow oscillations (SO ~0.5–1.25 Hz) at 250Hz in real-time, phase-locking threshold-adapted acoustic pulses to actively enhance deep restorative sleep (Coon et al., Front Neurosci 2025; Tabar et al., 2023).",
+        excl2Title: "αCLAS Focus Modulation vs Screen Locks",
+        excl2Desc: "Phone app limiters rely on rigid lockout after distraction, but empirical evidence shows restrictive surveillance rapidly loses efficacy in older adolescents (Ho et al., JMIR Pediatr Parent 2025). In-ear biosensors detect prefrontal mental fatigue (Theta/Beta CLI) before impulsive phone-grabbing, providing αCLAS 10Hz Alpha acoustic modulation to preserve natural flow (Hebron et al., PLOS Biol 2024).",
+        excl3Title: "100% Screen-Off Audio vs Blue Light",
+        excl3Desc: "In-ear in-ear micro-speaker and micro-pickups allow teenagers to hear and whisper messages with friends while keeping the phone screen completely pitch black—eliminating midnight doomscrolling from the biological source.",
+
+        ecoBadge: "SOFTWARE & SERVICE ECOSYSTEM",
+        ecoTitle: "Cue Multi-End Application Architecture",
+        ecoSub: "Seamless synergy between the Teen Mobile App and the Parent Co-Growth Console—bridging adolescent self-determination and caring parental support without surveillance.",
+        ecoTeenTitle: "Cue Adolescent App (5 Core Modules)",
+        ecoT1: "<b>📅 Daily Momentum:</b> CAR sunrise wake tracking, WHO (World Health Organization) 4D micro-habits, and positive daily progress logging.",
+        ecoT2: "<b>📚 Focus & αCLAS Modulation:</b> Real-time CLI tracking, αCLAS 10Hz Alpha modulation, and 3-second breathing friction against doomscrolling.",
+        ecoT3: "<b>🎙️ Growth Mindset Voice AI Coach:</b> In-ear private voiceprint interaction providing effort-based encouragement without empty flattery or nagging.",
+        ecoT4: "<b>🏃 180 SPM Cadence Sport:</b> 180 spm cadence music, in-ear PPG aerobic HR (135 bpm), and peer kudos with zero leaderboard anxiety.",
+        ecoT5: "<b>🌙 Screen-Off Bedtime & CLAS:</b> 100% black screen voice messaging, sunset warm light, and CLAS slow-wave deep sleep enhancement.",
+        ecoParentTitle: "Parent Co-Growth Console (4 Core Modules)",
+        ecoP1: "<b>📊 Co-Growth Dashboard:</b> Aggregated macro status sharing (wake time, steps, deep sleep hours) without intrusive surveillance.",
+        ecoP2: "<b>🛡️ Study Flow Shield:</b> Real-time 'SON IN FLOW' status display preventing door-knocking interruption and attention residue costs.",
+        ecoP3: "<b>🏠 Smart Home IoT Manager:</b> Automated ambient study lamp, living room audio muting, and bedroom temperature sync.",
+        ecoP4: "<b>💬 Positive Parenting Scripts:</b> AI communication guidance coaching parents on positive affirmation, plus World Health Organization (WHO) co-growth contracts.",
+
+        privBadge: "DATA PRIVACY & ETHICAL COMPLIANCE",
+        privTitle: "Strict Minor Data Protection & Zero Surveillance Standard",
+        privSub: "Adolescent neural biometrics are classified as highly sensitive personal data. Cue strictly complies with personal information protection regulations (PIPL), rigorously safeguarding privacy and autonomy.",
+        privC1Title: "Zero Raw EEG Upload",
+        privC1Desc: "Microvolt neural signals are filtered and computed on local earbud DSP chips. Raw waveforms are wiped immediately, with zero cloud storage or advertising monetization.",
+        privC2Title: "Zero Chat Snooping or Mirroring",
+        privC2Desc: "Parent devices only receive aggregated macro status indicators (e.g. 'In Deep Study', 'Run Completed'). Teen private chats, voice audio, and app browsing are never accessible to parents.",
+        privC3Title: "Non-Coercive Co-Growth Compact",
+        privC3Desc: "No remote lockouts or camera surveillance. Builds on WHO AA-HA! (2023) adolescent health guidance and mutual agreement contracts to foster intrinsic motivation and parental peace of mind.",
+
+        bibBadge: "EVIDENCE SOURCES & SCIENTIFIC BIBLIOGRAPHY",
+        bibTitle: "Academic Bibliography & Empirical Evidence Base (2022–2026 APA 7th)",
+        bibSub: "Strictly aligned with challenge requirements: 8 core evidence sources (5 academic papers + 2 recent studies from past 5 years + 1 authoritative guideline) plus 2 international Living Lab cases, comprehensively covering scale, user needs, gaps, safety, ethics, privacy, and accessibility.",
+        bibCat1: "Part I: Academic Papers (5+ Peer-Reviewed Journals, 2022–2026)",
+        bibCat2: "Part II: Recent Empirical Studies (Past 5 Years / 2022–2026)",
+        bibCat3: "Part III: Authoritative International Guidelines & Standards (WHO / NICE)",
+        bibCat4: "Part IV: 2 International Living Lab Benchmark Cases",
+        bib1Tag: "CLAS Phase-Locked Slow Oscillations (2025)",
+        bib2Tag: "SLYM & Glymphatic Barrier Foundation (2023)",
+        bib3Tag: "Digital Micro-Nudge: -37% Usage (2023)",
+        bib4Tag: "ipRGCs & Circadian Entrainment (2022)",
+        bib5Tag: "Attention Residue & Interruption Cost (2024)",
+        bib6Tag: "αCLAS Alpha Phase Modulation (2024)",
+        bib7Tag: "Growth Mindset Effort Feedback (2022)",
+        bib8Tag: "In-Ear Sleep EEG Feasibility (2023)",
+        bib9Tag: "Wrist Wearable vs In-Ear Accuracy (2023)",
+        bib10Tag: "Parental Control vs Reactance (2025)",
+        bib11Tag: "WHO Adolescent Autonomy & Ethics (2023)",
+        bib12Tag: "NICE Non-Pharmacological Guidance (2022)",
+        bib13Tag: "Philips Ambient Intelligence Lab (Eindhoven)",
+        bib14Tag: "Boston Children's Digital Wellness Lab (USA)"
+      }
+    };
+
+    function applyLanguage() {
+      const dict = i18n[currentLang];
+      
+      document.getElementById('nav-brand-title').innerText = dict.brandTitle;
+      document.getElementById('lnk-portals').innerText = dict.lnkPortals;
+      const lnkSci = document.getElementById('lnk-science-explained');
+      if (lnkSci) lnkSci.innerText = dict.lnkScienceExplained;
+      document.getElementById('lnk-pillars').innerText = dict.lnkPillars;
+      document.getElementById('lnk-exclusivity').innerText = dict.lnkExclusivity;
+      document.getElementById('lnk-ecosystem').innerText = dict.lnkEcosystem;
+      document.getElementById('lnk-privacy').innerText = dict.lnkPrivacy;
+      document.getElementById('lnk-science').innerText = dict.lnkScience;
+      document.getElementById('github-lbl').innerText = dict.githubLbl;
+
+      document.getElementById('hero-badge-txt').innerText = dict.heroBadge;
+      document.getElementById('hero-title-txt').innerText = dict.heroTitle;
+      const sloganEl = document.getElementById('hero-slogan-txt');
+      if (sloganEl) sloganEl.innerText = dict.heroSlogan;
+      document.getElementById('hero-subtitle-txt').innerText = dict.heroSub;
+      document.getElementById('txt-hero-scroll').innerText = dict.heroScroll;
+      document.getElementById('txt-team-tag').innerText = dict.teamTag;
+      document.getElementById('txt-team-members').innerText = dict.teamMembers;
+      document.getElementById('txt-footer-team').innerText = dict.footerTeam;
+
+      // Gateways
+      document.getElementById('pill-g1').innerText = dict.pillG1;
+      document.getElementById('pill-g2').innerText = dict.pillG2;
+      document.getElementById('pill-g3').innerText = dict.pillG3;
+
+      document.getElementById('g1-title').innerText = dict.g1Title;
+      document.getElementById('g1-desc').innerText = dict.g1Desc;
+      document.getElementById('g1-tag1').innerText = dict.g1Tag1;
+      document.getElementById('g1-tag2').innerText = dict.g1Tag2;
+      document.getElementById('g1-tag3').innerText = dict.g1Tag3;
+      document.getElementById('g1-tag4').innerText = dict.g1Tag4;
+      document.getElementById('g1-btn').innerText = dict.g1Btn;
+
+      document.getElementById('g2-title').innerText = dict.g2Title;
+      document.getElementById('g2-desc').innerText = dict.g2Desc;
+      document.getElementById('g2-tag1').innerText = dict.g2Tag1;
+      document.getElementById('g2-tag2').innerText = dict.g2Tag2;
+      document.getElementById('g2-tag3').innerText = dict.g2Tag3;
+      document.getElementById('g2-tag4').innerText = dict.g2Tag4;
+      document.getElementById('g2-btn').innerText = dict.g2Btn;
+
+      document.getElementById('g3-title').innerText = dict.g3Title;
+      document.getElementById('g3-desc').innerText = dict.g3Desc;
+      document.getElementById('g3-tag1').innerText = dict.g3Tag1;
+      document.getElementById('g3-tag2').innerText = dict.g3Tag2;
+      document.getElementById('g3-tag3').innerText = dict.g3Tag3;
+      document.getElementById('g3-tag4').innerText = dict.g3Tag4;
+      document.getElementById('g3-btn').innerText = dict.g3Btn;
+
+      // Science Explained Section Sync
+      const txtSciBadge = document.getElementById('txt-sci-badge');
+      if (txtSciBadge) txtSciBadge.innerText = dict.sciBadge;
+      const txtSciTitle = document.getElementById('txt-sci-title');
+      if (txtSciTitle) txtSciTitle.innerText = dict.sciTitle;
+      const txtSciSub = document.getElementById('txt-sci-sub');
+      if (txtSciSub) txtSciSub.innerText = dict.sciSub;
+
+      const m1Title = document.getElementById('m1-title');
+      if (m1Title) m1Title.innerText = dict.m1Title;
+      const m1Sub = document.getElementById('m1-sub');
+      if (m1Sub) m1Sub.innerText = dict.m1Sub;
+      const m1Plain = document.getElementById('m1-plain');
+      if (m1Plain) m1Plain.innerHTML = dict.m1Plain;
+      const m1Hardcore = document.getElementById('m1-hardcore');
+      if (m1Hardcore) m1Hardcore.innerHTML = dict.m1Hardcore;
+
+      const m2Title = document.getElementById('m2-title');
+      if (m2Title) m2Title.innerText = dict.m2Title;
+      const m2Sub = document.getElementById('m2-sub');
+      if (m2Sub) m2Sub.innerText = dict.m2Sub;
+      const m2Plain = document.getElementById('m2-plain');
+      if (m2Plain) m2Plain.innerHTML = dict.m2Plain;
+      const m2Hardcore = document.getElementById('m2-hardcore');
+      if (m2Hardcore) m2Hardcore.innerHTML = dict.m2Hardcore;
+
+      const m3Title = document.getElementById('m3-title');
+      if (m3Title) m3Title.innerText = dict.m3Title;
+      const m3Sub = document.getElementById('m3-sub');
+      if (m3Sub) m3Sub.innerText = dict.m3Sub;
+      const m3Plain = document.getElementById('m3-plain');
+      if (m3Plain) m3Plain.innerHTML = dict.m3Plain;
+      const m3Hardcore = document.getElementById('m3-hardcore');
+      if (m3Hardcore) m3Hardcore.innerHTML = dict.m3Hardcore;
+
+      const m4Title = document.getElementById('m4-title');
+      if (m4Title) m4Title.innerText = dict.m4Title;
+      const m4Sub = document.getElementById('m4-sub');
+      if (m4Sub) m4Sub.innerText = dict.m4Sub;
+      const m4Plain = document.getElementById('m4-plain');
+      if (m4Plain) m4Plain.innerHTML = dict.m4Plain;
+      const m4Hardcore = document.getElementById('m4-hardcore');
+      if (m4Hardcore) m4Hardcore.innerHTML = dict.m4Hardcore;
+
+      const m5Title = document.getElementById('m5-title');
+      if (m5Title) m5Title.innerText = dict.m5Title;
+      const m5Sub = document.getElementById('m5-sub');
+      if (m5Sub) m5Sub.innerText = dict.m5Sub;
+      const m5Plain = document.getElementById('m5-plain');
+      if (m5Plain) m5Plain.innerHTML = dict.m5Plain;
+      const m5Hardcore = document.getElementById('m5-hardcore');
+      if (m5Hardcore) m5Hardcore.innerHTML = dict.m5Hardcore;
+
+      // Pillars sync
+      document.getElementById('txt-pillar-badge').innerText = dict.pillarBadge;
+      document.getElementById('txt-pillar-title').innerText = dict.pillarTitle;
+      document.getElementById('txt-pillar-sub').innerText = dict.pillarSub;
+      document.getElementById('p1-badge').innerText = dict.p1Badge;
+      document.getElementById('p1-title').innerText = dict.p1Title;
+      document.getElementById('p1-pain').innerHTML = `<b>${currentLang === 'zh' ? '真实家庭痛点：' : 'Real-World Friction:'}</b> ${dict.p1Pain.replace(/^[^：:]+[：:]\s*/, '')}`;
+      document.getElementById('p1-pt1').innerHTML = dict.p1Pt1;
+      document.getElementById('p1-pt2').innerHTML = dict.p1Pt2;
+      document.getElementById('p1-pt3').innerHTML = dict.p1Pt3;
+
+      document.getElementById('p2-badge').innerText = dict.p2Badge;
+      document.getElementById('p2-title').innerText = dict.p2Title;
+      document.getElementById('p2-pain').innerHTML = `<b>${currentLang === 'zh' ? '真实家庭痛点：' : 'Real-World Friction:'}</b> ${dict.p2Pain.replace(/^[^：:]+[：:]\s*/, '')}`;
+      document.getElementById('p2-pt1').innerHTML = dict.p2Pt1;
+      document.getElementById('p2-pt2').innerHTML = dict.p2Pt2;
+      document.getElementById('p2-pt3').innerHTML = dict.p2Pt3;
+
+      // Exclusivity sync
+      document.getElementById('txt-excl-badge').innerText = dict.exclBadge;
+      document.getElementById('txt-excl-title').innerText = dict.exclTitle;
+      document.getElementById('txt-excl-sub').innerText = dict.exclSub;
+      document.getElementById('excl-1-title').innerText = dict.excl1Title;
+      document.getElementById('excl-1-desc').innerText = dict.excl1Desc;
+      document.getElementById('excl-2-title').innerText = dict.excl2Title;
+      document.getElementById('excl-2-desc').innerText = dict.excl2Desc;
+      document.getElementById('excl-3-title').innerText = dict.excl3Title;
+      document.getElementById('excl-3-desc').innerText = dict.excl3Desc;
+
+      // App Ecosystem Sync
+      document.getElementById('txt-eco-badge').innerText = dict.ecoBadge;
+      document.getElementById('txt-eco-title').innerText = dict.ecoTitle;
+      document.getElementById('txt-eco-sub').innerText = dict.ecoSub;
+      document.getElementById('eco-teen-title').innerText = dict.ecoTeenTitle;
+      document.getElementById('eco-t1').innerHTML = dict.ecoT1;
+      document.getElementById('eco-t2').innerHTML = dict.ecoT2;
+      document.getElementById('eco-t3').innerHTML = dict.ecoT3;
+      document.getElementById('eco-t4').innerHTML = dict.ecoT4;
+      document.getElementById('eco-t5').innerHTML = dict.ecoT5;
+      document.getElementById('eco-parent-title').innerText = dict.ecoParentTitle;
+      document.getElementById('eco-p1').innerHTML = dict.ecoP1;
+      document.getElementById('eco-p2').innerHTML = dict.ecoP2;
+      document.getElementById('eco-p3').innerHTML = dict.ecoP3;
+      document.getElementById('eco-p4').innerHTML = dict.ecoP4;
+
+      // Privacy Section Sync
+      document.getElementById('txt-priv-badge').innerText = dict.privBadge;
+      document.getElementById('txt-priv-title').innerText = dict.privTitle;
+      document.getElementById('txt-priv-sub').innerText = dict.privSub;
+      document.getElementById('priv-c1-title').innerText = dict.privC1Title;
+      document.getElementById('priv-c1-desc').innerText = dict.privC1Desc;
+      document.getElementById('priv-c2-title').innerText = dict.privC2Title;
+      document.getElementById('priv-c2-desc').innerText = dict.privC2Desc;
+      document.getElementById('priv-c3-title').innerText = dict.privC3Title;
+      document.getElementById('priv-c3-desc').innerText = dict.privC3Desc;
+
+      // Bibliography Section Sync
+      document.getElementById('txt-bib-badge').innerText = dict.bibBadge;
+      document.getElementById('txt-bib-title').innerText = dict.bibTitle;
+      document.getElementById('txt-bib-sub').innerText = dict.bibSub;
+
+      const cat1 = document.getElementById('txt-bib-cat1');
+      if (cat1 && dict.bibCat1) cat1.innerText = dict.bibCat1;
+      const cat2 = document.getElementById('txt-bib-cat2');
+      if (cat2 && dict.bibCat2) cat2.innerText = dict.bibCat2;
+      const cat3 = document.getElementById('txt-bib-cat3');
+      if (cat3 && dict.bibCat3) cat3.innerText = dict.bibCat3;
+      const cat4 = document.getElementById('txt-bib-cat4');
+      if (cat4 && dict.bibCat4) cat4.innerText = dict.bibCat4;
+
+      for (let i = 1; i <= 14; i++) {
+        const tagEl = document.getElementById(`bib${i}-tag`);
+        if (tagEl && dict[`bib${i}Tag`]) {
+          tagEl.innerText = dict[`bib${i}Tag`];
+        }
+      }
+
+      // Theme toggle button sync
+      const themeLbl = document.getElementById('theme-lbl');
+      const themeIcon = document.getElementById('theme-icon');
+      if (themeLbl) themeLbl.innerText = (currentTheme === 'light') ? dict.themeDark : dict.themeLight;
+      if (themeIcon) themeIcon.innerText = (currentTheme === 'light') ? '🌙' : '☀️';
+    }
+
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      const themeIcon = document.getElementById('theme-icon');
+      const themeLbl = document.getElementById('theme-lbl');
+      const dict = i18n[currentLang];
+
+      if (currentTheme === 'light') {
+        currentTheme = 'dark';
+        htmlEl.setAttribute('data-theme', 'dark');
+        if (themeIcon) themeIcon.innerText = '☀️';
+        if (themeLbl) themeLbl.innerText = dict.themeLight;
+      } else {
+        currentTheme = 'light';
+        htmlEl.setAttribute('data-theme', 'light');
+        if (themeIcon) themeIcon.innerText = '🌙';
+        if (themeLbl) themeLbl.innerText = dict.themeDark;
+      }
+      try { localStorage.setItem('cue_theme', currentTheme); } catch(e){}
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      try { localStorage.setItem('cue_lang', lang); } catch(e){}
+      document.getElementById('btn-lang-zh').className = (lang === 'zh') ? 'lang-btn active' : 'lang-btn';
+      document.getElementById('btn-lang-en').className = (lang === 'en') ? 'lang-btn active' : 'lang-btn';
+      applyLanguage();
+    }
+
+    // Initialize with localStorage persistence (Default to English)
+    try {
+      const savedTheme = localStorage.getItem('cue_theme') || 'light';
+      if (savedTheme === 'dark') {
+        currentTheme = 'dark';
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      const savedLang = localStorage.getItem('cue_lang') || 'en';
+      setLanguage(savedLang);
+    } catch(e) {
+      setLanguage('en');
+    }
+
+    // Back to top floating button scroll listener
+    const backToTopBtn = document.getElementById('btn-back-to-top');
+    if (backToTopBtn) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 320) {
+          backToTopBtn.classList.add('visible');
+        } else {
+          backToTopBtn.classList.remove('visible');
+        }
+      }, { passive: true });
+    }
+  </script>
+</body>
+</html>
